@@ -30,7 +30,8 @@ class _ConnexionState extends State<Connexion> {
                         width: 600,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(50),
-                          child: Image.asset("assets/images/login1-removebg.png"),
+                          // child: Image.asset("assets/images/login1-removebg.png"),
+                          child: Image.asset("assets/images/signin.png"),
                         ),
                       ),
                     ],
@@ -205,7 +206,7 @@ class _ConnexionState extends State<Connexion> {
                   ),
 
                  const SizedBox(height: 30),
-
+                //Pour la navigation
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   const  Text("Vous n'avez pas de compte?"),
                   const  SizedBox(width: 10),
@@ -231,6 +232,9 @@ class _ConnexionState extends State<Connexion> {
                   )
 
                   ]),
+                   //fin la navigation
+
+
                 ],
               )),
         ),
