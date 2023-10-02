@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:ika_musaka/screens/ConnexionScreen.dart';
+import 'package:ika_musaka/screens/demarrage.dart';
 
     
 void main() {
@@ -14,13 +15,13 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
+  
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return  MaterialApp(
       // title: "LogIn Screen",
       debugShowCheckedModeBanner: false,
-      home: Connexion()
+      home: Damarrage()
       );//Place SignUp function here to Observe SignUp Screen.
   }
   //koureissi
