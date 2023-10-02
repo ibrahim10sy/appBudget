@@ -15,8 +15,8 @@ class _DepenseState extends State<DepensesListes>{
       body: Column(
         children: [
           Container(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
+            child: const Padding(
+              padding: EdgeInsets.all(16.0),
               child: Row(
                 children:[
                   CircleAvatar(
@@ -106,7 +106,7 @@ class _DepenseState extends State<DepensesListes>{
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
+                      const Row(
                         children: [
                           Text(
                             'Budget Total:',
@@ -145,7 +145,7 @@ class _DepenseState extends State<DepensesListes>{
                     child: Image.asset(
                       'assets/images/wallet.png',
                       fit: BoxFit.cover,
-                     // Utilisez BoxFit.contain si vous préférez que l'image soit entièrement contenue dans le conteneur
+                    // Utilisez BoxFit.contain si vous préférez que l'image soit entièrement contenue dans le conteneur
                     ),
                   ),
                 ],
@@ -167,86 +167,35 @@ class _DepenseState extends State<DepensesListes>{
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children:  [
-                    ListTile(
+                    const ListTile(
                         leading: CircleAvatar(
                           backgroundImage: AssetImage("assets/images/wallet.png"),
                         ),
                       title:Text("Liste des depenses",
                         style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold, color: Color.fromRGBO(47, 144, 98, 1),))
                     ),
-                    Card(
-                     shape: RoundedRectangleBorder(
-                       side: BorderSide(color: Colors.white10,width: 2),
-                       borderRadius: BorderRadius.circular(20),
-                     ),
-                     child: const ListTile(
 
-                         leading: CircleAvatar(
-                           backgroundImage: AssetImage("assets/images/wallet.png"),
-                         ),
-                         title:Text("Budget pour le transport")
-                     ),
-                   ),
+                    Expanded(
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: 10,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Card(
+                            shape: RoundedRectangleBorder(
+                              side: BorderSide(color: Colors.white10,width: 2),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: const ListTile(
 
-                    Card(
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(color: Colors.white10,width: 2),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: const ListTile(
-
-                          leading: CircleAvatar(
-                            backgroundImage: AssetImage("assets/images/wallet.png"),
-                          ),
-                          title:Text("Budget pour le loyer")
+                                leading: CircleAvatar(
+                                  backgroundImage: AssetImage("assets/images/wallet.png"),
+                                ),
+                                title:Text("Budget pour le loyer")
+                            ),
+                          );
+                        },
                       ),
                     ),
-
-
-                    Card(
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(color: Colors.white10,width: 2),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: const ListTile(
-
-                          leading: CircleAvatar(
-                            backgroundImage: AssetImage("assets/images/wallet.png"), // No matter how big it is, it won't overflow
-                          ),
-                          title:Text("Budget pour la nourriture")
-                      ),
-                    ),
-
-
-                    Card(
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(color: Colors.white10,width: 2),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: const ListTile(
-
-                          leading: CircleAvatar(
-                            backgroundImage: AssetImage("assets/images/wallet.png"), // No matter how big it is, it won't overflow
-                          ),
-                          title:Text("Budget pour les etudes")
-                      ),
-                    ),
-
-                    Card(
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(color: Colors.white10,width: 2),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: const ListTile(
-
-                          leading: CircleAvatar(
-                            backgroundImage: AssetImage("assets/images/wallet.png"), // No matter how big it is, it won't overflow
-                          ),
-                          title:Text("Budget pour le imprevus")
-                      ),
-                    ),
-
-
                   ],
                 ),
               ),
