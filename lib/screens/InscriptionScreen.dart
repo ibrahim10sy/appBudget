@@ -1,12 +1,66 @@
+// import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:ika_musaka/main.dart';
+// import 'package:ika_musaka/model/utilisateur.dart';
 import 'package:ika_musaka/screens/ConnexionScreen.dart';
+// import 'package:http/http.dart' as http;
 
 class Inscription extends StatefulWidget {
+  const Inscription({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _InscriptionState createState() => _InscriptionState();
 }
 
+// Future<Utilisateur?> Inscriptions(
+//   String nom,
+//   String prenom,
+//   String email,
+//   String motDepasse,
+//   BuildContext context,
+// ) async {
+//   var Url = "http://localhost:8080/utilisateur/create";
+//   var response = await http.post(
+//     Url as Uri,
+//     headers: <String, String>{
+//       "Content-Type": "application/json"
+//     },
+//     body: jsonEncode(<String, String>{
+//       "nom": nom,
+//       "prenom": prenom,
+//       "email": email,
+//       "motDepasse": motDepasse
+//     })
+//   );
+
+//   String reponseString = response.body;
+//   if (response.statusCode == 200) {
+//     showDialog(
+//       context: context,
+//       barrierDismissible: true,
+//       builder: (BuildContext dialogContext) {
+//         return MyAlertDialog(title: "Backend reponse", content: response.body);
+//       },
+//     );
+//   }
+
+//   // Return null if you don't have a specific Utilisateur object to return.
+//   return null;
+// }
+
+
+
 class _InscriptionState extends State<Inscription> {
+  // ignore: non_constant_identifier_names
+  TextEditingController nom_controller= TextEditingController() ;
+  // ignore: non_constant_identifier_names
+  TextEditingController prenom_controller= TextEditingController() ;
+  // ignore: non_constant_identifier_names
+  TextEditingController email_controller= TextEditingController() ;
+  // ignore: non_constant_identifier_names
+  TextEditingController motDepasse_controller= TextEditingController() ;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +91,7 @@ class _InscriptionState extends State<Inscription> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(50),
                                 child: Image.asset(
-                                  "assets/images/signup.png",
+                                  "assets/images/logoresize.png",
                                 ),
                               ),
                             ),
@@ -64,14 +118,14 @@ class _InscriptionState extends State<Inscription> {
 
                             children: [
 
-                              Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 3),
-                              child: const Text(
-                                "Inscription",
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.w800, color: Color(0xFFE4AF18), ),
-                              )),
+                              // Container(
+                              // padding: const EdgeInsets.symmetric(
+                              //     horizontal: 10, vertical: 3),
+                              // child: const Text(
+                              //   "Inscription",
+                              //   style: TextStyle(
+                              //       fontSize: 18, fontWeight: FontWeight.w800, color: Color(0xFFE4AF18), ),
+                              // )),
 
                               const SizedBox(height: 15),
                                 Container(
@@ -82,27 +136,7 @@ class _InscriptionState extends State<Inscription> {
                                       borderRadius:
                                       BorderRadius.all(Radius.circular(20))),
                                     child: TextFormField(
-                                    obscureText: true,
-                                    decoration: const InputDecoration(
-                                      hintText: "Nom",
-                                      border: InputBorder.none,
-                                      prefixIcon:
-                                          Icon(Icons.verified_user, color: Colors.grey),
-                                    ),
-                                  ),
-                                ),
-
-
-                              const SizedBox(height: 15),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 2, vertical: 5),
-                                  decoration: const BoxDecoration(
-                                      color: Color(0xfff5f8fd),
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(20))),
-                                    child: TextFormField(
-                                    obscureText: true,
+                                    // obscureText: true,
                                     decoration: const InputDecoration(
                                       hintText: "Prenom",
                                       border: InputBorder.none,
@@ -111,7 +145,6 @@ class _InscriptionState extends State<Inscription> {
                                     ),
                                   ),
                                 ),
-                              
 
                               const SizedBox(height: 15),
                                 Container(
@@ -122,7 +155,26 @@ class _InscriptionState extends State<Inscription> {
                                       borderRadius:
                                       BorderRadius.all(Radius.circular(20))),
                                     child: TextFormField(
-                                    obscureText: true,
+                                    // obscureText: true,
+                                    decoration: const InputDecoration(
+                                      hintText: "Nom",
+                                      border: InputBorder.none,
+                                      prefixIcon:
+                                          Icon(Icons.verified_user, color: Colors.grey),
+                                    ),
+                                  ),
+                                ),
+ 
+                              const SizedBox(height: 15),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 2, vertical: 5),
+                                  decoration: const BoxDecoration(
+                                      color: Color(0xfff5f8fd),
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(20))),
+                                    child: TextFormField(
+                                    // obscureText: true,
                                     decoration: const InputDecoration(
                                       hintText: "Email",
                                       border: InputBorder.none,
@@ -151,7 +203,25 @@ class _InscriptionState extends State<Inscription> {
                               ),
                             ),
 
-                             
+                             const SizedBox(height: 15),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 2, vertical: 5),
+                              decoration: const BoxDecoration(
+                                  color: Color(0xfff5f8fd),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20))),
+                              child: TextFormField(
+                                obscureText: true,
+                                decoration: const InputDecoration(
+                                  hintText: "Repetermot de passe",
+                                  border: InputBorder.none,
+                                  prefixIcon:
+                                      Icon(Icons.vpn_key, color: Colors.grey),
+                                ),
+                              ),
+                            ),
+
 
                             ],
 
@@ -169,11 +239,15 @@ class _InscriptionState extends State<Inscription> {
                      ElevatedButton(
                       onPressed: () {
                         // Your button's onPressed logic here
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const ListUtilisateur()),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         elevation: 13,
                         padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 55),
-                        backgroundColor: Color(0xFF2F9062), // Button color
+                        backgroundColor: const Color(0xFF2F9062), // Button color
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                           side: const BorderSide(color: Colors.white70),
@@ -237,9 +311,10 @@ class _InscriptionState extends State<Inscription> {
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => Connexion()),
+                          MaterialPageRoute(builder: (context) => const Connexion()),
                         );
                       },
+                      // ignore: avoid_unnecessary_containers
                       child: Container(
                         child:const Text("Se connecter",
                             style: TextStyle(
@@ -257,3 +332,22 @@ class _InscriptionState extends State<Inscription> {
   }
 }
 
+class MyAlertDialog extends StatelessWidget{
+  final String title;
+  final String content;
+  final List<Widget> actions;
+  const MyAlertDialog({super.key, required this.title,required this.content, this.actions=const[]});
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text(
+        title,
+        ),
+        actions: actions,
+        content: Text(content,
+        
+        ),
+    );
+  }
+
+}
