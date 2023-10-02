@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:ika_musaka/screens/ConnexionScreen.dart';
+import 'package:ika_musaka/screens/DepenseListes.dart';
 
     
 void main() {
@@ -20,7 +21,7 @@ class _MyAppState extends State<MyApp> {
     return const MaterialApp(
       // title: "LogIn Screen",
       debugShowCheckedModeBanner: false,
-      home: Connexion()
+      home: DepensesListes()
       );//Place SignUp function here to Observe SignUp Screen.
   }
   //AYA
