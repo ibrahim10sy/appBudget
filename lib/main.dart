@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:device_preview/device_preview.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:ika_musaka/screens/Budget.dart';
 import 'package:ika_musaka/screens/ConnexionScreen.dart';
+import 'package:ika_musaka/screens/Depense.dart';
+import 'package:ika_musaka/screens/Finances.dart';
+import 'package:ika_musaka/screens/demarrage.dart';
 
 void main() {
   runApp(
@@ -28,7 +32,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       locale: DevicePreview.locale(context),
       builder: DevicePreview.appBuilder,
-      home: const Connexion()
+      home:  Depense()
       );//Place SignUp function here to Observe SignUp Screen.
   }
   //koureissi
