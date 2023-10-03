@@ -12,7 +12,7 @@ class Depense extends StatelessWidget{
               padding: const EdgeInsets.only(bottom: 25),
               child:
       
-        Image.asset("assets/images/Group 26"),
+        Image.asset("images/aaa.png"),
           ), 
           // Container(
           //    padding: const EdgeInsets.only(bottom: 0),

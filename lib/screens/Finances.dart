@@ -14,7 +14,7 @@ class Finances extends StatelessWidget{
               padding: const EdgeInsets.only(bottom: 25),
               child:
          Image(
-          image:  AssetImage('assets/images/Group 16.png' ),
+          image:  AssetImage('assets/images/aaa.png' ),
           ), ),
           Container(
              padding: const EdgeInsets.only(bottom: 0),
