@@ -1,9 +1,14 @@
 // import 'dart:convert';
-
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:ika_musaka/main.dart';
 // import 'package:ika_musaka/model/utilisateur.dart';
 import 'package:ika_musaka/screens/ConnexionScreen.dart';
+
+import '../model/utilisateur.dart';
+import '../provider/UtilisateurProvider.dart';
+import 'ListUtilisateur.dart';
+import 'UtilisateurService.dart';
 // import 'package:http/http.dart' as http;
 
 class Inscription extends StatefulWidget {
@@ -14,43 +19,6 @@ class Inscription extends StatefulWidget {
   _InscriptionState createState() => _InscriptionState();
 }
 
-// Future<Utilisateur?> Inscriptions(
-//   String nom,
-//   String prenom,
-//   String email,
-//   String motDepasse,
-//   BuildContext context,
-// ) async {
-//   var Url = "http://localhost:8080/utilisateur/create";
-//   var response = await http.post(
-//     Url as Uri,
-//     headers: <String, String>{
-//       "Content-Type": "application/json"
-//     },
-//     body: jsonEncode(<String, String>{
-//       "nom": nom,
-//       "prenom": prenom,
-//       "email": email,
-//       "motDepasse": motDepasse
-//     })
-//   );
-
-//   String reponseString = response.body;
-//   if (response.statusCode == 200) {
-//     showDialog(
-//       context: context,
-//       barrierDismissible: true,
-//       builder: (BuildContext dialogContext) {
-//         return MyAlertDialog(title: "Backend reponse", content: response.body);
-//       },
-//     );
-//   }
-
-//   // Return null if you don't have a specific Utilisateur object to return.
-//   return null;
-// }
-
-
 
 class _InscriptionState extends State<Inscription> {
   // ignore: non_constant_identifier_names
@@ -58,24 +26,44 @@ class _InscriptionState extends State<Inscription> {
   // ignore: non_constant_identifier_names
   TextEditingController prenom_controller= TextEditingController() ;
   // ignore: non_constant_identifier_names
+  TextEditingController username_controller= TextEditingController() ;
+  // ignore: non_constant_identifier_names
   TextEditingController email_controller= TextEditingController() ;
   // ignore: non_constant_identifier_names
   TextEditingController motDepasse_controller= TextEditingController() ;
+  TextEditingController RepmotDePasse_controller = TextEditingController() ;
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialisation des contrôleurs de texte avec des valeurs vides.
+    username_controller.clear();
+    nom_controller.clear();
+    prenom_controller.clear();
+    email_controller.clear();
+    motDepasse_controller.clear();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xffe8ebed),
       
-      body: SingleChildScrollView(
+      body:
+      SingleChildScrollView(
+
         //we are adding this so that we can scroll when KeyBoard PopsUp.
         
         child: Container(
+
           height: MediaQuery.of(context)
               .size
-              .height, // If you get any blur that is outoff the screen then try to decrease or increase this negative value.This is mainly bcz it adjusts as per the phone size.
+              .height, // If you get any blur that is out off the screen then try to decrease or increase this negative value.This is mainly bcz it adjusts as per the phone size.
           alignment: Alignment.topCenter,
           
           child: Container(
+
               padding: const EdgeInsets.all(30),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -87,11 +75,13 @@ class _InscriptionState extends State<Inscription> {
                         Stack(
                           //I added stack so that i can position it anywhere i want with the coordinates like left ,right,bottom.
                           children: <Widget>[
+
                             Positioned(
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(50),
                                 child: Image.asset(
-                                  "assets/images/logoresize.png",
+                                  "assets/images/logo.png",
+                                  height: 100,
                                 ),
                               ),
                             ),
@@ -99,8 +89,9 @@ class _InscriptionState extends State<Inscription> {
                         ),
 
                       //The Username,Email,Password Input fields.
-                       const SizedBox(height: 20),
+                      // const SizedBox(height: 20),
                         Container(
+
                           padding:const EdgeInsets.all(10),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
@@ -118,14 +109,15 @@ class _InscriptionState extends State<Inscription> {
 
                             children: [
 
-                              // Container(
-                              // padding: const EdgeInsets.symmetric(
-                              //     horizontal: 10, vertical: 3),
-                              // child: const Text(
-                              //   "Inscription",
-                              //   style: TextStyle(
-                              //       fontSize: 18, fontWeight: FontWeight.w800, color: Color(0xFFE4AF18), ),
-                              // )),
+                              Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 3),
+                              child: const Text(
+                                "Inscription",
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w800, color: Color(0xFFE4AF18), ),
+                              )
+                              ),
 
                               const SizedBox(height: 15),
                                 Container(
@@ -137,14 +129,34 @@ class _InscriptionState extends State<Inscription> {
                                       BorderRadius.all(Radius.circular(20))),
                                     child: TextFormField(
                                     // obscureText: true,
+                                      controller: username_controller,
                                     decoration: const InputDecoration(
-                                      hintText: "Prenom",
+                                      hintText: "Username",
                                       border: InputBorder.none,
                                       prefixIcon:
-                                          Icon(Icons.verified_user, color: Colors.grey),
+                                          Icon(Icons.verified_user, color: Color(0xFF2F9062),),
                                     ),
                                   ),
                                 ),
+                              const SizedBox(height: 15),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 2, vertical: 5),
+                                decoration: const BoxDecoration(
+                                    color: Color(0xfff5f8fd),
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(20))),
+                                child: TextFormField(
+                                  // obscureText: true,
+                                  controller: prenom_controller,
+                                  decoration: const InputDecoration(
+                                    hintText: "Prenom",
+                                    border: InputBorder.none,
+                                    prefixIcon:
+                                    Icon(Icons.verified_user, color: Color(0xFF2F9062),),
+                                  ),
+                                ),
+                              ),
 
                               const SizedBox(height: 15),
                                 Container(
@@ -156,11 +168,12 @@ class _InscriptionState extends State<Inscription> {
                                       BorderRadius.all(Radius.circular(20))),
                                     child: TextFormField(
                                     // obscureText: true,
+                                      controller: nom_controller,
                                     decoration: const InputDecoration(
                                       hintText: "Nom",
                                       border: InputBorder.none,
                                       prefixIcon:
-                                          Icon(Icons.verified_user, color: Colors.grey),
+                                          Icon(Icons.verified_user, color: const Color(0xFF2F9062),),
                                     ),
                                   ),
                                 ),
@@ -175,11 +188,12 @@ class _InscriptionState extends State<Inscription> {
                                       BorderRadius.all(Radius.circular(20))),
                                     child: TextFormField(
                                     // obscureText: true,
+                                      controller: email_controller,
                                     decoration: const InputDecoration(
                                       hintText: "Email",
                                       border: InputBorder.none,
                                       prefixIcon:
-                                          Icon(Icons.email, color: Colors.grey),
+                                          Icon(Icons.email, color: Color(0xFF2F9062),),
                                     ),
                                   ),
                                 ),
@@ -193,12 +207,13 @@ class _InscriptionState extends State<Inscription> {
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(20))),
                               child: TextFormField(
+                                controller: motDepasse_controller,
                                 obscureText: true,
                                 decoration: const InputDecoration(
                                   hintText: "Mot de passe",
                                   border: InputBorder.none,
                                   prefixIcon:
-                                      Icon(Icons.vpn_key, color: Colors.grey),
+                                      Icon(Icons.vpn_key, color:  Color(0xFF2F9062),),
                                 ),
                               ),
                             ),
@@ -212,12 +227,13 @@ class _InscriptionState extends State<Inscription> {
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(20))),
                               child: TextFormField(
+                                controller: RepmotDePasse_controller,
                                 obscureText: true,
                                 decoration: const InputDecoration(
                                   hintText: "Repetermot de passe",
                                   border: InputBorder.none,
                                   prefixIcon:
-                                      Icon(Icons.vpn_key, color: Colors.grey),
+                                      Icon(Icons.vpn_key, color:  Color(0xFF2F9062),),
                                 ),
                               ),
                             ),
@@ -237,13 +253,77 @@ class _InscriptionState extends State<Inscription> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                      ElevatedButton(
-                      onPressed: () {
-                        // Your button's onPressed logic here
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const ListUtilisateur()),
-                        );
-                      },
+                      onPressed: () async {
+                        final username = username_controller.text;
+                      final nom = nom_controller.text;
+                      final prenom = prenom_controller.text;
+                      final email = email_controller.text;
+                        final motDePasse = motDepasse_controller.text;
+                        final RepmotDePasse = RepmotDePasse_controller.text;
+
+                        if (motDePasse != RepmotDePasse) {
+
+                          final  String errorMessage = "Mot de passe different ";
+                          // Gérez le cas où l'email ou le mot de passe est vide.
+                          showDialog(
+                            context:  context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title:  Center(child: Text('Erreur')),
+                                content:  Text(errorMessage),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child:  Text('OK'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                          return;
+                        }
+
+                      try {
+                          UtilisateurProvider utilisateurProvider = Provider.of<UtilisateurProvider>(context, listen: false);
+                      final nouveauUtilisateur = await UtilisateurService.ajouterUtilisateur(
+                        username: username,
+                      nom: nom,
+                      prenom: prenom,
+                      email: email,
+                      motDePasse: motDePasse,
+                      );
+                      utilisateurProvider.setUtilisateur(nouveauUtilisateur);
+
+                      // Le nouvel utilisateur a été ajouté avec succès, vous pouvez gérer la réponse ici.
+                      print('Utilisateur ajouté avec succès : ${nouveauUtilisateur.nom}');
+                      nom_controller.clear();
+                      username_controller.clear();
+                      prenom_controller.clear();
+                      email_controller.clear();
+                      motDepasse_controller.clear();
+                      RepmotDePasse_controller.clear();
+                      } catch (e) {
+                      // Une erreur s'est produite lors de l'ajout de l'utilisateur, vous pouvez gérer l'erreur ici.
+                      //print('Erreur lors de l\'ajout de l\'utilisateur : $e');
+                      final String errorMessage = e.toString();
+                      showDialog(
+                          context:  context,
+                          builder: (BuildContext context) {
+                          return AlertDialog(
+                          title:  Center(child: Text('Erreur')),
+                          content:  Text(errorMessage),
+                          actions: <Widget>[
+                          TextButton(
+                          onPressed: () {
+                          Navigator.of(context).pop();
+                          },
+                          child:  Text('OK'),
+                          ),
+                          ],
+                          );});
+                      }},
                       style: ElevatedButton.styleFrom(
                         elevation: 13,
                         padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 55),
@@ -265,7 +345,12 @@ class _InscriptionState extends State<Inscription> {
 
                      const SizedBox(width: 5),
                       InkWell(        //We can use the GestureDetector as well.
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => const ListUtilisateur()),
+                          );
+                        },
                         child: Container(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
