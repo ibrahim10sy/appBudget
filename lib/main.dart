@@ -1,11 +1,10 @@
-
 import 'package:flutter/material.dart';
-import 'package:ika_musaka/screens/ConnexionScreen.dart';
+import 'package:ika_musaka/screens/depensepage.dart';
 
-    
 void main() {
-   runApp(MyApp());
+  runApp(MyApp());
 }
+
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
@@ -14,17 +13,13 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
       // title: "LogIn Screen",
       debugShowCheckedModeBanner: false,
-      home: Connexion()
-      );//Place SignUp function here to Observe SignUp Screen.
+      home: Depense(),
+    ); //Place SignUp function here to Observe SignUp Screen.
   }
   //GUIDO
 }
-
-
- 

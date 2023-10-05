@@ -11,7 +11,6 @@ class _InscriptionState extends State<Inscription> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xffe8ebed),
-      
       body: SingleChildScrollView(
         //we are adding this so that we can scroll when KeyBoard PopsUp.
         
