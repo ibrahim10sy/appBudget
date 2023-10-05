@@ -1,3 +1,4 @@
+// ignore: file_names
 import 'package:flutter/material.dart';
 import 'package:ika_musaka/screens/InscriptionScreen.dart';
 
@@ -12,7 +13,7 @@ class _ConnexionState extends State<Connexion> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xffe8ebed),
+      backgroundColor: const Color(0xffe8ebed),
       body: SingleChildScrollView(
         child: Container(
           height: MediaQuery.of(context).size.height -
@@ -25,12 +26,15 @@ class _ConnexionState extends State<Connexion> {
                 children: [
                   Stack(
                     children: <Widget>[
-                      Container(
-                        height: 250,
-                        width: 600,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(50),
-                          child: Image.asset("assets/images/login1-removebg.png"),
+                      SizedBox(
+                        child: Container(
+                          height: 250,
+                          width: 600,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(50),
+                            // child: Image.asset("assets/images/login1-removebg.png"),
+                            child: Image.asset("assets/images/logo.png"),
+                          ),
                         ),
                       ),
                     ],
@@ -118,13 +122,12 @@ class _ConnexionState extends State<Connexion> {
 
                   Container(
                     alignment: Alignment.centerRight,
-                    child: Container(
-                        child: const Text(
+                    child: const Text(
                       "Mot de passe oublié ?",
                       style:  TextStyle(
-                          color: Color(0xFFE4AF18), 
-                          fontWeight: FontWeight.w500),
-                    )),
+                      color: Color(0xFFE4AF18), 
+                      fontWeight: FontWeight.w500),
+                    ),
                   ),
 
                   const SizedBox(height: 25),
@@ -205,7 +208,7 @@ class _ConnexionState extends State<Connexion> {
                   ),
 
                  const SizedBox(height: 30),
-
+                //Pour la navigation
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                   const  Text("Vous n'avez pas de compte?"),
                   const  SizedBox(width: 10),
@@ -218,6 +221,7 @@ class _ConnexionState extends State<Connexion> {
                           MaterialPageRoute(builder: (context) => Inscription()),
                         );
                       },
+                      // ignore: avoid_unnecessary_containers
                       child: Container(
                         child: const Text(
                           "S'inscrire maintenant",
@@ -231,6 +235,7 @@ class _ConnexionState extends State<Connexion> {
                   )
 
                   ]),
+                   //fin la navigation
                 ],
               )),
         ),

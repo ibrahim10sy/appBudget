@@ -1,4 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:label="ika_musaka"
         android:name="${applicationName}"
@@ -30,4 +31,8 @@
             android:name="flutterEmbedding"
             android:value="2" />
     </application>
+
+    <!-- Required to fetch data from the internet. -->
+<uses-permission android:name="android.permission.INTERNET" />
+
 </manifest>
