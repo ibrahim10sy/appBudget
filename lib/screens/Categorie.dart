@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:ika_musaka/services/categorieService.dart';
 import 'package:http/http.dart' as http;
 
 class Categorie extends StatefulWidget{
