@@ -18,10 +18,14 @@ import 'model/utilisateur.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => UtilisateurProvider(),
-      child: MyApp(),
-    ),
+     DevicePreview(
+    enabled: true,
+    builder: (context) => const  MyApp(), // Wrap your app
+  ),
+    // ChangeNotifierProvider(
+    //   create: (context) => UtilisateurProvider(),
+    //   child: MyApp(),
+    // ),
   );
 }
 
@@ -42,9 +46,9 @@ class _MyAppState extends State<MyApp> {
       // title: "LogIn Screen",
       debugShowCheckedModeBanner: false,
 
-      //locale: DevicePreview.locale(context),
-      //builder: DevicePreview.appBuilder,
-      home: Connexion()
+      locale: DevicePreview.locale(context),
+      builder: DevicePreview.appBuilder,
+      home: Categorie()
       );//Place SignUp function here to Observe SignUp Screen.
   }
   //koureissi
