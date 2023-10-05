@@ -1,11 +1,8 @@
 // import 'dart:convert';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:ika_musaka/main.dart';
-// import 'package:ika_musaka/model/utilisateur.dart';
 import 'package:ika_musaka/screens/ConnexionScreen.dart';
-
-import '../model/utilisateur.dart';
+// import 'package:image_picker/image_picker.dart';
 import '../provider/UtilisateurProvider.dart';
 import 'ListUtilisateur.dart';
 import 'UtilisateurService.dart';
@@ -32,6 +29,19 @@ class _InscriptionState extends State<Inscription> {
   // ignore: non_constant_identifier_names
   TextEditingController motDepasse_controller= TextEditingController() ;
   TextEditingController RepmotDePasse_controller = TextEditingController() ;
+//    Future<void> _pickImage() async {
+//   final picker = ImagePicker();
+//   final pickedFile = await picker.getImage(source: ImageSource.camera);
+
+//   if (pickedFile != null) {
+//     // L'utilisateur a pris une photo, vous pouvez maintenant afficher cette photo.
+//     // Le chemin de la photo se trouve dans pickedFile.path.
+//     final imagePath = pickedFile.path;
+//     // Faites quelque chose avec cette image, par exemple, l'afficher dans votre interface utilisateur.
+//   } else {
+//     // L'utilisateur a annulé la capture d'image.
+//   }
+// }
 
   @override
   void initState() {
@@ -80,8 +90,8 @@ class _InscriptionState extends State<Inscription> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(50),
                                 child: Image.asset(
-                                  "assets/images/logo.png",
-                                  height: 100,
+                                  "assets/images/sign.png",
+                                  height: 150,
                                 ),
                               ),
                             ),
@@ -90,6 +100,57 @@ class _InscriptionState extends State<Inscription> {
 
                       //The Username,Email,Password Input fields.
                       // const SizedBox(height: 20),
+                      //Pour la navigation
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  // const  Text("Vous n'avez pas de compte?"),
+                   MouseRegion(
+                    cursor: SystemMouseCursors.click, // Définit le curseur en mode "pointer"
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const Connexion()),
+                        );
+                      },
+                      // ignore: avoid_unnecessary_containers
+                      child: Container(
+                        child: const Text(
+                          "Connexion",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w900,
+                            fontSize: 20,
+                            color: Color.fromARGB(255, 27, 30, 29),// Utilisez la couleur #2F9062
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const  SizedBox(width: 70),
+                    MouseRegion(
+                    cursor: SystemMouseCursors.click, // Définit le curseur en mode "pointer"
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) =>const Inscription()),
+                        );
+                      },
+                      // ignore: avoid_unnecessary_containers
+                      child: Container(
+                        child: const Text(
+                          "Inscription",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w900,
+                            fontSize: 20,
+                            color: Color(0xFF2F9062), // Utilisez la couleur #2F9062
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+
+                  ]),
+                  const SizedBox(height: 10),
                         Container(
 
                           padding:const EdgeInsets.all(10),
@@ -109,15 +170,7 @@ class _InscriptionState extends State<Inscription> {
 
                             children: [
 
-                              Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 3),
-                              child: const Text(
-                                "Inscription",
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.w800, color: Color(0xFFE4AF18), ),
-                              )
-                              ),
+                              
 
                               const SizedBox(height: 15),
                                 Container(
@@ -137,6 +190,12 @@ class _InscriptionState extends State<Inscription> {
                                           Icon(Icons.verified_user, color: Color(0xFF2F9062),),
                                     ),
                                   ),
+                                //     ElevatedButton(
+                                //   onPressed: () {
+                                //     _pickImage();
+                                //   },
+                                //   child: Text("Prendre une photo"),
+                                // ),
                                 ),
                               const SizedBox(height: 15),
                               Container(
@@ -260,23 +319,47 @@ class _InscriptionState extends State<Inscription> {
                       final email = email_controller.text;
                         final motDePasse = motDepasse_controller.text;
                         final RepmotDePasse = RepmotDePasse_controller.text;
+                        if(nom.isEmpty || prenom.isEmpty || email.isEmpty || motDePasse.isEmpty || RepmotDePasse.isEmpty) {
 
-                        if (motDePasse != RepmotDePasse) {
-
-                          final  String errorMessage = "Mot de passe different ";
+                          // Gérez le cas où l'email ou le mot de passe est vide.
+                          const String errorMessage = "Veillez remplir tout les champs ";
                           // Gérez le cas où l'email ou le mot de passe est vide.
                           showDialog(
                             context:  context,
                             builder: (BuildContext context) {
                               return AlertDialog(
-                                title:  Center(child: Text('Erreur')),
-                                content:  Text(errorMessage),
+                                title: const Center(child: Text('Erreur')),
+                                content:const  Text(errorMessage),
                                 actions: <Widget>[
                                   TextButton(
                                     onPressed: () {
                                       Navigator.of(context).pop();
                                     },
-                                    child:  Text('OK'),
+                                    child:const  Text('OK'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                          return;
+                        }
+
+                        if (motDePasse != RepmotDePasse) {
+
+                          const String errorMessage = "Mot de passe different ";
+                          // Gérez le cas où l'email ou le mot de passe est vide.
+                          showDialog(
+                            context:  context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Center(child: Text('Erreur')),
+                                content:const  Text(errorMessage),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child:const  Text('OK'),
                                   ),
                                 ],
                               );
@@ -308,18 +391,18 @@ class _InscriptionState extends State<Inscription> {
                       // Une erreur s'est produite lors de l'ajout de l'utilisateur, vous pouvez gérer l'erreur ici.
                       //print('Erreur lors de l\'ajout de l\'utilisateur : $e');
                       final String errorMessage = e.toString();
-                      showDialog(
+                        showDialog(
                           context:  context,
                           builder: (BuildContext context) {
                           return AlertDialog(
-                          title:  Center(child: Text('Erreur')),
-                          content:  Text(errorMessage),
+                          title: const  Center(child: Text('Erreur')),
+                          content:   Text(errorMessage),
                           actions: <Widget>[
                           TextButton(
                           onPressed: () {
                           Navigator.of(context).pop();
                           },
-                          child:  Text('OK'),
+                          child:const  Text('OK'),
                           ),
                           ],
                           );});
@@ -388,27 +471,6 @@ class _InscriptionState extends State<Inscription> {
                       )
                     ],
                   ),
-                 const SizedBox(height: 25),
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    const Text("J'ai dejà un compte?"),
-                   const SizedBox(width: 10),
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const Connexion()),
-                        );
-                      },
-                      // ignore: avoid_unnecessary_containers
-                      child: Container(
-                        child:const Text("Se connecter",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w900,
-                                color: Color(0xFF2F9062),
-                                fontSize: 18)),
-                      ),
-                    )
-                  ]),
                 ],
               )),
         ),

@@ -1,10 +1,9 @@
-// ignore: file_names
+
 import 'dart:convert';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:ika_musaka/screens/InscriptionScreen.dart';
 import 'package:http/http.dart' as http;
-import 'package:ika_musaka/screens/ListUtilisateur.dart';
 
 import '../model/utilisateur.dart';
 import '../provider/UtilisateurProvider.dart';
@@ -30,7 +29,27 @@ class _ConnexionState extends State<Connexion> {
     UtilisateurProvider utilisateurProvider = Provider.of<UtilisateurProvider>(context, listen: false);
 
     if (email.isEmpty || password.isEmpty) {
+
       // Gérez le cas où l'email ou le mot de passe est vide.
+       const String errorMessage = "Veillez remplir tout les champs ";
+        // Gérez le cas où l'email ou le mot de passe est vide.
+        showDialog(
+          context:  context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Center(child: Text('Erreur')),
+              content:const  Text(errorMessage),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child:const  Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
       return;
     }
 
@@ -49,7 +68,7 @@ class _ConnexionState extends State<Connexion> {
         // Authentification réussie, vous pouvez gérer la réponse ici.
         // Par exemple, vous pouvez enregistrer le token d'authentification.
         final responseBody = json.decode(response.body);
-        final authToken = responseBody['authToken']; // Remplacez par le nom réel du champ d'authentification.
+        //final authToken = responseBody['authToken']; // Remplacez par le nom réel du champ d'authentification.
         // Enregistrez authToken ou effectuez d'autres actions nécessaires.
         emailController.clear();
         motDePasseController.clear();
@@ -128,6 +147,7 @@ class _ConnexionState extends State<Connexion> {
                 children: [
                   Stack(
                     children: <Widget>[
+                      
                       SizedBox(
                         child: Container(
                           height: 250,
@@ -135,14 +155,73 @@ class _ConnexionState extends State<Connexion> {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(50),
                             // child: Image.asset("assets/images/login1-removebg.png"),
-                            child: Image.asset("assets/images/logo.png"),
+                            child: Image.asset("assets/images/log.png"),
+                           
+                          ),
+                         
+                        ),
+                        
+                      ),
+                      
+                    ],
+                  ),
+                 
+                  const SizedBox(height: 10),
+// From here the login Credentials start.
+                 //Pour la navigation
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  // const  Text("Vous n'avez pas de compte?"),
+                   MouseRegion(
+                    cursor: SystemMouseCursors.click, // Définit le curseur en mode "pointer"
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Inscription()),
+                        );
+                      },
+                      // ignore: avoid_unnecessary_containers
+                      child: Container(
+                        child: const Text(
+                          "Connexion",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w900,
+                            fontSize: 20,
+                            color: Color(0xFF2F9062), // Utilisez la couleur #2F9062
                           ),
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                  const SizedBox(height: 25),
-// From here the login Credentials start.
+                  const  SizedBox(width: 70),
+                    MouseRegion(
+                    cursor: SystemMouseCursors.click, // Définit le curseur en mode "pointer"
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) =>const Inscription()),
+                        );
+                      },
+                      // ignore: avoid_unnecessary_containers
+                      child: Container(
+                        child: const Text(
+                          "Inscription",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w900,
+                            fontSize: 20,
+                            color: Color.fromARGB(255, 27, 30, 29), // Utilisez la couleur #2F9062
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+
+                  ]),
+                  const SizedBox(height: 10),
+
+
+
                   Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
@@ -160,16 +239,16 @@ class _ConnexionState extends State<Connexion> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           
-                            Center(
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 3),
-                                child: const Text(
-                                  "Connexion",
-                                  style: TextStyle(
-                                      fontSize: 18, fontWeight: FontWeight.w800, color: Color(0xFFE4AF18), ),
-                                )),
-                            ),
+                            // Center(
+                            //   child: Container(
+                            //     padding: const EdgeInsets.symmetric(
+                            //         horizontal: 10, vertical: 3),
+                            //     child: const Text(
+                            //       "Connexion",
+                            //       style: TextStyle(
+                            //           fontSize: 18, fontWeight: FontWeight.w800, color: Color(0xFFE4AF18), ),
+                            //     )),
+                            // ),
                           
 
                          const SizedBox(height: 5),
@@ -313,35 +392,7 @@ class _ConnexionState extends State<Connexion> {
 
                   ),
 
-                 const SizedBox(height: 30),
-                //Pour la navigation
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  const  Text("Vous n'avez pas de compte?"),
-                  const  SizedBox(width: 10),
-                    MouseRegion(
-                    cursor: SystemMouseCursors.click, // Définit le curseur en mode "pointer"
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Inscription()),
-                        );
-                      },
-                      // ignore: avoid_unnecessary_containers
-                      child: Container(
-                        child: const Text(
-                          "S'inscrire maintenant",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            color: Color(0xFF2F9062), // Utilisez la couleur #2F9062
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
-
-                  ]),
-                   //fin la navigation
+              
                 ],
               )),
         ),
