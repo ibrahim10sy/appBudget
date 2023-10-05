@@ -21,12 +21,12 @@ void main() {
      DevicePreview(
     enabled: true,
     builder: (context) => const  MyApp(), // Wrap your app
-  ),
-    // ChangeNotifierProvider(
-    //   create: (context) => UtilisateurProvider(),
-    //   child: MyApp(),
-    // ),
-  );
+  ) );
+  //   ChangeNotifierProvider(
+  //     create: (context) => UtilisateurProvider(),
+  //     child: MyApp(),
+  //   ),
+  // );
 }
 
 class MyApp extends StatefulWidget {

@@ -1,7 +1,8 @@
 import 'dart:convert';
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:ika_musaka/model/categorieM.dart';
+
 
 class Categorie extends StatefulWidget{
   
@@ -10,46 +11,37 @@ class Categorie extends StatefulWidget{
 class MyCategorie extends State<Categorie>{
    TextEditingController titreController = TextEditingController();
 
-   Future<void> submitData() async{
-    // Get the data form
-    final titre= titreController.text;
-    final body={
-      "titre": titre,
-    };
-     // L'appel a l'url de mon api rest
-    final url= 'http://localhost:8080/Categorie/creer';
-    final uri= Uri.parse(url);
-    final response= await http.post(uri, body: jsonEncode(body),
-    headers: {'Content-type': 'application/json'},
-    );   // Le body siginifie que seulement le corps sera envoyé 
-    // Renvoie le message d'erreur ou de succès
-    if(response.statusCode == 200){
-       print('Creation succes');
-    }
-     else{
-          print('Creation Failed');
-          print(response.body);
-     }
-    
-   }
-   
-//   List<Categorie>? categories;
-//   var isLoaded= false;
+   @override
+  void initState() {
+    super.initState();
+    // Initialisation des contrôleurs de texte avec des valeurs vides.
+   titreController.clear();
+  }
 
-// @override
-//   void initState(){
-//     super.initState();
-//     // Fetch api
-//     getData();
-//   }
-//   getData() async{
-//    // categories = await CategorieService().getCategories();
-//    if(categories != null){
-//     setState(() {
-//       isLoaded= true;
-//     });
-//    }
-//   }
+    static const String apiUrl = 'http://locahost:8080/Categorie';
+
+  static Future<CategorieM> ajouterCategorie({
+    required String titre,
+   
+  }) async {
+    final response = await http.post(
+      Uri.parse('$apiUrl/create'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({
+        'titre': titre,
+       
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      return CategorieM.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Impossible d\'ajouter une catégorie');
+    }
+  }
+  
+ 
+//Fin Logique pour l'appel api et la logique
    final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -141,7 +133,59 @@ class MyCategorie extends State<Categorie>{
                              Padding(
                                     padding: const EdgeInsets.all(8),
                                     child:  ElevatedButton(
-                                     onPressed: submitData,
+                                     onPressed:() async {
+                        final titre = titreController.text;
+
+                        if (titre == 0) {
+
+                          final  String errorMessage = "Catégorie existe déjà ";
+                          // Gérez le cas où l'email ou le mot de passe est vide.
+                          showDialog(
+                            context:  context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title:  Center(child: Text('Erreur')),
+                                content:  Text(errorMessage),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child:  Text('OK'),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                          return;
+                        }
+                         try{
+                          final nouveauCategorie = await ajouterCategorie(
+                          titre: titre,
+                      );
+                       // La nouvelle utilCategorieisateur a été ajouté avec succès, vous pouvez gérer la réponse ici.
+                      print('Categorie ajouté avec succès');
+                      titreController.clear();
+                       } catch (e) {
+                      // Une erreur s'est produite lors de l'ajout de l'utilisateur, vous pouvez gérer l'erreur ici.
+                      //print('Erreur lors de l\'ajout de l\'utilisateur : $e');
+                      final String errorMessage = e.toString();
+                      showDialog(
+                          context:  context,
+                          builder: (BuildContext context) {
+                          return AlertDialog(
+                          title:  Center(child: Text('Erreur')),
+                          content:  Text(errorMessage),
+                          actions: <Widget>[
+                          TextButton(
+                          onPressed: () {
+                          Navigator.of(context).pop();
+                          },
+                          child:  Text('OK'),
+                          ),
+                          ],
+                          );});
+                      }},
                         style: ElevatedButton.styleFrom(
                           elevation: 3,
                           padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 80),
@@ -515,3 +559,26 @@ class MyCategorie extends State<Categorie>{
     );
  }
 }
+
+// Future<void> submitData() async{
+//     // Get the data form
+//     final titre= titreController.text;
+//     final body={
+//       "titre": titre,
+//     };
+//      // L'appel a l'url de mon api rest
+//     final url= 'http://localhost:8080/Categorie/creer';
+//     final uri= Uri.parse(url);
+//     final response= await http.post(uri, body: jsonEncode(body),
+//     headers: {'Content-type': 'application/json'},
+//     );   // Le body siginifie que seulement le corps sera envoyé 
+//     // Renvoie le message d'erreur ou de succès
+//     if(response.statusCode == 200){
+//        print('Creation succes');
+//     }
+//      else{
+//           print('Creation Failed');
+//           print(response.body);
+//      }
+    
+//    }
