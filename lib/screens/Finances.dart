@@ -14,7 +14,7 @@ class Finances extends StatelessWidget{
               padding: const EdgeInsets.only(bottom: 25),
               child:
          Image(
-          image:  AssetImage('assets/images/aaa.png' ),
+          image:  AssetImage('assets/images/finances.png' ),
           ), ),
           Container(
              padding: const EdgeInsets.only(bottom: 0),
@@ -50,10 +50,28 @@ class Finances extends StatelessWidget{
                 child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text("Suivant", 
-                style:TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color:Color(0xFF2F9062), 
-                ),
-                ),
+             ElevatedButton(onPressed: (){},  
+              style: ElevatedButton.styleFrom(
+                          elevation: 3,
+                          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 50),
+                          backgroundColor: const Color(0xFF2F9062), // Button color
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            side: const BorderSide(color: Colors.white70),
+                          ),
+                        ),
+              child: const Text(
+                          "Suivant",
+                          style: TextStyle(
+                            fontSize: 25,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),),
+                // Text("Suivant", 
+                // style:TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color:Color(0xFF2F9062), 
+                // ),
+                // ),
                 Icon(Icons.navigate_next, color: Colors.green,)
                
               ],

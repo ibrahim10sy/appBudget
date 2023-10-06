@@ -8,6 +8,7 @@ import 'package:ika_musaka/screens/Budget.dart';
 import 'package:ika_musaka/screens/ConnexionScreen.dart';
 import 'package:ika_musaka/screens/Depense.dart';
 import 'package:ika_musaka/screens/Finances.dart';
+import 'package:ika_musaka/screens/InscriptionScreen.dart';
 import 'package:ika_musaka/screens/demarrage.dart';
 
 import 'package:ika_musaka/provider/UtilisateurProvider.dart';
@@ -18,10 +19,11 @@ import 'model/utilisateur.dart';
 
 void main() {
   runApp(
-     DevicePreview(
-    enabled: true,
-    builder: (context) => const  MyApp(), // Wrap your app
-  ) );
+    //  DevicePreview(
+    // enabled: true,
+    // builder: (context) =>
+     const  MyApp()); // Wrap your app
+  // ) );
   //   ChangeNotifierProvider(
   //     create: (context) => UtilisateurProvider(),
   //     child: MyApp(),
@@ -46,9 +48,9 @@ class _MyAppState extends State<MyApp> {
       // title: "LogIn Screen",
       debugShowCheckedModeBanner: false,
 
-      locale: DevicePreview.locale(context),
-      builder: DevicePreview.appBuilder,
-      home: Categorie()
+      // locale: DevicePreview.locale(context),
+      // builder: DevicePreview.appBuilder,
+      home: Finances()
       );//Place SignUp function here to Observe SignUp Screen.
   }
   //koureissi

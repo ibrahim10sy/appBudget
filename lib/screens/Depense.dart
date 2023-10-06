@@ -14,13 +14,7 @@ class Depense extends StatelessWidget{
       
         Image.asset("images/aaa.png"),
           ), 
-          // Container(
-          //    padding: const EdgeInsets.only(bottom: 0),
-          //   child:
-          // Text("Budgeter votre argent",
-          //  style:TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-          //  ),
-          //  ),
+       
            Container(
             padding: const EdgeInsets.only(bottom: 25),
             child: 
@@ -45,6 +39,7 @@ class Depense extends StatelessWidget{
               padding: const EdgeInsets.only( bottom: 25),
               child:
               Container( 
+                
                 padding:const EdgeInsets.only( right: 25),
                 child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
