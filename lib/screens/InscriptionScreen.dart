@@ -216,6 +216,8 @@ class _InscriptionState extends State<Inscription> {
                       style: TextStyle(
                         fontWeight: FontWeight.w900,
                         decoration: TextDecoration.underline,
+                        decorationColor: Color(0xFF2F9062), 
+                        decorationThickness: 4,
                         fontSize: 20,
                         color: Color(0xFF2F9062), // Utilisez la couleur #2F9062
                       ),
