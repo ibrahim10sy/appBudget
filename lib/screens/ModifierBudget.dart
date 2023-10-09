@@ -35,6 +35,41 @@ class _ModifierState extends State<ModifierBudget> {
           child: Column(
             children: [
               Container(
+                margin: const EdgeInsets.only(
+                    top: 20, bottom: 1, left: 15, right: 15),
+                padding: const EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(31),
+                    boxShadow: const [
+                      BoxShadow(
+                        offset: Offset(0, 0),
+                        blurRadius: 7,
+                        color: Color.fromRGBO(0, 0, 0, 0.25),
+                      )
+                    ]),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    CircleAvatar(
+                      radius: 30,
+                      child: Stack(
+                        children: [
+                          Image.asset('assets/images/photoprofil.png',
+                              fit: BoxFit.cover),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    const Text('Pablo Picasso',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold)),
+                  ],
+                ),
+              ),
+              Container(
                 child: Padding(
                   padding: EdgeInsets.all(16.0),
                   child: Row(

@@ -16,25 +16,42 @@ class _DepenseState extends State<DepensesListes> {
           child: Column(
             children: [
               Container(
-                child: const Padding(
-                  padding: EdgeInsets.only(left: 15,right: 15, top: 30),
-                  child: Row(children: [
+                margin: const EdgeInsets.only(
+                    top: 20, bottom: 1, left: 15, right: 15),
+                padding: const EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(31),
+                    boxShadow: const [
+                      BoxShadow(
+                        offset: Offset(0, 0),
+                        blurRadius: 7,
+                        color: Color.fromRGBO(0, 0, 0, 0.25),
+                      )
+                    ]),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
                     CircleAvatar(
                       radius: 30,
-                      backgroundImage:
-                          AssetImage('assets/images/photoprofil.png'),
+                      child: Stack(
+                        children: [
+                          Image.asset('assets/images/photoprofil.png',
+                              fit: BoxFit.cover),
+                        ],
+                      ),
                     ),
-                    SizedBox(
-                      width: 16.0,
+                    const SizedBox(
+                      width: 10,
                     ),
-                    Text(
-                      "Name User",
-                      style: TextStyle(
-                          fontSize: 18.0, fontWeight: FontWeight.bold),
-                    )
-                  ]),
+                    const Text('Pablo Picasso',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold)),
+                  ],
                 ),
               ),
+
+
               SizedBox(
                 height: 10,
               ),
