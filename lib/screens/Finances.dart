@@ -1,4 +1,7 @@
+import 'dart:js';
+
 import 'package:flutter/material.dart';
+import 'package:ika_musaka/screens/Budget.dart';
 
 //Deuxième page
 
@@ -11,9 +14,11 @@ class Finances extends StatelessWidget{
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              padding: const EdgeInsets.only(bottom: 25),
+              padding: const EdgeInsets.only(bottom: 45),
               child:
          Image(
+          height: 210,
+          width: 210,
           image:  AssetImage('assets/images/finances.png' ),
           ), ),
           Container(
@@ -34,11 +39,17 @@ class Finances extends StatelessWidget{
             style:TextStyle(fontSize: 20),
             ),
             Container(
-              padding: const  EdgeInsets.only( bottom: 75),
+              padding: const  EdgeInsets.only( bottom: 45),
               child:
            Text("tout votre argent.",
             style:TextStyle(fontSize: 20) 
             ,),
+            ),
+
+            Container(
+              padding: EdgeInsets.only(bottom: 45),
+              child:Image(
+                image: AssetImage('images/ggg.png'))
             ),
       // --------------------- // Footer-------------------      
 
@@ -50,7 +61,11 @@ class Finances extends StatelessWidget{
                 child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-             ElevatedButton(onPressed: (){},  
+             ElevatedButton(onPressed: (){
+              Navigator.push(
+                context, 
+              MaterialPageRoute(builder: (context) =>  Budget()),
+             );},  
               style: ElevatedButton.styleFrom(
                           elevation: 3,
                           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 50),
@@ -68,12 +83,14 @@ class Finances extends StatelessWidget{
                             fontWeight: FontWeight.w700,
                           ),
                         ),),
-                // Text("Suivant", 
-                // style:TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color:Color(0xFF2F9062), 
-                // ),
-                // ),
-                Icon(Icons.navigate_next, color: Colors.green,)
-               
+               IconButton(icon:  Icon(Icons.navigate_next, color:Color(0xFF2F9062)),
+                                       onPressed:()
+                                       { Navigator.push(
+                context, 
+              MaterialPageRoute(builder: (context) =>  Budget()),
+             );
+               }
+                ),
               ],
             ) ),    // La ligne Row contenant Le text suivant et l'icone suivant 
             ) , // Fin de la ligne
@@ -109,4 +126,10 @@ class Finances extends StatelessWidget{
       ),
     );
   }
+  // void navigateTo(){
+  //   final route = MaterialPageRoute(
+  //     builder: (context) => Budget(),
+  //     );
+  //     Navigator.push(context , route);
+  // }
 }

@@ -5,6 +5,8 @@ import 'package:ika_musaka/screens/Budget.dart';
 import 'package:ika_musaka/screens/Categorie.dart';
 import 'package:ika_musaka/screens/Depense.dart';
 import 'package:ika_musaka/screens/Finances.dart';
+
+
 class Damarrage extends StatelessWidget{
 
    
@@ -14,11 +16,11 @@ class Damarrage extends StatelessWidget{
 
 
       Timer(
-     const  Duration(seconds:5), 
+     const  Duration(seconds:2), 
       () =>
       Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-      builder: (_) =>  Categorie(),),),
+      builder: (_) =>  Finances(),),),
      );
 
     return  Scaffold(

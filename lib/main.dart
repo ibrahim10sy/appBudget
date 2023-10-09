@@ -50,7 +50,7 @@ class _MyAppState extends State<MyApp> {
 
       // locale: DevicePreview.locale(context),
       // builder: DevicePreview.appBuilder,
-      home: Finances()
+      home: Categorie()
       );//Place SignUp function here to Observe SignUp Screen.
   }
   //koureissi
