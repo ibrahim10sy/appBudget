@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:ika_musaka/screens/ConnexionScreen.dart';
@@ -8,7 +7,6 @@ import 'package:ika_musaka/services/BottomNavigationService.dart';
 import 'package:ika_musaka/services/budgetService.dart';
 import 'package:provider/provider.dart';
 
-    
 void main() {
    runApp(
      MultiProvider(
@@ -18,8 +16,8 @@ void main() {
        ],
        child:  MyApp()),
      );
-
 }
+
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
@@ -28,7 +26,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
@@ -52,6 +49,3 @@ class _MyAppState extends State<MyApp> {
   }
   */
 }
-
-
- 
