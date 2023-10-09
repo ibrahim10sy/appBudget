@@ -10,7 +10,13 @@ dependencies:
   device_preview: ^1.1.0
   flutter:
     sdk: flutter
-  http: ^0.13.3
+
+
+  http: ^1.1.0
+  image_picker: ^1.0.4
+  provider: ^6.0.5
+
+
 
 dev_dependencies:
   flutter_test:

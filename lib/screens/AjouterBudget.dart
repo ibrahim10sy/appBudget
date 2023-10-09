@@ -1,7 +1,8 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:ika_musaka/screens/BudgetService.dart';
+import 'package:ika_musaka/screens/categorie.dart';
+import 'package:provider/provider.dart';
 import 'dart:convert';
 
 import '../model/ajoutBudget.dart';
@@ -11,10 +12,21 @@ class AjouterBudget extends StatefulWidget {
 
   @override
   State<AjouterBudget> createState() => _AjouterBudgetState();
-
 }
 
 class _AjouterBudgetState extends State<AjouterBudget> {
+  // ignore: non_constant_identifier_names
+  TextEditingController description_control = TextEditingController();
+  // ignore: non_constant_identifier_names
+  TextEditingController montant_control = TextEditingController();
+  // ignore: non_constant_identifier_names
+  TextEditingController montantalert_control = TextEditingController();
+  // ignore: non_constant_identifier_names
+  TextEditingController categorie_control = TextEditingController();
+  // ignore: non_constant_identifier_names
+  TextEditingController datedebut_control = TextEditingController();
+  int? catValue;
+  late Categorie maCat;
 
   /*@override
   void setState(VoidCallback fn) {
@@ -23,11 +35,26 @@ class _AjouterBudgetState extends State<AjouterBudget> {
 
   }*/
 
+  late Future _mesCategories;
 
   @override
   void initState() {
+    description_control.clear();
+    montant_control.clear();
+    montant_control.clear();
+    montantalert_control.clear();
+    categorie_control.clear();
+    datedebut_control.clear();
     fetchAlbum();
-    
+    _mesCategories =
+        http.get(Uri.parse('http://localhost:8083/Categorie/lire'));
+    super.initState();
+  }
+
+  @override
+  onDispose() {
+    description_control.dispose();
+    super.dispose();
   }
 
   Future fetchAlbum() async {
@@ -39,8 +66,7 @@ class _AjouterBudgetState extends State<AjouterBudget> {
       // If the server did return a 200 OK response,
       // then parse the JSON.
       print(jsonDecode(response.body));
-       return jsonDecode(response.body);
-
+      return jsonDecode(response.body);
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
@@ -48,10 +74,9 @@ class _AjouterBudgetState extends State<AjouterBudget> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
-   // fetchAlbum();
+    // fetchAlbum();
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter',
@@ -61,10 +86,26 @@ class _AjouterBudgetState extends State<AjouterBudget> {
           child: SafeArea(
             child: Column(
               children: [
-                const Positioned(
-                  top: 0,
-                  left: 30,
-                  child: Row(
+                 Positioned(
+                  top: -20,
+                   left: 0,
+                  child: Padding(padding: EdgeInsets.symmetric(horizontal: 10),
+                  child:Container(
+                    padding: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+
+                    boxShadow:[
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        spreadRadius: 3,
+                        blurRadius: 5,
+                        offset: Offset(0, 2),
+                      ),
+                    ],
+                    borderRadius: BorderRadius.circular(40),
+                  ),
+                  child: const Row(
                     children: [
                       CircleAvatar(
                         radius: 25,
@@ -79,7 +120,12 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                      SizedBox(width: 80,),
+                      Icon(Icons.notifications, size: 40, color: Colors.amber
+                      ),
                     ],
+                  ),
+          ),
                   ),
                 ),
 
@@ -89,7 +135,7 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                       const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                   height: 200,
                   decoration: BoxDecoration(
-                    color: Colors.green,
+                    color: Color(0xFF2F9062),
                     borderRadius: BorderRadius.circular(20),
                   ),
 
@@ -106,7 +152,7 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'Ajout',
+                            'Ajout Budget',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 20,
@@ -146,7 +192,7 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                                 Text("Déscription"),
                                 Card(
                                   child: TextField(
-                                    // controller: myController,
+                                    controller: description_control,
                                     maxLines: 3,
                                     // style: TextStyle(height: 5),
                                     decoration: InputDecoration(
@@ -169,6 +215,7 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                                 Expanded(
                                     flex: 6,
                                     child: TextField(
+                                      controller: montant_control,
                                       decoration: InputDecoration(
                                         border: OutlineInputBorder(
                                           borderRadius:
@@ -190,6 +237,7 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                                 Expanded(
                                     flex: 6,
                                     child: TextField(
+                                      controller: montantalert_control,
                                       decoration: InputDecoration(
                                         border: OutlineInputBorder(
                                           borderRadius:
@@ -209,17 +257,66 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                                 Expanded(flex: 2, child: Text("Catégorie")),
                                 Expanded(
                                     flex: 6,
-                                    child: TextField(
-                                      decoration: InputDecoration(
-                                        border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20.0),
-                                        ),
-                                      ),
-                                    )),
+                                    child: FutureBuilder(
+                                      future: _mesCategories,
+                                      builder: (_, snapshot) {
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.waiting) {
+                                          return DropdownButton(
+                                              items: [], onChanged: (value) {});
+                                        }
+
+                                        if (snapshot.hasError) {
+                                          return Text("${snapshot.error}");
+                                        }
+
+                                        if (snapshot.hasData) {
+                                          //debugPrint(snapshot.data.body.toString());
+                                          final reponse =
+                                              json.decode(snapshot.data.body)
+                                                  as List;
+                                          final mesCategories = reponse
+                                              .map((e) => Categorie.fromMap(e))
+                                              .toList();
+                                          //debugPrint(mesCategories.length.toString());
+                                          return DropdownButton(
+                                              items: mesCategories
+                                                  .map((e) => DropdownMenuItem(
+                                                        child: Text(e.titre),
+                                                        value: e.id,
+                                                      ))
+                                                  .toList(),
+                                              value: catValue,
+                                              onChanged: (newValue) {
+                                                setState(() {
+                                                  catValue = newValue;
+                                                  maCat = mesCategories
+                                                      .firstWhere((element) =>
+                                                          element.id ==
+                                                          newValue);
+                                                  debugPrint(
+                                                      maCat.id.toString());
+                                                });
+                                              });
+                                        }
+
+                                        return DropdownButton(
+                                            items: [], onChanged: (value) {});
+                                      },
+                                    ))
+                                // TextField(
+                                //   controller: categorie_control,
+                                //   decoration: InputDecoration(
+                                //     border: OutlineInputBorder(
+                                //       borderRadius:
+                                //           BorderRadius.circular(20.0),
+                                //     ),
+                                //   ),
+                                // )),
                               ],
                             ),
                             const SizedBox(height: 10),
+                            //palce calendrier
                             Row(
                               children: [
                                 Expanded(
@@ -231,26 +328,107 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                                 Expanded(
                                     flex: 5,
                                     child: TextField(
+                                      controller: datedebut_control,
                                       decoration: InputDecoration(
                                         border: OutlineInputBorder(
                                           borderRadius:
-                                              BorderRadius.circular(20.0),
+                                          BorderRadius.circular(20.0),
                                         ),
                                       ),
                                     )),
                               ],
                             ),
+
                             const SizedBox(height: 10),
                             TextButton(
-                              onPressed: () {},
+                              onPressed: () async {
+                                final description = description_control.text;
+                                final montant = montant_control.text;
+                                final montantAlert = montantalert_control.text;
+                                //final categorie = categorie_control.text;
+                                final datedebut = datedebut_control.text;
+
+                                if (description.isEmpty ||
+                                    montant.isEmpty ||
+                                    montantAlert.isEmpty ||
+                                    datedebut.isEmpty) {
+                                  //throw Exception("Tous les champs doivent être remplis.");
+                                  final String errorMessage =
+                                      "Tous les champs doivent etre chargé";
+
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Center(child: Text('Erreur')),
+                                        content: Text(errorMessage),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: Text('Ok'),
+                                          )
+                                        ],
+                                      );
+                                    },
+                                  );
+                                  return;
+                                }
+
+                                try {
+                                  await BudgetService.addBudget(
+                                      description: description,
+                                      montant: montant,
+                                      montantAlert: montantAlert,
+                                      datedebut: datedebut,
+                                      categorie: maCat);
+                                  //setBudget(nouveauBudget);
+                                  //print('Budget enregisté avc sucvès : ${nouveauBudget}');
+                                  description_control.clear();
+                                  montant_control.clear();
+                                  montantalert_control.clear();
+                                  datedebut_control.clear();
+                                  categorie_control.clear();
+                                } catch (e) {
+                                  final String errorMessage = e.toString();
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Center(child: Text('Erreur')),
+                                          content: Text(errorMessage),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: Text('OK'),
+                                            ),
+                                          ],
+                                        );
+                                      });
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                elevation: 13,
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 15, horizontal: 55),
+                                backgroundColor:
+                                    const Color(0xFF2F9062), // Button color
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                  side: const BorderSide(color: Colors.white70),
+                                ),
+                              ),
                               child: Container(
                                   width: double.infinity,
                                   decoration: BoxDecoration(
                                     color: Color(0xFF2F9062),
                                     borderRadius: BorderRadius.circular(20),
                                   ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(15.0),
+                                  child: const Padding(
+                                    padding: EdgeInsets.all(5.0),
                                     child: Text(
                                       "Ajouter",
                                       style: TextStyle(
@@ -263,9 +441,7 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                             ),
                             const SizedBox(height: 10),
                             TextButton(
-                              onPressed: () {
-                                // addBudget(bu);
-                              },
+                              onPressed: () {},
                               child: Container(
                                   width: double.infinity,
                                   decoration: BoxDecoration(
@@ -273,7 +449,7 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                                     borderRadius: BorderRadius.circular(20),
                                   ),
                                   child: Padding(
-                                    padding: const EdgeInsets.all(15.0),
+                                    padding: const EdgeInsets.all(10.0),
                                     child: Text(
                                       "Annuler",
                                       style: TextStyle(
@@ -353,4 +529,6 @@ class _AjouterBudgetState extends State<AjouterBudget> {
     );
     const Placeholder();
   }
+
+  //void setBudget(Budget nouveauBudget) {}
 }
