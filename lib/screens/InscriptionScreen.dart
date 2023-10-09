@@ -151,24 +151,7 @@ class _InscriptionState extends State<Inscription> {
                               ),
                             ),
 
-                              // const SizedBox(height: 15),
-                              //   Container(
-                              //     padding: const EdgeInsets.symmetric(
-                              //         horizontal: 2, vertical: 5),
-                              //     decoration: const BoxDecoration(
-                              //         color: Color(0xfff5f8fd),
-                              //         borderRadius:
-                              //         BorderRadius.all(Radius.circular(20))),
-                              //       child: TextFormField(
-                              //       obscureText: true,
-                              //       decoration: const InputDecoration(
-                              //         hintText: "Repeter mot de passe",
-                              //         border: InputBorder.none,
-                              //         prefixIcon:
-                              //             Icon(Icons.vpn_key, color: Colors.grey),
-                              //       ),
-                              //     ),
-                              //   ),
+                    
 
                             ],
 
