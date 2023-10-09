@@ -1,8 +1,7 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_date_pickers/flutter_date_pickers.dart';
+
 class Depense extends StatefulWidget {
   const Depense({super.key});
 
@@ -11,11 +10,14 @@ class Depense extends StatefulWidget {
 }
 
 class _DepenseState extends State<Depense> {
-  TextEditingController _dateController = TextEditingController();
+  TextEditingController dateInput = TextEditingController();
+
+  String _typeDepense = "Quotidien";
+
   @override
   void initState() {
+    dateInput.text = ""; //set the initial value of text field
     super.initState();
-    _dateController.text = "";
   }
 
   @override
@@ -207,11 +209,20 @@ class _DepenseState extends State<Depense> {
                                                 color: Color(0xff2f9062)),
                                           )),
                                     ),
-                                    const Expanded(
+                                    Expanded(
                                       flex: 2,
                                       child: TextField(
-                                        decoration: InputDecoration(
+                                        keyboardType: TextInputType.number,
+                                        inputFormatters: <TextInputFormatter>[
+                                          FilteringTextInputFormatter.digitsOnly
+                                        ],
+                                        decoration: const InputDecoration(
+                                            labelText: 'Montant',
+                                            labelStyle:
+                                                TextStyle(color: Colors.green),
                                             enabledBorder: OutlineInputBorder(
+                                                borderSide: BorderSide.none),
+                                            focusedBorder: OutlineInputBorder(
                                                 borderSide: BorderSide(
                                                     width: 3,
                                                     color: Colors.green))),
@@ -244,7 +255,12 @@ class _DepenseState extends State<Depense> {
                                       flex: 2,
                                       child: TextField(
                                         decoration: InputDecoration(
+                                            labelText: 'Catégorie',
+                                            labelStyle:
+                                                TextStyle(color: Colors.green),
                                             enabledBorder: OutlineInputBorder(
+                                                borderSide: BorderSide.none),
+                                            focusedBorder: OutlineInputBorder(
                                                 borderSide: BorderSide(
                                                     width: 3,
                                                     color: Colors.green))),
@@ -273,15 +289,14 @@ class _DepenseState extends State<Depense> {
                                                 color: Color(0xff2f9062)),
                                           )),
                                     ),
-                                    const Expanded(
+                                    Expanded(
                                       flex: 2,
                                       child: TextField(
-                                        controller: _dateController,
-                                        decoration: InputDecoration(
-                                            labelText: 'Date',
-                                            filled: true,
-                                            prefixIcon:
-                                                Icon(Icons.calendar_today),
+                                        controller: dateInput,
+                                        decoration: const InputDecoration(
+                                            labelText: 'Date de création',
+                                            labelStyle:
+                                                TextStyle(color: Colors.green),
                                             enabledBorder: OutlineInputBorder(
                                                 borderSide: BorderSide.none),
                                             focusedBorder: OutlineInputBorder(
@@ -290,26 +305,26 @@ class _DepenseState extends State<Depense> {
                                                     color: Colors.green))),
                                         readOnly: true,
                                         onTap: () async {
-                                          DateTime? _picked =
+                                          DateTime? pickedDate =
                                               await showDatePicker(
                                                   context: context,
                                                   initialDate: DateTime.now(),
-                                                  firstDate: DateTime(2000),
+                                                  firstDate: DateTime(1950),
+                                                  //DateTime.now() - not to allow to choose before today.
                                                   lastDate: DateTime(2100));
-                                          if (_picked != null) {
+                                          if (pickedDate != null) {
+                                            print(pickedDate);
                                             String formattedDate =
-                                                DateFormat("yyyy-MM-dd")
-                                                    .format(_picked);
+                                                DateFormat('yyyy-MM-dd')
+                                                    .format(pickedDate);
+                                            print(formattedDate);
                                             setState(() {
-                                              _dateController.text =
-                                                  formattedDate.toString();
+                                              dateInput.text = formattedDate;
                                             });
-                                          } else {
-                                            print('Not Selected');
-                                          }
+                                          } else {}
                                         },
                                       ),
-                                    )
+                                    ),
                                   ]),
                             ),
                             Padding(
@@ -319,31 +334,116 @@ class _DepenseState extends State<Depense> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Image.asset(
-                                      'assets/images/share.png',
+                                      'assets/images/planning.png',
                                       width: 23,
                                     ),
                                     const Expanded(
                                       child: Padding(
                                           padding: EdgeInsets.only(left: 5),
                                           child: Text(
-                                            'Montant :',
+                                            'Type :',
                                             style: TextStyle(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.bold,
                                                 color: Color(0xff2f9062)),
                                           )),
                                     ),
-                                    const Expanded(
+                                    Expanded(
                                       flex: 2,
                                       child: TextField(
                                         decoration: InputDecoration(
+                                            labelText: 'Type dépense',
+                                            labelStyle:
+                                                TextStyle(color: Colors.green),
                                             enabledBorder: OutlineInputBorder(
+                                                borderSide: BorderSide.none),
+                                            focusedBorder: OutlineInputBorder(
                                                 borderSide: BorderSide(
                                                     width: 3,
                                                     color: Colors.green))),
+                                        onTap: () {
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: Text(
+                                                      'Sélectionner un type de dépense'),
+                                                  content:
+                                                      DropdownButton<String>(
+                                                    value: _typeDepense,
+                                                    items: <String>[
+                                                      'Quotidien',
+                                                      'Hebdomadaire',
+                                                      'Mensuelle',
+                                                    ].map((String value) {
+                                                      return DropdownMenuItem<
+                                                          String>(
+                                                        value: value,
+                                                        child: Text(value),
+                                                      );
+                                                    }).toList(),
+                                                    onChanged: (value) {
+                                                      setState(() {
+                                                        _typeDepense = value!;
+                                                      });
+                                                    },
+                                                  ),
+                                                );
+                                              });
+                                        },
                                       ),
-                                    )
+                                    ),
                                   ]),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 15, right: 15, bottom: 20),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  SizedBox(
+                                    height: 30,
+                                    width: 142,
+                                    child: ElevatedButton(
+                                      onPressed: () {},
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.green,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(13))),
+                                      child: const Text(
+                                        'Modifier',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 30,
+                                    width: 142,
+                                    child: ElevatedButton(
+                                      onPressed: () {},
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.red,
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(13))),
+                                      child: const Text(
+                                        'Supprimer',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
                             )
                           ],
                         )
