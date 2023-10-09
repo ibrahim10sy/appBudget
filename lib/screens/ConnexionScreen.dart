@@ -52,8 +52,7 @@ class _ConnexionState extends State<Connexion> {
         );
       return;
     }
-
-    final String endpoint = '/login';
+    const String endpoint = '/login';
     final Uri apiUrl = Uri.parse('$baseUrl$endpoint?email=$email&motDePasse=$password');
 
     try {
@@ -67,7 +66,7 @@ class _ConnexionState extends State<Connexion> {
       if (response.statusCode == 200) {
         // Authentification réussie, vous pouvez gérer la réponse ici.
         // Par exemple, vous pouvez enregistrer le token d'authentification.
-        final responseBody = json.decode(response.body);
+        final responseBody = json.decode(utf8.decode(response.bodyBytes));
         //final authToken = responseBody['authToken']; // Remplacez par le nom réel du champ d'authentification.
         // Enregistrez authToken ou effectuez d'autres actions nécessaires.
         emailController.clear();
@@ -77,7 +76,7 @@ class _ConnexionState extends State<Connexion> {
         Utilisateur utilisateur = Utilisateur(
           nom: responseBody['nom'], // Remplacez par les vrais noms de champs.
           prenom: responseBody['prenom'],
-          username: responseBody['username'],
+          photos: responseBody['photos'],
           motDePasse: password,
           email: email,
           idUtilisateur: responseBody['idUtilisateur'],
@@ -134,9 +133,10 @@ class _ConnexionState extends State<Connexion> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffe8ebed),
+      backgroundColor: const Color(0xffffffff),
       body: SingleChildScrollView(
         child: Container(
+          
           height: MediaQuery.of(context).size.height -
               70, //For moving according to the screen when the keyboard popsup.
           alignment: Alignment.bottomCenter,
@@ -184,7 +184,11 @@ class _ConnexionState extends State<Connexion> {
                       child: Container(
                         child: const Text(
                           "Connexion",
+                          
                           style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            decorationColor: Color(0xFF2F9062), 
+                            decorationThickness: 4,
                             fontWeight: FontWeight.w900,
                             fontSize: 20,
                             color: Color(0xFF2F9062), // Utilisez la couleur #2F9062
@@ -221,36 +225,27 @@ class _ConnexionState extends State<Connexion> {
                   const SizedBox(height: 10),
 
 
-
+                    // je voudrais mettre le background cette container à cette blanc
                   Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: const Color(0xffe1e2e3),
+                        borderRadius: BorderRadius.circular(20),
+                        // color: const Color(0xffe1e2e3),
+                        color: Colors.white,
+                        
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
+                            // color: Colors.grey.withOpacity(0.5),
+                            color: Color(0xffffffff),
                             spreadRadius: 5,
                             blurRadius: 7,
                             offset: const Offset(0, 3),
+                            
                           ),
                         ]),
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          
-                            // Center(
-                            //   child: Container(
-                            //     padding: const EdgeInsets.symmetric(
-                            //         horizontal: 10, vertical: 3),
-                            //     child: const Text(
-                            //       "Connexion",
-                            //       style: TextStyle(
-                            //           fontSize: 18, fontWeight: FontWeight.w800, color: Color(0xFFE4AF18), ),
-                            //     )),
-                            // ),
-                          
-
                          const SizedBox(height: 5),
 
                           Container(
@@ -258,6 +253,19 @@ class _ConnexionState extends State<Connexion> {
                                 horizontal: 2, vertical: 5),
                             decoration: const BoxDecoration(
                                 color: Color(0xfff5f8fd),
+                                boxShadow: 
+                                  [
+                                    
+                                    BoxShadow(  
+                                        color: Colors.black12,
+                                        offset: Offset(0.0,
+                                            1.0),
+                                        blurRadius: 5.0),
+                                    BoxShadow(
+                                        color: Colors.black12,
+                                        offset: Offset(0.0, 1.0),
+                                        blurRadius: 1.0),
+                                  ],
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(20))),
                             child:  TextFormField(
@@ -281,6 +289,19 @@ class _ConnexionState extends State<Connexion> {
                                 horizontal: 2, vertical: 5),
                             decoration: const BoxDecoration(
                                 color: Color(0xfff5f8fd),
+                                boxShadow: 
+                                  [
+                                    
+                                    BoxShadow(  
+                                        color: Colors.black12,
+                                        offset: Offset(0.0,
+                                            1.0),
+                                        blurRadius: 5.0),
+                                    BoxShadow(
+                                        color: Colors.black12,
+                                        offset: Offset(0.0, 1.0),
+                                        blurRadius: 1.0),
+                                  ],
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(20))),
                             child: TextFormField(
@@ -361,12 +382,12 @@ class _ConnexionState extends State<Connexion> {
                                       //For creating like a card.
                                       color: Colors.black12,
                                       offset: Offset(0.0,
-                                          18.0), // This offset is for making the the lenght of the shadow and also the brightness of the black color try seeing it by changing its values.
-                                      blurRadius: 15.0),
+                                          0.0), // This offset is for making the the lenght of the shadow and also the brightness of the black color try seeing it by changing its values.
+                                      blurRadius: 5.0),
                                   BoxShadow(
                                       color: Colors.black12,
-                                      offset: Offset(0.0, -04.0),
-                                      blurRadius: 10.0),
+                                      offset: Offset(0.0, 0.0),
+                                      blurRadius: 1.0),
                                 ]),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment
