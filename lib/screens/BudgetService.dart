@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:ika_musaka/model/ajoutBudget.dart';
-import 'package:ika_musaka/screens/categorie.dart';
+import 'package:ika_musaka/screens/categoriess.dart';
 
 class BudgetService{
   static const String apiUrl = 'http://localhost:8083/Budget';

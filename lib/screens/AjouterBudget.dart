@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:ika_musaka/screens/BudgetService.dart';
-import 'package:ika_musaka/screens/categorie.dart';
+import 'package:ika_musaka/screens/categoriess.dart';
 import 'package:provider/provider.dart';
 import 'dart:convert';
 
@@ -86,46 +86,50 @@ class _AjouterBudgetState extends State<AjouterBudget> {
           child: SafeArea(
             child: Column(
               children: [
-                 Positioned(
+                Positioned(
                   top: -20,
-                   left: 0,
-                  child: Padding(padding: EdgeInsets.symmetric(horizontal: 10),
-                  child:Container(
-                    padding: EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-
-                    boxShadow:[
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
-                        spreadRadius: 3,
-                        blurRadius: 5,
-                        offset: Offset(0, 2),
+                  left: 0,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    child: Container(
+                      padding: EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            spreadRadius: 3,
+                            blurRadius: 5,
+                            offset: Offset(0, 2),
+                          ),
+                        ],
+                        borderRadius: BorderRadius.circular(40),
                       ),
-                    ],
-                    borderRadius: BorderRadius.circular(40),
-                  ),
-                  child: const Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 25,
-                        backgroundImage: AssetImage('assets/images/signin.png'),
+                      child: const Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 25,
+                            backgroundImage:
+                                AssetImage('assets/images/signin.png'),
+                          ),
+                          SizedBox(
+                              width:
+                                  10), // Espacement entre le profil et le texte
+                          Text(
+                            'Saran Coulibaly', // Remplacez par votre nom
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 80,
+                          ),
+                          Icon(Icons.notifications,
+                              size: 40, color: Colors.amber),
+                        ],
                       ),
-                      SizedBox(
-                          width: 10), // Espacement entre le profil et le texte
-                      Text(
-                        'Saran Coulibaly', // Remplacez par votre nom
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(width: 80,),
-                      Icon(Icons.notifications, size: 40, color: Colors.amber
-                      ),
-                    ],
-                  ),
-          ),
+                    ),
                   ),
                 ),
 
@@ -332,7 +336,7 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                                       decoration: InputDecoration(
                                         border: OutlineInputBorder(
                                           borderRadius:
-                                          BorderRadius.circular(20.0),
+                                              BorderRadius.circular(20.0),
                                         ),
                                       ),
                                     )),

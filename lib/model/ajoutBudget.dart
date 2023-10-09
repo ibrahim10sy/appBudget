@@ -1,7 +1,7 @@
 // ignore: unused_import
 import 'dart:convert';
 
-import 'package:ika_musaka/screens/categorie.dart';
+import 'package:ika_musaka/screens/categoriess.dart';
 // import 'dart:ffi';
 
 Budget budgetJson(String str) => Budget.fromJson(json.decode(str));

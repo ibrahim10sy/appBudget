@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:ika_musaka/provider/UtilisateurProvider.dart';
-import 'package:ika_musaka/screens/AjouterBudget.dart';
-import 'package:ika_musaka/screens/ConnexionScreen.dart';
-import 'package:ika_musaka/screens/Notification.dart';
+ import 'package:ika_musaka/screens/AjouterBudget.dart';
+// import 'package:ika_musaka/screens/ConnexionScreen.dart';
+// import 'package:ika_musaka/screens/Notification.dart';
 import 'package:ika_musaka/screens/ProfilUtilisateur.dart';
 import 'package:provider/provider.dart';
-import 'model/utilisateur.dart';
+// import 'model/utilisateur.dart';
 
 void main() {
   runApp(
@@ -37,7 +37,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       //locale: DevicePreview.locale(context),
       //builder: DevicePreview.appBuilder,
-      home: Notifatication()
+      home: AjouterBudget()
       );//Place SignUp function here to Observe SignUp Screen.
   }
   //JJDJD
