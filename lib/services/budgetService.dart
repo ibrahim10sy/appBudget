@@ -6,7 +6,7 @@ import 'package:ika_musaka/model/Budget.dart';
 
 class BudgetService extends ChangeNotifier {
 
-  final String url = "http://10.175.48.217:8080/Budget/";
+  final String url = "http://10.0.2.2:8080/Budget/";
   
   List<Budget> budgets = [];
   String action = "all";
