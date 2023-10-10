@@ -1,5 +1,6 @@
 
 import 'dart:convert';
+import 'package:ika_musaka/screens/bottomNavigatorBar.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:ika_musaka/screens/InscriptionScreen.dart';
@@ -87,11 +88,12 @@ class _ConnexionState extends State<Connexion> {
         // Affichez les informations de l'utilisateur dans votre interface utilisateur (UI).
         // Stockez l'utilisateur dans UtilisateurProvider.
         utilisateurProvider.setUtilisateur(utilisateur);
-        Navigator.pushNamed(
-          context,
-          '/profilUtilisateur',
-          arguments: utilisateurConnecte, // Passer l'objet utilisateurConnecte en tant qu'argument.
-        );
+        Navigator.push(context,MaterialPageRoute(builder: (context) => BottomNavigationPage()));
+        // Navigator.pushNamed(
+        //   context,
+        //   '/BottomNavigationPage',
+        //   arguments: utilisateurConnecte, // Passer l'objet utilisateurConnecte en tant qu'argument.
+        // );
       } else {
         // Gérez les erreurs d'authentification ici, par exemple affichez un message d'erreur.
         final responseBody = json.decode(response.body);

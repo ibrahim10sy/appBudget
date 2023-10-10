@@ -15,7 +15,7 @@ import 'package:flutter/src/widgets/image.dart';
 import 'package:path/path.dart';
 import '../provider/UtilisateurProvider.dart';
 import 'ListUtilisateur.dart';
-import 'UtilisateurService.dart';
+import '../services/UtilisateurService.dart';
 // import 'package:http/http.dart' as http;
 
 class Inscription extends StatefulWidget {

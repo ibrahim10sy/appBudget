@@ -1,18 +1,30 @@
-
 import 'package:flutter/material.dart';
 import 'package:ika_musaka/provider/UtilisateurProvider.dart';
 import 'package:ika_musaka/screens/ConnexionScreen.dart';
 import 'package:ika_musaka/screens/ProfilUtilisateur.dart';
 import 'package:provider/provider.dart';
 
+
+import 'package:get/get.dart';
+import 'package:ika_musaka/screens/ConnexionScreen.dart';
+import 'package:ika_musaka/screens/accueil.dart';
+import 'package:ika_musaka/screens/bottomNavigatorBar.dart';
+import 'package:ika_musaka/services/BottomNavigationService.dart';
+import 'package:ika_musaka/services/budgetService.dart';
+import 'package:provider/provider.dart';
+
 void main() {
-  runApp(
-    ChangeNotifierProvider(
-      create: (context) => UtilisateurProvider(),
-      child: const MyApp(),
-    ),
-  );
+   runApp(
+     MultiProvider(
+       providers: [
+         ChangeNotifierProvider(create: (context) => BottomNavigationService()),
+         ChangeNotifierProvider(create: (context) => UtilisateurProvider()),
+         ChangeNotifierProvider(create: (context) => BudgetService())
+       ],
+       child:  MyApp()),
+     );
 }
+
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
   @override
@@ -25,18 +37,16 @@ class _MyAppState extends State<MyApp> {
     return  MaterialApp(
         routes: {
           '/profilUtilisateur': (context) => ProfilUtilisateur(),
+          '/BottomNavigationPage':(context) => BottomNavigationPage(),
           // Autres routes...
         },
       // title: "LogIn Screen",
       debugShowCheckedModeBanner: false,
-      // locale: DevicePreview.locale(context),
-      // builder: DevicePreview.appBuilder,
-      home: const Connexion()
-      );//Place SignUp function here to Observe SignUp Screen.
+      // home: BottomNavigationPage(),
+      home: Connexion(),
+    );//Place SignUp function here to Observe SignUp Screen.
   }
   //adama
 }
 
 
-
- 
