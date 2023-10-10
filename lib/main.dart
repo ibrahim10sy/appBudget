@@ -5,20 +5,28 @@ import 'package:ika_musaka/screens/ConnexionScreen.dart';
 import 'package:ika_musaka/screens/DepenseListes.dart';
 import 'package:ika_musaka/screens/ModifierBudget.dart';
 import 'package:ika_musaka/screens/ModifierDepense.dart';
+import 'package:ika_musaka/provider/UtilisateurProvider.dart';
+import 'package:ika_musaka/screens/ConnexionScreen.dart';
+import 'package:ika_musaka/screens/ProfilUtilisateur.dart';
+import 'package:provider/provider.dart';
+import 'model/utilisateur.dart';
 
-    
 void main() {
-   runApp(MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => UtilisateurProvider(),
+      child: MyApp(),
+    ),
+  );
 }
+
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
-
   @override
+  // ignore: library_private_types_in_public_api
   _MyAppState createState() => _MyAppState();
 }
-
 class _MyAppState extends State<MyApp> {
-
   @override
   Widget build(BuildContext context) {  
     return const MaterialApp(
@@ -32,6 +40,7 @@ class _MyAppState extends State<MyApp> {
   }
   //AYA
 }
+
 
 
  
