@@ -1,6 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ika_musaka/services/updatedepenseservice.dart';
 import 'package:intl/intl.dart';
+
+class Depenses {
+  int? idDepenses;
+  String? description;
+  int? montant;
+  String? date;
+  Map<String,dynamic>? budget;
+  Map<String, dynamic>? type;
+  Map<String,dynamic>? utilisateur;
+  Map<String, dynamic>? categorie;
+
+  Depenses({this.idDepenses, this.description, this.montant, this.date,
+      this.budget, this.type, this.utilisateur, this.categorie});
+
+  factory Depenses.fromJson(Map<String, dynamic> json) => Depenses(
+    idDepenses : json["idDepense"],
+    description: json["description"],
+    montant: json["montant"],
+    date: json["date"],
+    budget: json["budget"],
+    type: json["type"],
+    utilisateur: json["utilisateur"],
+    categorie: json["categorie"]
+  );
+
+
+}
 
 class Depense extends StatefulWidget {
   const Depense({super.key});
@@ -10,13 +38,40 @@ class Depense extends StatefulWidget {
 }
 
 class _DepenseState extends State<Depense> {
+  TextEditingController typeInput = TextEditingController();
   TextEditingController dateInput = TextEditingController();
+  TextEditingController descriptionInput = TextEditingController();
+  TextEditingController montantInput = TextEditingController();
+  TextEditingController categorieInput = TextEditingController();
+  var items = ['quotidien', 'hebdomadaire', 'mensuelle'];
 
-  String _typeDepense = "Quotidien";
+  Depenses depenses = Depenses(
+    idDepenses: 2,
+    description: "Depense pour le loyer",
+    montant: 10000,
+    date: "2023-10-02",
+    categorie: {
+      "idCategorie" : 1
+    },
+    utilisateur: {
+      "idUtilisateur": 1
+    },
+    type: {
+      "idType": 1,
+      "titre": 'quotidien'
+    },
+    budget: {
+      "idBudget": 4
+    }
+  );
 
   @override
   void initState() {
-    dateInput.text = ""; //set the initial value of text field
+    dateInput.text = depenses.date!;
+    descriptionInput.text= depenses.description!;
+    montantInput.text = depenses.montant!.toString();
+    typeInput.text = depenses.type!["titre"];
+
     super.initState();
   }
 
@@ -128,7 +183,7 @@ class _DepenseState extends State<Depense> {
                 ),
                 Container(
                   margin:
-                      const EdgeInsets.only(top: 15.0, right: 15.0, left: 15.0),
+                      const EdgeInsets.only(top: 15.0, right: 15.0, left: 15.0, bottom: 15.0),
                   height: 436,
                   decoration: BoxDecoration(
                       color: const Color(0xfff9f7f7),
@@ -178,11 +233,12 @@ class _DepenseState extends State<Depense> {
                                       color: Color.fromRGBO(0, 0, 0, 0.25))
                                 ],
                               ),
-                              child: const Padding(
-                                padding: EdgeInsets.only(left: 10, top: 10),
+                              child:  Padding(
+                                padding: const EdgeInsets.only(left: 10, top: 10),
                                 child: TextField(
+                                  controller: descriptionInput,
                                   maxLines: 8,
-                                  decoration: InputDecoration.collapsed(
+                                  decoration: const InputDecoration.collapsed(
                                       hintText:
                                           "Une description pour la dépense"),
                                 ),
@@ -212,6 +268,7 @@ class _DepenseState extends State<Depense> {
                                     Expanded(
                                       flex: 2,
                                       child: TextField(
+                                        controller: montantInput,
                                         keyboardType: TextInputType.number,
                                         inputFormatters: <TextInputFormatter>[
                                           FilteringTextInputFormatter.digitsOnly
@@ -230,7 +287,7 @@ class _DepenseState extends State<Depense> {
                                     )
                                   ]),
                             ),
-                            Padding(
+                            /*Padding(
                               padding: const EdgeInsets.only(
                                   left: 15, right: 15, bottom: 15),
                               child: Row(
@@ -251,10 +308,11 @@ class _DepenseState extends State<Depense> {
                                                 color: Color(0xff2f9062)),
                                           )),
                                     ),
-                                    const Expanded(
+                                     Expanded(
                                       flex: 2,
                                       child: TextField(
-                                        decoration: InputDecoration(
+                                        controller: categorieInput,
+                                        decoration: const InputDecoration(
                                             labelText: 'Catégorie',
                                             labelStyle:
                                                 TextStyle(color: Colors.green),
@@ -267,7 +325,7 @@ class _DepenseState extends State<Depense> {
                                       ),
                                     )
                                   ]),
-                            ),
+                            )*/
                             Padding(
                               padding: const EdgeInsets.only(
                                   left: 15, right: 15, bottom: 15),
@@ -304,7 +362,7 @@ class _DepenseState extends State<Depense> {
                                                     width: 3,
                                                     color: Colors.green))),
                                         readOnly: true,
-                                        onTap: () async {
+                                        /*onTap: () async {
                                           DateTime? pickedDate =
                                               await showDatePicker(
                                                   context: context,
@@ -322,7 +380,7 @@ class _DepenseState extends State<Depense> {
                                               dateInput.text = formattedDate;
                                             });
                                           } else {}
-                                        },
+                                        },*/
                                       ),
                                     ),
                                   ]),
@@ -351,49 +409,21 @@ class _DepenseState extends State<Depense> {
                                     Expanded(
                                       flex: 2,
                                       child: TextField(
-                                        decoration: InputDecoration(
+                                        controller: typeInput,
+                                        decoration: const InputDecoration(
                                             labelText: 'Type dépense',
-                                            labelStyle:
-                                                TextStyle(color: Colors.green),
+                                            labelStyle: TextStyle(
+                                                color: Colors.green),
                                             enabledBorder: OutlineInputBorder(
                                                 borderSide: BorderSide.none),
                                             focusedBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    width: 3,
-                                                    color: Colors.green))),
-                                        onTap: () {
-                                          showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return AlertDialog(
-                                                  title: Text(
-                                                      'Sélectionner un type de dépense'),
-                                                  content:
-                                                      DropdownButton<String>(
-                                                    value: _typeDepense,
-                                                    items: <String>[
-                                                      'Quotidien',
-                                                      'Hebdomadaire',
-                                                      'Mensuelle',
-                                                    ].map((String value) {
-                                                      return DropdownMenuItem<
-                                                          String>(
-                                                        value: value,
-                                                        child: Text(value),
-                                                      );
-                                                    }).toList(),
-                                                    onChanged: (value) {
-                                                      setState(() {
-                                                        _typeDepense = value!;
-                                                      });
-                                                    },
-                                                  ),
-                                                );
-                                              });
-                                        },
+                                                    borderSide: BorderSide(
+                                                        width: 3,
+                                                        color: Colors.green))),
+                                        readOnly: true,
                                       ),
-                                    ),
-                                  ]),
+                                    )
+                                  ])
                             ),
                             Padding(
                               padding: const EdgeInsets.only(
@@ -406,7 +436,46 @@ class _DepenseState extends State<Depense> {
                                     height: 30,
                                     width: 142,
                                     child: ElevatedButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        setState(() {
+                                          depenses.montant = int.parse(montantInput.text);
+                                          depenses.date = dateInput.text;
+                                          depenses.description = descriptionInput.text;
+                                        });
+                                        FutureBuilder(
+                                          future: UpdateDepensesService().modifierdepense(depenses),
+                                          builder: (context, snapshot){
+                                            debugPrint("Hellooo");
+                                            if(snapshot.hasData){
+                                              showDialog(
+                                                context: context,
+                                                builder: (BuildContext context){
+                                                  return Dialog(
+                                                      shape: RoundedRectangleBorder(
+                                                        borderRadius: BorderRadius.circular(20.0),
+                                                        side:const BorderSide(color: Colors.greenAccent),
+                                                      ),
+                                                      child: const Text('Modification avec succès')
+                                                  );
+                                                });
+                                              return Container();
+                                            }else{
+                                              showDialog(
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return Dialog(
+                                                      shape: RoundedRectangleBorder(
+                                                        borderRadius: BorderRadius.circular(20.0),
+                                                        side:const BorderSide(color: Colors.greenAccent),
+                                                      ),
+                                                      child: Text("${snapshot.error}")
+                                                  );
+                                                });
+                                              return Container();
+                                            }
+                                          }
+                                        );
+                                      },
                                       style: ElevatedButton.styleFrom(
                                           backgroundColor: Colors.green,
                                           shape: RoundedRectangleBorder(
