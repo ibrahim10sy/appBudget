@@ -17,7 +17,7 @@ class MyCategorie extends State<Categorie> {
     titreController.clear();
   }
 
-  static const String apiUrl = 'http://locahost:8080/Categorie';
+  static const String apiUrl = 'http://localhost:8080/Categorie';
 
   static Future<CategorieM> ajouterCategorie({
     required String titre,
@@ -47,20 +47,22 @@ class MyCategorie extends State<Categorie> {
               Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
         Container(
           padding:
-              const EdgeInsets.only(bottom: 1, top: 1, left: 10, right: 10),
+              const EdgeInsets.only(bottom: 0, top: 0, left: 10, right: 10),
           margin: EdgeInsets.only(top: 17, right: 7, left: 7, bottom: 15),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(50),
-            border: Border.all(width: 1),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.white.withOpacity(0.5),
-                spreadRadius: 5,
-                blurRadius: 7,
-                offset: Offset(0, 3), // changes position of shadow
-              ),
-            ],
-          ),
+           decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.black12,
+                    style: BorderStyle.solid,
+                    width: 1.0,
+                  ),
+                  borderRadius: BorderRadius.circular(50),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.white,
+                      blurRadius: 25.0,
+                    ),
+                  ],
+                ),
           child: Row(children: [
             Container(
               padding: const EdgeInsets.only(right: 20),
@@ -259,13 +261,7 @@ class MyCategorie extends State<Categorie> {
                                           // Debut button annuler
                                           padding: const EdgeInsets.all(8),
                                           child: ElevatedButton(
-                                            onPressed: () {
-                                              // Your button's onPressed logic here
-                                              if (_formKey.currentState!
-                                                  .validate()) {
-                                                _formKey.currentState!.save();
-                                              }
-                                            },
+                                            onPressed: ()=>Navigator.pop(context),
                                             style: ElevatedButton.styleFrom(
                                               elevation: 3,
                                               padding:
@@ -395,11 +391,13 @@ class MyCategorie extends State<Categorie> {
                       ),
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                      
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
                           padding: const EdgeInsets.all(1),
                           child: IconButton(
+                            padding: EdgeInsets.only(left: 70),
                               icon: Icon(Icons.edit_sharp,
                                   color: Color(0xFF2F9062)),
                               onPressed: () {
@@ -545,16 +543,7 @@ class MyCategorie extends State<Categorie> {
                                                             const EdgeInsets
                                                                 .all(8),
                                                         child: ElevatedButton(
-                                                          onPressed: () {
-                                                            // Your button's onPressed logic here
-                                                            if (_formKey
-                                                                .currentState!
-                                                                .validate()) {
-                                                              _formKey
-                                                                  .currentState!
-                                                                  .save();
-                                                            }
-                                                          },
+                                                          onPressed: ()=>Navigator.pop(context),
                                                           style: ElevatedButton
                                                               .styleFrom(
                                                             elevation: 3,
