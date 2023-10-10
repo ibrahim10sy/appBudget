@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:ika_musaka/provider/UtilisateurProvider.dart';
 import 'package:ika_musaka/screens/budgetListe.dart';
 import 'package:ika_musaka/services/BottomNavigationService.dart';
 import 'package:ika_musaka/services/budgetService.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:provider/provider.dart';
+import '../model/utilisateur.dart';
 
 class Accueil extends StatefulWidget {
   const Accueil ({super.key});
@@ -14,16 +16,21 @@ class Accueil extends StatefulWidget {
 
 class _AccueilState extends State<Accueil> {
 
+
   late Future<Map<String, dynamic>> future;
+  late Utilisateur utilisateur;
 
   @override
   void initState() {
     super.initState();
-    future = BudgetService().getBudgetTotal("somme/1");
+    utilisateur = Provider.of<UtilisateurProvider>(context,listen: false).utilisateur!;
+    future = BudgetService().getBudgetTotal("somme/${utilisateur.idUtilisateur}");
   }
 
   @override
   Widget build(BuildContext context) {
+    // Récupérer les données de l'utilisateur passées en argument.
+    // final utilisateur = ModalRoute.of(context)!.settings.arguments as Utilisateur;
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -48,10 +55,12 @@ class _AccueilState extends State<Accueil> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Row(
+                          Row(
                             children: [
-                              CircleAvatar(
+                              utilisateur.photos.isEmpty ?
+                              const CircleAvatar(
                                 //backgroundImage: AssetImage("assets/images/avatar.png"),
+                                //  child: Image.network(utilisateur.photos),
                                 backgroundColor: Color.fromRGBO(240, 176, 2, 1),
                                 radius: 30,
                                 child: Text(
@@ -63,8 +72,12 @@ class _AccueilState extends State<Accueil> {
                                     letterSpacing: 3
                                   ),
                                 ),
+                              ) : 
+                              CircleAvatar(
+                                backgroundImage: NetworkImage(utilisateur.photos),
+                                radius: 30
                               ),
-                              Padding(
+                              const Padding(
                                 padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
                                 child: Text(
                                   "Hello Hii!!!",

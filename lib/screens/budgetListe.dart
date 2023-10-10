@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ika_musaka/model/utilisateur.dart';
+import 'package:ika_musaka/provider/UtilisateurProvider.dart';
 import 'package:ika_musaka/services/budgetService.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:intl/intl.dart';
@@ -19,6 +21,7 @@ class _BudgetListeState extends State<BudgetListe> {
   late Future<List<Budget>> _futureListBudget;
   late List<Budget>? budgets = [];
   TextEditingController inputController = TextEditingController();
+  late Utilisateur utilisateur;
 
   DateTime selectedDate = DateTime.now();
 
@@ -41,13 +44,14 @@ class _BudgetListeState extends State<BudgetListe> {
   @override
   void initState() {
     super.initState();
-    future = BudgetService().getBudgetTotal("somme/1");
-    _futureListBudget = BudgetService().getBudgetByIdUser("list/1");
+    utilisateur = Provider.of<UtilisateurProvider>(context,listen: false).utilisateur!;
+    future = BudgetService().getBudgetTotal("somme/${utilisateur.idUtilisateur}");
+    _futureListBudget = BudgetService().getBudgetByIdUser("list/${utilisateur.idUtilisateur}");
     inputController.text = DateFormat('yyyy-MM').format(DateTime.now());
   }
 
   void updateOnCLick(){
-    _futureListBudget = BudgetService().getBudgetByIdUser("list/1");
+    _futureListBudget = BudgetService().getBudgetByIdUser("list/${utilisateur.idUtilisateur}");
     setState(() {
 
     });
@@ -144,7 +148,7 @@ class _BudgetListeState extends State<BudgetListe> {
                                     ),
                                     Consumer<BudgetService>(builder: (context,budgetService,child){
                                       return FutureBuilder<Map<String, dynamic>>(
-                                          future: BudgetService().getBudgetTotal("somme/1") ,
+                                          future: BudgetService().getBudgetTotal("somme/${utilisateur.idUtilisateur}") ,
                                           builder: (context, snapshot){
                                             if(snapshot.connectionState == ConnectionState.waiting){
                                               return const CircularProgressIndicator();
@@ -328,8 +332,8 @@ class _BudgetListeState extends State<BudgetListe> {
                       Consumer<BudgetService>(
                         builder: (context,budgetService,child){
                           return FutureBuilder <List<Budget>>(
-                              future: budgetService.action == "all" ? budgetService.getBudgetByIdUser("list/1") :
-                              budgetService.action == "search" ? budgetService.searchBudgetByDesc(1) : budgetService.sortByMonthAndYear(1) ,
+                              future: budgetService.action == "all" ? budgetService.getBudgetByIdUser("list/${utilisateur.idUtilisateur}") :
+                              budgetService.action == "search" ? budgetService.searchBudgetByDesc(utilisateur.idUtilisateur) : budgetService.sortByMonthAndYear(utilisateur.idUtilisateur) ,
                               builder: (context, snapshot){
                                 budgetService.action="all";
                                 if(snapshot.connectionState == ConnectionState.waiting){
