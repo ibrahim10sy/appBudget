@@ -84,19 +84,36 @@ class _BudgetListeState extends State<BudgetListe> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Row(
+                          Row(
                             children: [
+                              utilisateur.photos == null || utilisateur.photos!.isEmpty ?
                               CircleAvatar(
-                                  backgroundImage: AssetImage("assets/images/avatar.png"),
+                                //backgroundImage: AssetImage("assets/images/avatar.png"),
+                                //  child: Image.network(utilisateur.photos),
+                                backgroundColor: const Color.fromRGBO(240, 176, 2, 1),
+                                radius: 30,
+                                child: Text(
+                                  "${utilisateur.prenom.substring(0,1).toUpperCase()}${utilisateur.nom.substring(0,1).toUpperCase()}",
+                                  style: const TextStyle(
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                    letterSpacing: 2
+                                  ),
+                                ),
+                              ) :
+                              CircleAvatar(
+                                  backgroundImage: NetworkImage(utilisateur.photos!),
                                   radius: 30
                               ),
                               Padding(
-                                padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
                                 child: Text(
-                                  "Hello Hii!!!",
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold
+                                  "${utilisateur.prenom} ${utilisateur.nom}",
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               )
@@ -291,6 +308,7 @@ class _BudgetListeState extends State<BudgetListe> {
                       ]
                   ),
                   child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(left: 20,right: 20),
@@ -326,7 +344,7 @@ class _BudgetListeState extends State<BudgetListe> {
                         ),
                       ),
                       const Divider(
-                        height: 30,
+                        height: 15,
                         color: Colors.white,
                       ),
                       Consumer<BudgetService>(
@@ -351,12 +369,13 @@ class _BudgetListeState extends State<BudgetListe> {
                                 }
 
                                 budgets = snapshot.data;
-                                return ListView.builder(
-                                    shrinkWrap: true,
-                                    itemCount: budgets!.length,
-                                    itemBuilder: (context,index){
-                                      return createCardBudget(budgets![index].description!, index,budgets![index]);
-                                    }
+                                return Expanded(
+                                  child: ListView.builder(
+                                      itemCount: budgets!.length,
+                                      itemBuilder: (context,index){
+                                        return createCardBudget(budgets![index].description!, index,budgets![index]);
+                                      }
+                                  ),
                                 );
                               }
                           );
@@ -377,7 +396,7 @@ class _BudgetListeState extends State<BudgetListe> {
   //Card pour la liste des budget
   createCardBudget(String titre,int index,Budget budget){
     return Container(
-      margin: const EdgeInsets.only(bottom: 15),
+      margin: index == 0 ? const EdgeInsets.only(bottom: 15,top: 15) : const EdgeInsets.only(bottom: 15),
       padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
           color: Colors.white,

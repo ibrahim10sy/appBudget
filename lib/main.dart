@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:ika_musaka/provider/UtilisateurProvider.dart';
 import 'package:ika_musaka/screens/ConnexionScreen.dart';
 import 'package:ika_musaka/screens/ProfilUtilisateur.dart';
@@ -14,14 +15,17 @@ import 'package:ika_musaka/services/budgetService.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-   runApp(
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarColor: Color.fromRGBO(47, 144, 98, 1),
+  ));
+  runApp(
      MultiProvider(
        providers: [
          ChangeNotifierProvider(create: (context) => BottomNavigationService()),
          ChangeNotifierProvider(create: (context) => UtilisateurProvider()),
          ChangeNotifierProvider(create: (context) => BudgetService())
        ],
-       child:  MyApp()),
+       child:  const MyApp()),
      );
 }
 

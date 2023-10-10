@@ -57,33 +57,34 @@ class _AccueilState extends State<Accueil> {
                         children: [
                           Row(
                             children: [
-                              utilisateur.photos.isEmpty ?
-                              const CircleAvatar(
+                              utilisateur.photos == null || utilisateur.photos!.isEmpty ?
+                              CircleAvatar(
                                 //backgroundImage: AssetImage("assets/images/avatar.png"),
                                 //  child: Image.network(utilisateur.photos),
-                                backgroundColor: Color.fromRGBO(240, 176, 2, 1),
+                                backgroundColor: const Color.fromRGBO(240, 176, 2, 1),
                                 radius: 30,
                                 child: Text(
-                                  "AK",
-                                  style: TextStyle(
+                                  "${utilisateur.prenom.substring(0,1).toUpperCase()}${utilisateur.nom.substring(0,1).toUpperCase()}",
+                                  style: const TextStyle(
                                     fontSize: 25,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white,
-                                    letterSpacing: 3
+                                    letterSpacing: 2
                                   ),
                                 ),
-                              ) : 
+                              ) :
                               CircleAvatar(
-                                backgroundImage: NetworkImage(utilisateur.photos),
+                                backgroundImage: NetworkImage(utilisateur.photos!),
                                 radius: 30
                               ),
-                              const Padding(
-                                padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
                                 child: Text(
-                                  "Hello Hii!!!",
-                                  style: TextStyle(
+                                  "${utilisateur.prenom} ${utilisateur.nom}",
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
                                       fontSize: 20,
-                                      fontWeight: FontWeight.bold
+                                      fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               )
@@ -133,22 +134,26 @@ class _AccueilState extends State<Accueil> {
                                             fontWeight: FontWeight.bold
                                         )
                                     ),
-                                    FutureBuilder<Map<String, dynamic>>(
-                                        future: future ,
-                                        builder: (context, snapshot){
-                                          if(snapshot.hasData){
-                                            return Text(
-                                                "${snapshot.data?["Total"]} CFA",
-                                                style: const TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 22,
-                                                    fontWeight: FontWeight.bold
-                                                )
-                                            );
-                                          }else{
-                                            return const CircularProgressIndicator();//const CircularProgressIndicator();
-                                          }
-                                        }
+                                    Consumer<BudgetService>(
+                                      builder: (context,bugetService,child){
+                                        return FutureBuilder<Map<String, dynamic>>(
+                                            future: bugetService.getBudgetTotal("somme/${utilisateur.idUtilisateur}") ,
+                                            builder: (context, snapshot){
+                                              if(snapshot.hasData){
+                                                return Text(
+                                                    "${snapshot.data?["Total"]} CFA",
+                                                    style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 22,
+                                                        fontWeight: FontWeight.bold
+                                                    )
+                                                );
+                                              }else{
+                                                return const CircularProgressIndicator();//const CircularProgressIndicator();
+                                              }
+                                            }
+                                        );
+                                      },
                                     )
                                   ],
                                 ),

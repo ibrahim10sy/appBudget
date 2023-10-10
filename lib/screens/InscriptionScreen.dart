@@ -4,6 +4,8 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:ika_musaka/model/utilisateur.dart';
+import 'package:ika_musaka/screens/accueil.dart';
+import 'package:ika_musaka/screens/bottomNavigatorBar.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
@@ -83,36 +85,28 @@ class _InscriptionState extends State<Inscription> {
       // Gérez le cas où l'email ou le mot de passe est vide.
       const String errorMessage = "Veuillez remplir tous les champs";
       debugPrint(errorMessage);
-      // showDialog(
-      //   context: context,
-      //   builder: (BuildContext context) {
-      //     return AlertDialog(
-      //       title: const Center(child: Text('Message')),
-      //       content: const Text(errorMessage),
-      //       actions: <Widget>[
-      //         TextButton(
-      //           onPressed: () {
-      //             Navigator.of(context).pop();
-      //           },
-      //           child: const Text('OK'),
-      //         ),
-      //       ],
-      //     );
-      //   },
-      // );
       return;
     }
 
+    Utilisateur nouveauUtilisateur;
+
     try {
-      final Utilisateur nouveauUtilisateur = await UtilisateurService.ajouterUtilisateur(
-        nom: nom,
-        prenom: prenom,
-        email: email,
-        motDePasse: motDePasse, photos: image as File,
-        //  photos: photos as File,FileUploadInputElement
-        // // photos: photos as File,
-        
-      );
+      if(image != null){
+        nouveauUtilisateur = await UtilisateurService.ajouterUtilisateur(
+          nom: nom,
+          prenom: prenom,
+          email: email,
+          motDePasse: motDePasse, photos: image as File);
+      }else{
+        nouveauUtilisateur = await UtilisateurService.ajouterUtilisateur(
+          nom: nom,
+          prenom: prenom,
+          email: email,
+          motDePasse: motDePasse
+
+        );
+      }
+
       nouveauUtilisateur;
       // Le nouvel utilisateur a été ajouté avec succès, vous pouvez gérer la réponse ici.
       print('Utilisateur ajouté avec succès : ${nouveauUtilisateur.nom}');
@@ -121,6 +115,7 @@ class _InscriptionState extends State<Inscription> {
       email_controller.clear();
       motDepasse_controller.clear();
       RepmotDePasse_controller.clear();
+
     } catch (e) {
       // Une erreur s'est produite lors de l'ajout de l'utilisateur, vous pouvez gérer l'erreur ici.
       final String errorMessage = e.toString();
@@ -471,7 +466,55 @@ class _InscriptionState extends State<Inscription> {
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  onPressed: _ajouterUtilisateur,
+                  onPressed: () async {
+                    final nom = nom_controller.text;
+                    final prenom = prenom_controller.text;
+                    final email = email_controller.text;
+                    final motDePasse = motDepasse_controller.text;
+
+                    if (nom.isEmpty || prenom.isEmpty || email.isEmpty || motDePasse.isEmpty) {
+                      // Gérez le cas où l'email ou le mot de passe est vide.
+                      const String errorMessage = "Veuillez remplir tous les champs";
+                      debugPrint(errorMessage);
+                      return;
+                    }
+
+                    Utilisateur nouveauUtilisateur;
+
+                    try {
+                      if(image != null){
+                        nouveauUtilisateur = await UtilisateurService.ajouterUtilisateur(
+                            nom: nom,
+                            prenom: prenom,
+                            email: email,
+                            motDePasse: motDePasse, photos: image as File);
+                      }else{
+                        nouveauUtilisateur = await UtilisateurService.ajouterUtilisateur(
+                            nom: nom,
+                            prenom: prenom,
+                            email: email,
+                            motDePasse: motDePasse
+
+                        );
+                      }
+
+                      Provider.of<UtilisateurProvider>(context, listen: false).setUtilisateur(nouveauUtilisateur);
+                      // Le nouvel utilisateur a été ajouté avec succès, vous pouvez gérer la réponse ici.
+                      print('Utilisateur ajouté avec succès : ${nouveauUtilisateur.nom}');
+                      nom_controller.clear();
+                      prenom_controller.clear();
+                      email_controller.clear();
+                      motDepasse_controller.clear();
+                      RepmotDePasse_controller.clear();
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> BottomNavigationPage()));
+
+                    } catch (e) {
+                      // Une erreur s'est produite lors de l'ajout de l'utilisateur, vous pouvez gérer l'erreur ici.
+                      final String errorMessage = e.toString();
+                      debugPrint(errorMessage);
+
+                    }
+                  },
                 ),
         
                  const SizedBox(width: 5),

@@ -16,7 +16,7 @@ class UtilisateurService {
     required String prenom,
     required String email,
     required String motDePasse,
-    required File photos,
+    File? photos,
   }) async {
     try {
       var request = http.MultipartRequest('POST', Uri.parse(apiUrl));
@@ -24,8 +24,10 @@ class UtilisateurService {
 
       // Ajoutez l'image à la requête en utilisant le chemin du fichier
       //request.files.add(await http.MultipartFile.fromPath("photos", photos.path));
-      request.files.add(http.MultipartFile('photo',photos.readAsBytes().asStream(),photos.lengthSync(),filename : basename(photos.path)));
-      debugPrint("MMM======== "+photos.path);
+      if(photos != null){
+        request.files.add(http.MultipartFile('photo',photos.readAsBytes().asStream(),photos.lengthSync(),filename : basename(photos.path)));
+        debugPrint("MMM======== "+photos.path);
+      }
 
       // Ajoutez les autres champs requis à la requête
       // request.fields['nom'] = nom;

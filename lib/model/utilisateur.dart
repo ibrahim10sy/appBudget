@@ -7,7 +7,7 @@ class Utilisateur {
   final String email;
   final String motDePasse;
   final int idUtilisateur;
-  final String photos;
+  final String? photos;
 
   Utilisateur({required this.photos,
     required this.nom,

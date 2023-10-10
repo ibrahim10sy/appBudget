@@ -25,7 +25,7 @@ class ProfilUtilisateur extends StatelessWidget {
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(50),
                             // child: Image.asset("assets/images/login1-removebg.png"),
-                            child: Image.network(utilisateur.photos),
+                            child: Image.network(utilisateur.photos!),
                            
                           ),
                          
