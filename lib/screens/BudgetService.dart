@@ -31,7 +31,7 @@ class BudgetService{
       'montant': int.parse(montant),
       'montantAlerte' : int.parse(montantAlert),
       'dateDebut': datedebut,
-      'categorie': cate,
+      'categorie': categorie.toMap(),
       'utilisateur' : ut
     });
     final response = await http.post(Uri.parse('$apiUrl/ajouter'),
