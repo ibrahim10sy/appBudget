@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../model/Budget.dart';
+import 'AjouterBudget.dart';
 
 class BudgetListe extends StatefulWidget {
   const BudgetListe ({super.key});
@@ -244,7 +245,7 @@ class _BudgetListeState extends State<BudgetListe> {
                                                     Row(
                                                       children: [
                                                         GestureDetector(
-                                                          onTap: (){},
+                                                          onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=> AjouterBudget()));},
                                                           child: Container(
                                                             padding: const EdgeInsets.all(5.0),
                                                             decoration: BoxDecoration(
