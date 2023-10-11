@@ -73,6 +73,9 @@ class _DepenseState extends State<Depense> {
     typeInput.text = depenses.type!["titre"];
 
     super.initState();
+
+    final a = UpdateDepensesService().modifierdepense(depenses);
+    print(a);
   }
 
   @override
@@ -442,10 +445,56 @@ class _DepenseState extends State<Depense> {
                                           depenses.date = dateInput.text;
                                           depenses.description = descriptionInput.text;
                                         });
-                                        FutureBuilder(
+                                        UpdateDepensesService().modifierdepense(depenses).then((value) {
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext context){
+                                                return Dialog(
+                                                  shadowColor: const Color.fromRGBO(0, 0, 0, 0.25),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(15.0),
+                                                  ),
+                                                    child: Container(
+                                                      padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+                                                      height: 100,
+                                                      child: Row(
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        children: [
+                                                          const Text('Modifier avec succès',
+                                                            style: TextStyle(
+                                                              fontSize: 20,
+                                                              fontWeight: FontWeight.bold,
+                                                              color: Colors.green
+                                                            ),
+                                                          ),
+                                                          Padding(
+                                                              padding: const EdgeInsets.only(left: 15.0),
+                                                            child: Image.asset('assets/images/img.png',
+                                                              height: 30,
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    )
+                                                );
+                                              });
+                                        }).catchError((onError){
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return Dialog(
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(20.0),
+                                                      side:const BorderSide(color: Colors.greenAccent),
+                                                    ),
+                                                    child: Text("${onError}")
+                                                );
+                                              });
+                                        });
+                                        /*FutureBuilder<Depenses>(
                                           future: UpdateDepensesService().modifierdepense(depenses),
                                           builder: (context, snapshot){
-                                            debugPrint("Hellooo");
+                                            print("Hellooo");
                                             if(snapshot.hasData){
                                               showDialog(
                                                 context: context,
@@ -460,6 +509,7 @@ class _DepenseState extends State<Depense> {
                                                 });
                                               return Container();
                                             }else{
+                                              print("Hellooo");
                                               showDialog(
                                                 context: context,
                                                 builder: (BuildContext context) {
@@ -474,7 +524,7 @@ class _DepenseState extends State<Depense> {
                                               return Container();
                                             }
                                           }
-                                        );
+                                        );*/
                                       },
                                       style: ElevatedButton.styleFrom(
                                           backgroundColor: Colors.green,
