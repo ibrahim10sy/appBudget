@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ika_musaka/services/Deletedepenseservice.dart';
 import 'package:ika_musaka/services/updatedepenseservice.dart';
-import 'package:intl/intl.dart';
 
 class Depenses {
-  int? idDepenses;
+   int? idDepenses;
   String? description;
   int? montant;
   String? date;
@@ -27,7 +27,6 @@ class Depenses {
     categorie: json["categorie"]
   );
 
-
 }
 
 class Depense extends StatefulWidget {
@@ -46,13 +45,10 @@ class _DepenseState extends State<Depense> {
   var items = ['quotidien', 'hebdomadaire', 'mensuelle'];
 
   Depenses depenses = Depenses(
-    idDepenses: 2,
-    description: "Depense pour le loyer",
+    idDepenses: 13,
+    description: "dddddddd",
     montant: 10000,
     date: "2023-10-02",
-    categorie: {
-      "idCategorie" : 1
-    },
     utilisateur: {
       "idUtilisateur": 1
     },
@@ -74,8 +70,6 @@ class _DepenseState extends State<Depense> {
 
     super.initState();
 
-    final a = UpdateDepensesService().modifierdepense(depenses);
-    print(a);
   }
 
   @override
@@ -290,45 +284,6 @@ class _DepenseState extends State<Depense> {
                                     )
                                   ]),
                             ),
-                            /*Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 15, right: 15, bottom: 15),
-                              child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Image.asset(
-                                      'assets/images/820826.png',
-                                      width: 25,
-                                    ),
-                                    const Expanded(
-                                      child: Padding(
-                                          padding: EdgeInsets.only(left: 5),
-                                          child: Text(
-                                            'Catégorie :',
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold,
-                                                color: Color(0xff2f9062)),
-                                          )),
-                                    ),
-                                     Expanded(
-                                      flex: 2,
-                                      child: TextField(
-                                        controller: categorieInput,
-                                        decoration: const InputDecoration(
-                                            labelText: 'Catégorie',
-                                            labelStyle:
-                                                TextStyle(color: Colors.green),
-                                            enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide.none),
-                                            focusedBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    width: 3,
-                                                    color: Colors.green))),
-                                      ),
-                                    )
-                                  ]),
-                            )*/
                             Padding(
                               padding: const EdgeInsets.only(
                                   left: 15, right: 15, bottom: 15),
@@ -487,44 +442,34 @@ class _DepenseState extends State<Depense> {
                                                       borderRadius: BorderRadius.circular(20.0),
                                                       side:const BorderSide(color: Colors.greenAccent),
                                                     ),
-                                                    child: Text("${onError}")
+                                                    child:Container(
+                                                      padding: const EdgeInsets.only(left: 15.0) ,
+                                                      height: 100,
+                                                      child:  Row(
+                                                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        children: [
+                                                          Expanded(
+                                                            child: Row(
+                                                              children: [
+                                                                Expanded(
+                                                                  child: Text("${onError}",
+                                                                    style: const TextStyle(
+                                                                        fontSize: 20,
+                                                                        color: Colors.green,
+                                                                        fontWeight: FontWeight.bold
+                                                                    ),
+                                                                  ),
+                                                                )
+                                                              ],
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    )
                                                 );
                                               });
                                         });
-                                        /*FutureBuilder<Depenses>(
-                                          future: UpdateDepensesService().modifierdepense(depenses),
-                                          builder: (context, snapshot){
-                                            print("Hellooo");
-                                            if(snapshot.hasData){
-                                              showDialog(
-                                                context: context,
-                                                builder: (BuildContext context){
-                                                  return Dialog(
-                                                      shape: RoundedRectangleBorder(
-                                                        borderRadius: BorderRadius.circular(20.0),
-                                                        side:const BorderSide(color: Colors.greenAccent),
-                                                      ),
-                                                      child: const Text('Modification avec succès')
-                                                  );
-                                                });
-                                              return Container();
-                                            }else{
-                                              print("Hellooo");
-                                              showDialog(
-                                                context: context,
-                                                builder: (BuildContext context) {
-                                                  return Dialog(
-                                                      shape: RoundedRectangleBorder(
-                                                        borderRadius: BorderRadius.circular(20.0),
-                                                        side:const BorderSide(color: Colors.greenAccent),
-                                                      ),
-                                                      child: Text("${snapshot.error}")
-                                                  );
-                                                });
-                                              return Container();
-                                            }
-                                          }
-                                        );*/
                                       },
                                       style: ElevatedButton.styleFrom(
                                           backgroundColor: Colors.green,
@@ -545,7 +490,78 @@ class _DepenseState extends State<Depense> {
                                     height: 30,
                                     width: 142,
                                     child: ElevatedButton(
-                                      onPressed: () {},
+                                      onPressed: (){
+                                        SupprimerDepensesService().supprimerdepense(depenses.idDepenses!).then((value) {
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext context){
+                                                return Dialog(
+                                                    shadowColor: const Color.fromRGBO(0, 0, 0, 0.25),
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(15.0),
+                                                    ),
+                                                    child: Container(
+                                                      padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+                                                      height: 100,
+                                                      child: Row(
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        children: [
+                                                          const Text('Supprimer avec succès',
+                                                            style: TextStyle(
+                                                                fontSize: 20,
+                                                                fontWeight: FontWeight.bold,
+                                                                color: Colors.green
+                                                            ),
+                                                          ),
+                                                          Padding(
+                                                            padding: const EdgeInsets.only(left: 15.0),
+                                                            child: Image.asset('assets/images/img.png',
+                                                              height: 30,
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    )
+                                                );
+                                              });
+                                        }).catchError((onError){
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return Dialog(
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.circular(20.0),
+                                                      side:const BorderSide(color: Colors.greenAccent),
+                                                    ),
+                                                    child:Container(
+                                                      padding: const EdgeInsets.only(left: 15.0) ,
+                                                      height: 100,
+                                                      child:  Row(
+                                                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        children: [
+                                                          Expanded(
+                                                            child: Row(
+                                                              children: [
+                                                                Expanded(
+                                                                  child: Text("${onError}",
+                                                                    style: const TextStyle(
+                                                                        fontSize: 20,
+                                                                        color: Colors.green,
+                                                                        fontWeight: FontWeight.bold
+                                                                    ),
+                                                                  ),
+                                                                )
+                                                              ],
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    )
+                                                );
+                                              });
+                                        });
+                                      },
                                       style: ElevatedButton.styleFrom(
                                           backgroundColor: Colors.red,
                                           shape: RoundedRectangleBorder(

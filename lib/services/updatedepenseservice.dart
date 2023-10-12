@@ -27,7 +27,7 @@ class UpdateDepensesService{
       debugPrint("Hello");
       return Depenses.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
     } else {
-      throw Exception(response.body);
+      throw Exception(jsonDecode(response.body)["message"]);
     }
   }
 
