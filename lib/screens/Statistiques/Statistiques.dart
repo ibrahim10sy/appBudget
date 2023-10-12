@@ -87,7 +87,7 @@ class Statistiques extends StatelessWidget {
                                         ),
                                         PieChartSectionData(
                                           value: 8,
-                                          color: Colors.deepOrange.shade900,
+                                          color: Colors.pink,
                                           radius: 55,
                                           showTitle: false,
                                         ),
@@ -128,9 +128,9 @@ class Statistiques extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              _buildLegendItem("Nourriture", Colors.green.shade900),
-                              _buildLegendItem("Loyer", Colors.blue.shade900),
-                              _buildLegendItem("Loisir", Colors.red.shade900),
+                              _buildLegendItem("Nourriture", Colors.grey),
+                              _buildLegendItem("Loyer", Colors.blue),
+                              _buildLegendItem("Loisir", Colors.pink),
                               _buildLegendItem("Transport", Colors.amberAccent),
                             ],
                           ),
@@ -177,13 +177,13 @@ class Statistiques extends StatelessWidget {
                                       sections: [
                                         PieChartSectionData(
                                           value: 45,
-                                          color: Colors.green.shade900,
+                                          color: Colors.grey,
                                           radius: 55,
                                           showTitle: false,
                                         ),
                                         PieChartSectionData(
                                           value: 25,
-                                          color: Colors.blue.shade900,
+                                          color: Colors.blue,
                                           radius: 55,
                                           showTitle: false,
                                         ),
@@ -195,7 +195,7 @@ class Statistiques extends StatelessWidget {
                                         ),
                                         PieChartSectionData(
                                           value: 15,
-                                          color: Colors.deepOrange.shade900,
+                                          color: Colors.pink,
                                           radius: 55,
                                           showTitle: false,
                                         ),
@@ -235,8 +235,8 @@ class Statistiques extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             _buildLegendItem("Nourriture", Colors.green.shade900),
-                            _buildLegendItem("Loyer", Colors.blue.shade900),
-                            _buildLegendItem("Loisir", Colors.red.shade900),
+                            _buildLegendItem("Loyer", Colors.blue),
+                            _buildLegendItem("Loisir", Colors.pink),
                             _buildLegendItem("Transport", Colors.amberAccent),
                           ],
                         ),
