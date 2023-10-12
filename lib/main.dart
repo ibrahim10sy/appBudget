@@ -14,7 +14,7 @@ import 'package:ika_musaka/screens/Categorie.dart';
 //  import 'package:ika_musaka/screens/AjouterBudget.dart';
 // import 'package:ika_musaka/screens/ConnexionScreen.dart';
 // import 'package:ika_musaka/screens/Notification.dart';
-import 'package:ika_musaka/screens/ProfilUtilisateur.dart';
+// import 'package:ika_musaka/screens/ProfilUtilisateur.dart';
 // import 'package:provider/provider.dart';
 // import 'model/utilisateur.dart';
 
@@ -56,5 +56,5 @@ class _MyAppState extends State<MyApp> {
       home: const Categorie(),
     ); //Place SignUp function here to Observe SignUp Screen.
   }
-  //koureissi
+  
 }

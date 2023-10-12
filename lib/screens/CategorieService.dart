@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:js';
+
 // import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -38,56 +38,83 @@ class CategorieService {
     }
   }
 
-  // ouss
   List<Categorie> categories = [];
   //recuperation
 
-  Future<List> fetchAlbum() async {
+  Future fetchAlbum() async {
     final response =
         await http.get(Uri.parse('http://localhost:8083/Categorie/lire'));
-//print(response);
+
     if (response.statusCode == 200) {
-      var cat = response.body;
-      //  final List<dynamic> data = jsonDecode(response.body);
-      //     categories = data.map((item) => Categorie.fromJson(item) as Categorie).toList();
-      print("Bienvenu dans le console");
+      print("Bienvenu au categorie");
       // If the server did return a 200 OK response,
       // then parse the JSON.
-      // print(jsonDecode(response.body));
-      
-      // return categories;
-      var catg = jsonDecode(response.body);
-      print(catg);
-
-       return catg;
+      print(jsonDecode(response.body));
+      return jsonDecode(response.body);
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
-      throw Exception('Failed list');
+      throw Exception('Failed to lire');
     }
   }
 
-  //affichage sur l'interface
-}
+  //modifier
+  static Future<void> updateCategorie(
+      {required int id, required String newTitre}) async {
+    Map<String, dynamic> user = {
+      "idUtilisateur": id,
+    };
 
+    final response = await http.put(
+      Uri.parse(
+          '$apiUrl/modifier/$id'), // Utilisez l'URL de mise à jour de votre API
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'titre': newTitre, 'utilisateur': user}),
+    );
 
-
-
-  // static const String apiUrl = 'http://localhost:8083/Categorie';
-
-  // static Future<CategorieM> ajouterCategorie({
-  //   required String titre,
-  // }) async {
-    
-  //   final response = await http.post(
-  //     Uri.parse('$apiUrl/creer'),
+    if (response.statusCode == 200) {
+      // La catégorie a été mise à jour avec succès.
+    } else {
+      debugPrint(response.reasonPhrase);
+      debugPrint(response.body);
+      throw Exception(response.body);
+    }
+  }
+  //////////suppression
+  //  static Future<void> suppression(
+  //     {required int? id, required String newTitre}) async {
+  //   final response = await http.put(
+  //     Uri.parse(
+  //         '$apiUrl/modifier/$id'), // Utilisez l'URL de mise à jour de votre API
   //     headers: {'Content-Type': 'application/json'},
-  //     body: jsonEncode({"idCategorie": null, "titre": titre}),
+  //     body: jsonEncode({'titre': newTitre}),
   //   );
 
   //   if (response.statusCode == 200) {
-  //     return CategorieM.fromJson(jsonDecode(response.body));
+  //     // La catégorie a été mise à jour avec succès.
   //   } else {
-  //     throw Exception('Impossible d\'ajouter une catégorie');
+  //     debugPrint(response.reasonPhrase);
+  //     debugPrint(response.body);
+  //     throw Exception('Échec de la mise à jour de la catégorie');
   //   }
   // }
+}
+
+// static const String apiUrl = 'http://localhost:8083/Categorie';
+
+// static Future<CategorieM> ajouterCategorie({
+//   required String titre,
+// }) async {
+
+//   final response = await http.post(
+//     Uri.parse('$apiUrl/creer'),
+//     headers: {'Content-Type': 'application/json'},
+//     body: jsonEncode({"idCategorie": null, "titre": titre}),
+//   );
+
+//   if (response.statusCode == 200) {
+//     return CategorieM.fromJson(jsonDecode(response.body));
+//   } else {
+//     throw Exception('Impossible d\'ajouter une catégorie');
+//   }
+// }

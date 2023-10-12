@@ -1,11 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:ika_musaka/screens/BudgetService.dart';
- import 'package:ika_musaka/screens/categoriess.dart';
-import 'package:provider/provider.dart';
-import 'dart:convert';
-
-import '../model/ajoutBudget.dart';
+import 'package:ika_musaka/screens/categoriess.dart';
 
 class AjouterBudget extends StatefulWidget {
   const AjouterBudget({super.key});
@@ -35,10 +33,11 @@ class _AjouterBudgetState extends State<AjouterBudget> {
 
   }*/
 
-   late Future _mesCategories;
+  late List<dynamic> _mesCategories;
 
   @override
   void initState() {
+    getCategories();
     description_control.clear();
     montant_control.clear();
     montant_control.clear();
@@ -46,9 +45,19 @@ class _AjouterBudgetState extends State<AjouterBudget> {
     categorie_control.clear();
     datedebut_control.clear();
     fetchAlbum();
-    // _mesCategories =
-    //     http.get(Uri.parse('http://localhost:8083/Categorie/lire'));
-    // super.initState();
+
+    super.initState();
+  }
+
+  Future<dynamic> getCategories() async {
+    var response =
+        await http.get(Uri.parse('http://localhost:8083/Categorie/lire'));
+    if (response.statusCode == 200) {
+      _mesCategories = jsonDecode(response.body);
+      return _mesCategories;
+    } else {
+      _mesCategories = [];
+    }
   }
 
   @override
@@ -86,46 +95,50 @@ class _AjouterBudgetState extends State<AjouterBudget> {
           child: SafeArea(
             child: Column(
               children: [
-                 Positioned(
+                Positioned(
                   top: -20,
-                   left: 0,
-                  child: Padding(padding: EdgeInsets.symmetric(horizontal: 10),
-                  child:Container(
-                    padding: EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-
-                    boxShadow:[
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
-                        spreadRadius: 3,
-                        blurRadius: 5,
-                        offset: Offset(0, 2),
+                  left: 0,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Container(
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            spreadRadius: 3,
+                            blurRadius: 5,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                        borderRadius: BorderRadius.circular(40),
                       ),
-                    ],
-                    borderRadius: BorderRadius.circular(40),
-                  ),
-                  child: const Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 25,
-                        backgroundImage: AssetImage('assets/images/signin.png'),
+                      child: const Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 25,
+                            backgroundImage:
+                                AssetImage('assets/images/signin.png'),
+                          ),
+                          SizedBox(
+                              width:
+                                  10), // Espacement entre le profil et le texte
+                          Text(
+                            'Saran Coulibaly', // Remplacez par votre nom
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(
+                            width: 80,
+                          ),
+                          Icon(Icons.notifications,
+                              size: 40, color: Colors.amber),
+                        ],
                       ),
-                      SizedBox(
-                          width: 10), // Espacement entre le profil et le texte
-                      Text(
-                        'Saran Coulibaly', // Remplacez par votre nom
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(width: 80,),
-                      Icon(Icons.notifications, size: 40, color: Colors.amber
-                      ),
-                    ],
-                  ),
-          ),
+                    ),
                   ),
                 ),
 
@@ -135,7 +148,7 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                       const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                   height: 200,
                   decoration: BoxDecoration(
-                    color: Color(0xFF2F9062),
+                    color: const Color(0xFF2F9062),
                     borderRadius: BorderRadius.circular(20),
                   ),
 
@@ -189,7 +202,7 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                               //mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("Déscription"),
+                                const Text("Déscription"),
                                 Card(
                                   child: TextField(
                                     controller: description_control,
@@ -204,14 +217,14 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                                 ),
                               ],
                             ),
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10),
                             Row(
                               children: [
                                 Expanded(
                                     flex: 1,
                                     child: Image.asset(
                                         "assets/images/montant.png")),
-                                Expanded(flex: 2, child: Text("Montant")),
+                                const Expanded(flex: 2, child: Text("Montant")),
                                 Expanded(
                                     flex: 6,
                                     child: TextField(
@@ -225,14 +238,14 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                                     )),
                               ],
                             ),
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10),
                             Row(
                               children: [
                                 Expanded(
                                     flex: 1,
                                     child: Image.asset(
                                         "assets/images/montant_alert.png")),
-                                Expanded(
+                                const Expanded(
                                     flex: 3, child: Text("Montant alerte")),
                                 Expanded(
                                     flex: 6,
@@ -254,36 +267,44 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                                     flex: 1,
                                     child: Image.asset(
                                         "assets/images/categories.png")),
-                                Expanded(flex: 2, child: Text("Catégorie")),
+                                const Expanded(
+                                    flex: 2, child: Text("Catégorie")),
                                 Expanded(
                                     flex: 6,
                                     child: FutureBuilder(
-                                      future: _mesCategories,
+                                      future: getCategories(),
                                       builder: (_, snapshot) {
+                                        debugPrint("-" * 100);
                                         if (snapshot.connectionState ==
                                             ConnectionState.waiting) {
-                                          return DropdownButton(
-                                              items: [], onChanged: (value) {});
+                                          return const Center(
+                                            child: CircularProgressIndicator(),
+                                          );
                                         }
 
                                         if (snapshot.hasError) {
                                           return Text("${snapshot.error}");
                                         }
 
+                                        if (!snapshot.hasData) {
+                                          debugPrint(
+                                              "Aucune catégorie trouvée !");
+                                          return DropdownButton(
+                                              items: const [],
+                                              onChanged: (value) {});
+                                        }
+
                                         if (snapshot.hasData) {
-                                          //debugPrint(snapshot.data.body.toString());
-                                          final reponse =
-                                              json.decode(snapshot.data.body)
-                                                  as List;
-                                          final mesCategories = reponse
+                                          final mesCategories = _mesCategories
                                               .map((e) => Categorie.fromMap(e))
                                               .toList();
-                                          //debugPrint(mesCategories.length.toString());
+                                          debugPrint(
+                                              mesCategories.length.toString());
                                           return DropdownButton(
                                               items: mesCategories
                                                   .map((e) => DropdownMenuItem(
-                                                        child: Text(e.titre),
                                                         value: e.id,
+                                                        child: Text(e.titre),
                                                       ))
                                                   .toList(),
                                               value: catValue,
@@ -300,8 +321,12 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                                               });
                                         }
 
+                                        debugPrint(
+                                            "Etat du snapshot ${snapshot.stackTrace.toString()}");
+
                                         return DropdownButton(
-                                            items: [], onChanged: (value) {});
+                                            items: const [],
+                                            onChanged: (value) {});
                                       },
                                     ))
                                 // TextField(
@@ -323,7 +348,7 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                                     flex: 1,
                                     child: Image.asset(
                                         "assets/images/calendrier.png")),
-                                Expanded(
+                                const Expanded(
                                     flex: 4, child: Text("Date de création")),
                                 Expanded(
                                     flex: 5,
@@ -332,7 +357,7 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                                       decoration: InputDecoration(
                                         border: OutlineInputBorder(
                                           borderRadius:
-                                          BorderRadius.circular(20.0),
+                                              BorderRadius.circular(20.0),
                                         ),
                                       ),
                                     )),
@@ -353,21 +378,22 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                                     montantAlert.isEmpty ||
                                     datedebut.isEmpty) {
                                   //throw Exception("Tous les champs doivent être remplis.");
-                                  final String errorMessage =
+                                  const String errorMessage =
                                       "Tous les champs doivent etre chargé";
 
                                   showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
                                       return AlertDialog(
-                                        title: Center(child: Text('Erreur')),
-                                        content: Text(errorMessage),
+                                        title:
+                                            const Center(child: Text('Erreur')),
+                                        content: const Text(errorMessage),
                                         actions: <Widget>[
                                           TextButton(
                                             onPressed: () {
                                               Navigator.of(context).pop();
                                             },
-                                            child: Text('Ok'),
+                                            child: const Text('Ok'),
                                           )
                                         ],
                                       );
@@ -392,18 +418,20 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                                   categorie_control.clear();
                                 } catch (e) {
                                   final String errorMessage = e.toString();
+                                  // ignore: use_build_context_synchronously
                                   showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
                                         return AlertDialog(
-                                          title: Center(child: Text('Erreur')),
+                                          title: const Center(
+                                              child: Text('Erreur')),
                                           content: Text(errorMessage),
                                           actions: <Widget>[
                                             TextButton(
                                               onPressed: () {
                                                 Navigator.of(context).pop();
                                               },
-                                              child: Text('OK'),
+                                              child: const Text('OK'),
                                             ),
                                           ],
                                         );
@@ -424,7 +452,7 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                               child: Container(
                                   width: double.infinity,
                                   decoration: BoxDecoration(
-                                    color: Color(0xFF2F9062),
+                                    color: const Color(0xFF2F9062),
                                     borderRadius: BorderRadius.circular(20),
                                   ),
                                   child: const Padding(
@@ -445,11 +473,11 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                               child: Container(
                                   width: double.infinity,
                                   decoration: BoxDecoration(
-                                    color: Color(0xFFE42E2E),
+                                    color: const Color(0xFFE42E2E),
                                     borderRadius: BorderRadius.circular(20),
                                   ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
+                                  child: const Padding(
+                                    padding: EdgeInsets.all(10.0),
                                     child: Text(
                                       "Annuler",
                                       style: TextStyle(
