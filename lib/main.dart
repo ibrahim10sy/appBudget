@@ -1,34 +1,32 @@
-
 import 'package:flutter/material.dart';
-import 'package:device_preview/device_preview.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:ika_musaka/screens/Categorie.dart';
-import 'package:ika_musaka/screens/Budget.dart';
-import 'package:ika_musaka/screens/ConnexionScreen.dart';
-import 'package:ika_musaka/screens/Depense.dart';
-import 'package:ika_musaka/screens/Finances.dart';
-import 'package:ika_musaka/screens/InscriptionScreen.dart';
-import 'package:ika_musaka/screens/demarrage.dart';
-
+import 'package:flutter/services.dart';
 import 'package:ika_musaka/provider/UtilisateurProvider.dart';
 import 'package:ika_musaka/screens/ConnexionScreen.dart';
 import 'package:ika_musaka/screens/ProfilUtilisateur.dart';
 import 'package:provider/provider.dart';
-import 'model/utilisateur.dart';
+
+
+import 'package:get/get.dart';
+import 'package:ika_musaka/screens/ConnexionScreen.dart';
+import 'package:ika_musaka/screens/accueil.dart';
+import 'package:ika_musaka/screens/bottomNavigatorBar.dart';
+import 'package:ika_musaka/services/BottomNavigationService.dart';
+import 'package:ika_musaka/services/budgetService.dart';
+import 'package:provider/provider.dart';
 
 void main() {
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarColor: Color.fromRGBO(47, 144, 98, 1),
+  ));
   runApp(
-    //  DevicePreview(
-    // enabled: true,
-    // builder: (context) =>
-     const  MyApp()); // Wrap your app
-  // ) );
-  //   ChangeNotifierProvider(
-  //     create: (context) => UtilisateurProvider(),
-  //     child: MyApp(),
-  //   ),
-  // );
+     MultiProvider(
+       providers: [
+         ChangeNotifierProvider(create: (context) => BottomNavigationService()),
+         ChangeNotifierProvider(create: (context) => UtilisateurProvider()),
+         ChangeNotifierProvider(create: (context) => BudgetService())
+       ],
+       child:  const MyApp()),
+     );
 }
 
 class MyApp extends StatefulWidget {
@@ -37,25 +35,23 @@ class MyApp extends StatefulWidget {
   // ignore: library_private_types_in_public_api
   _MyAppState createState() => _MyAppState();
 }
+
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return  MaterialApp(
         routes: {
           '/profilUtilisateur': (context) => ProfilUtilisateur(),
+          '/BottomNavigationPage':(context) => BottomNavigationPage(),
           // Autres routes...
         },
       // title: "LogIn Screen",
       debugShowCheckedModeBanner: false,
-
-      // locale: DevicePreview.locale(context),
-      // builder: DevicePreview.appBuilder,
-      home: Categorie()
-      );//Place SignUp function here to Observe SignUp Screen.
+      // home: BottomNavigationPage(),
+      home: Connexion(),
+    );//Place SignUp function here to Observe SignUp Screen.
   }
-  //koureissi
+  //adama
 }
 
 
-
- 

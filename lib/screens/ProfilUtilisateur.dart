@@ -15,6 +15,26 @@ class ProfilUtilisateur extends StatelessWidget {
       ),
       body: Column(
         children: [
+           Stack(
+                    children: <Widget>[
+                      
+                      SizedBox(
+                        child: Container(
+                          height: 250,
+                          width: 600,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(50),
+                            // child: Image.asset("assets/images/login1-removebg.png"),
+                            child: Image.network(utilisateur.photos!),
+                           
+                          ),
+                         
+                        ),
+                        
+                      ),
+                      
+                    ],
+                  ),
           Text('Nom: ${utilisateur.nom}'),
           Text('Prénom: ${utilisateur.prenom}'),
           Text('Email: ${utilisateur.email}'),
