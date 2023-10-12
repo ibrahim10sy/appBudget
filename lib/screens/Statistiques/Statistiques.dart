@@ -10,7 +10,7 @@ class Statistiques extends StatelessWidget {
       body: SingleChildScrollView(
         child: Center(
           child: Container(
-            margin: EdgeInsets.only(top:35),
+            margin: const EdgeInsets.only(top:35),
             width: 370,
             height: 787,
             decoration: ShapeDecoration(
@@ -56,7 +56,7 @@ class Statistiques extends StatelessWidget {
                             const Text(
                               "LES DEPENSES PAR CATEGORIES"
                             ),
-                            const SizedBox(height: 10,),
+                            const SizedBox(height: 15),
                             SizedBox(
                               height: 300,
                               child: Stack(
@@ -70,25 +70,25 @@ class Statistiques extends StatelessWidget {
                                         PieChartSectionData(
                                           value: 40,
                                           color: Colors.grey,
-                                          radius: 50,
+                                          radius: 55,
                                           showTitle: false,
                                         ),
                                         PieChartSectionData(
                                           value: 35,
                                           color: Colors.blue,
-                                          radius: 50,
+                                          radius: 55,
                                           showTitle: false,
                                         ),
                                         PieChartSectionData(
                                           value: 35,
                                           color: Colors.amberAccent,
-                                          radius: 50,
+                                          radius: 55,
                                           showTitle: false,
                                         ),
                                         PieChartSectionData(
                                           value: 8,
                                           color: Colors.deepOrange.shade900,
-                                          radius: 50,
+                                          radius: 55,
                                           showTitle: false,
                                         ),
                                       ],
@@ -122,15 +122,18 @@ class Statistiques extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 5),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            _buildLegendItem("Nourriture", Colors.green.shade900),
-                            _buildLegendItem("Loyer", Colors.blue.shade900),
-                            _buildLegendItem("Loisir", Colors.red.shade900),
-                            _buildLegendItem("Transport", Colors.amberAccent),
-                          ],
+                        const SizedBox(height: 15),
+                        Container(
+                          margin: const EdgeInsets.only(bottom: 8),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              _buildLegendItem("Nourriture", Colors.green.shade900),
+                              _buildLegendItem("Loyer", Colors.blue.shade900),
+                              _buildLegendItem("Loisir", Colors.red.shade900),
+                              _buildLegendItem("Transport", Colors.amberAccent),
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -161,6 +164,7 @@ class Statistiques extends StatelessWidget {
                         Column(
                           children: [
                             const Text('LES DEPENSES PAR CATEGORIES'),
+                            const SizedBox(height: 15),
                             SizedBox(
                               height: 300,
                               child: Stack(
@@ -174,25 +178,25 @@ class Statistiques extends StatelessWidget {
                                         PieChartSectionData(
                                           value: 45,
                                           color: Colors.green.shade900,
-                                          radius: 50,
+                                          radius: 55,
                                           showTitle: false,
                                         ),
                                         PieChartSectionData(
                                           value: 25,
                                           color: Colors.blue.shade900,
-                                          radius: 50,
+                                          radius: 55,
                                           showTitle: false,
                                         ),
                                         PieChartSectionData(
                                           value: 35,
                                           color: Colors.amberAccent,
-                                          radius: 50,
+                                          radius: 55,
                                           showTitle: false,
                                         ),
                                         PieChartSectionData(
                                           value: 15,
                                           color: Colors.deepOrange.shade900,
-                                          radius: 50,
+                                          radius: 55,
                                           showTitle: false,
                                         ),
                                       ],
@@ -226,7 +230,7 @@ class Statistiques extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 5),
+                        const SizedBox(height: 15),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
