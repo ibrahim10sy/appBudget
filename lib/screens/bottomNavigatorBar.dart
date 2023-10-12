@@ -6,6 +6,7 @@ import 'package:ika_musaka/services/BottomNavigationService.dart';
 import 'package:ika_musaka/services/budgetService.dart';
 import 'package:provider/provider.dart';
 
+import 'DepenseListes.dart';
 import 'budgetListeGetx.dart';
 
 class BottomNavigationPage extends StatefulWidget {
@@ -64,6 +65,7 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
               children: [
                 _buildOffstageNavigator(0),
                 _buildOffstageNavigator(1),
+                _buildOffstageNavigator(2),
               ],
             );
           }
@@ -119,7 +121,8 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
       '/': (context) {
         return [
           const Accueil(),
-          const BudgetListe()
+          const BudgetListe(),
+          const DepensesListes()
         ].elementAt(index);
       },
     };

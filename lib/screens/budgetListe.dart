@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ika_musaka/model/utilisateur.dart';
 import 'package:ika_musaka/provider/UtilisateurProvider.dart';
+import 'package:ika_musaka/screens/budgetDetail.dart';
 import 'package:ika_musaka/services/budgetService.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:intl/intl.dart';
@@ -396,111 +397,95 @@ class _BudgetListeState extends State<BudgetListe> {
 
   //Card pour la liste des budget
   createCardBudget(String titre,int index,Budget budget){
-    return Container(
-      margin: index == 0 ? const EdgeInsets.only(bottom: 15,top: 15) : const EdgeInsets.only(bottom: 15),
-      padding: const EdgeInsets.all(5),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: const [
-            BoxShadow(
-                offset: Offset(0.0,0.0),
-                blurRadius: 6,
-                color: Color.fromRGBO(0, 0, 0, 0.25)
+    return GestureDetector(
+      onTap: (){
+        Navigator.push(context, MaterialPageRoute(builder: (context) => BudgetDetaille(budget: budget)));
+      },
+      child: Container(
+        margin: index == 0 ? const EdgeInsets.only(bottom: 15,top: 15) : const EdgeInsets.only(bottom: 15),
+        padding: const EdgeInsets.all(5),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: const [
+              BoxShadow(
+                  offset: Offset(0.0,0.0),
+                  blurRadius: 6,
+                  color: Color.fromRGBO(0, 0, 0, 0.25)
+              ),
+            ],
+            borderRadius: BorderRadius.circular(17)
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+                flex: 2,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Image.asset("assets/images/budget.png",width: 33,height: 33),
+                    Expanded(child: Text(titre,style: const TextStyle(fontWeight: FontWeight.bold),overflow:TextOverflow.visible))
+                  ],
+                )
             ),
-          ],
-          borderRadius: BorderRadius.circular(17)
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            flex: 2,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Image.asset("assets/images/budget.png",width: 33,height: 33),
-                Expanded(child: Text(titre,style: const TextStyle(fontWeight: FontWeight.bold),overflow:TextOverflow.visible))
-              ],
-            )
-          ),
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                IconButton(onPressed: (){},
-                    icon: Image.asset("assets/images/edit_icon (2).png") ),
-                IconButton(onPressed: () => showDialog(
-                    context: context,
-                    builder: (BuildContext context) => Dialog(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(32)
-                        ),
-                        child: Padding(
-                            padding: const EdgeInsets.only(top: 15,left: 10,right: 10,bottom: 15),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Image.asset("assets/images/budget.png",width: 53,height: 53),
-                                    const Expanded(
-                                      child: Text(
-                                        "Voulez-vous vraiment supprimer cet budget ?",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Color.fromRGBO(47, 144, 98, 1)
-                                        ),
-                                        textAlign: TextAlign.center,
-                                        overflow: TextOverflow.visible,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                Text(titre,textAlign: TextAlign.center,overflow:TextOverflow.visible),
-                                const Divider(
-                                  color: Colors.white,
-                                  height: 30,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 0.0,horizontal: 30),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  IconButton(onPressed: (){},
+                      icon: Image.asset("assets/images/edit_icon (2).png") ),
+                  IconButton(onPressed: () => showDialog(
+                      context: context,
+                      builder: (BuildContext context) => Dialog(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(32)
+                          ),
+                          child: Padding(
+                              padding: const EdgeInsets.only(top: 15,left: 10,right: 10,bottom: 15),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      GestureDetector(
-                                        onTap: (){
-                                          Provider.of<BudgetService>(context,listen: false).deleteBudgetById("supprimer/${budget.idBudget}");
-                                          Navigator.pop(context);
-                                        },
-                                        child: Card(
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(16)
+                                      Image.asset("assets/images/budget.png",width: 53,height: 53),
+                                      const Expanded(
+                                        child: Text(
+                                          "Voulez-vous vraiment supprimer cet budget ?",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Color.fromRGBO(47, 144, 98, 1)
                                           ),
-                                          color: Colors.red,
-                                          child: const Padding(
-                                            padding: EdgeInsets.symmetric(vertical: 5,horizontal: 30),
-                                            child: Text(
-                                              "OUI",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 20,
-                                                  color: Colors.white
-                                              ),
-                                            ),
-                                          ),
+                                          textAlign: TextAlign.center,
+                                          overflow: TextOverflow.visible,
                                         ),
-                                      ),
-                                      GestureDetector(
-                                          onTap: (){Navigator.pop(context);},
+                                      )
+                                    ],
+                                  ),
+                                  Text(titre,textAlign: TextAlign.center,overflow:TextOverflow.visible),
+                                  const Divider(
+                                    color: Colors.white,
+                                    height: 30,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(vertical: 0.0,horizontal: 30),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        GestureDetector(
+                                          onTap: (){
+                                            Provider.of<BudgetService>(context,listen: false).deleteBudgetById("supprimer/${budget.idBudget}");
+                                            Navigator.pop(context);
+                                          },
                                           child: Card(
                                             shape: RoundedRectangleBorder(
                                                 borderRadius: BorderRadius.circular(16)
                                             ),
-                                            color: const Color.fromRGBO(47, 144, 98, 1),
+                                            color: Colors.red,
                                             child: const Padding(
                                               padding: EdgeInsets.symmetric(vertical: 5,horizontal: 30),
                                               child: Text(
-                                                "NON",
+                                                "OUI",
                                                 style: TextStyle(
                                                     fontWeight: FontWeight.bold,
                                                     fontSize: 20,
@@ -508,21 +493,42 @@ class _BudgetListeState extends State<BudgetListe> {
                                                 ),
                                               ),
                                             ),
-                                          )
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            )
-                        )
-                    )
-                ),
-                    icon: Image.asset("assets/images/icon_poubelle.png"))
-              ],
-            ),
-          )
-        ],
+                                          ),
+                                        ),
+                                        GestureDetector(
+                                            onTap: (){Navigator.pop(context);},
+                                            child: Card(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(16)
+                                              ),
+                                              color: const Color.fromRGBO(47, 144, 98, 1),
+                                              child: const Padding(
+                                                padding: EdgeInsets.symmetric(vertical: 5,horizontal: 30),
+                                                child: Text(
+                                                  "NON",
+                                                  style: TextStyle(
+                                                      fontWeight: FontWeight.bold,
+                                                      fontSize: 20,
+                                                      color: Colors.white
+                                                  ),
+                                                ),
+                                              ),
+                                            )
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              )
+                          )
+                      )
+                  ),
+                      icon: Image.asset("assets/images/icon_poubelle.png"))
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

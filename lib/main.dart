@@ -1,8 +1,10 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ika_musaka/provider/UtilisateurProvider.dart';
 import 'package:ika_musaka/screens/ConnexionScreen.dart';
 import 'package:ika_musaka/screens/ProfilUtilisateur.dart';
+import 'package:ika_musaka/services/depenseService.dart';
 import 'package:provider/provider.dart';
 
 
@@ -23,7 +25,8 @@ void main() {
        providers: [
          ChangeNotifierProvider(create: (context) => BottomNavigationService()),
          ChangeNotifierProvider(create: (context) => UtilisateurProvider()),
-         ChangeNotifierProvider(create: (context) => BudgetService())
+         ChangeNotifierProvider(create: (context) => BudgetService()),
+         ChangeNotifierProvider(create: (context) => DepenseService())
        ],
        child:  const MyApp()),
      );
