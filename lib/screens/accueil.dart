@@ -6,6 +6,7 @@ import 'package:ika_musaka/services/budgetService.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:provider/provider.dart';
 import '../model/utilisateur.dart';
+import 'Statistiques/Statistiques.dart';
 
 class Accueil extends StatefulWidget {
   const Accueil ({super.key});
@@ -186,7 +187,7 @@ class _AccueilState extends State<Accueil> {
                 _buildAccueilCard("Budget", "budget.png",1),
                 _buildAccueilCard("Dépense", "depenses 1.png",2),
                 _buildAccueilCard("Catégorie", "categorie.png",3),
-                _buildAccueilCard("Statistique", "statistique_logo.png",0)
+                _buildAccueilCard("Statistique", "statistique_logo.png",4)
               ],
             ),
           )
@@ -198,7 +199,11 @@ class _AccueilState extends State<Accueil> {
   Widget _buildAccueilCard(String titre, String imgLocation,int index){
     return InkWell(
       onTap: (){
-        Provider.of<BottomNavigationService>(context,listen: false).changeIndex(index);
+        if(index == 4){
+          Navigator.push(context, MaterialPageRoute(builder: (context)=> const Statistiques()));
+        }else{
+          Provider.of<BottomNavigationService>(context,listen: false).changeIndex(index);
+        }
       },
       borderRadius: BorderRadius.circular(28),
       highlightColor: const Color.fromRGBO(47, 144, 98, 0.9),
