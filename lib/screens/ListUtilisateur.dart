@@ -10,7 +10,8 @@ Future<List<Utilisateur>> fetchUtilisateurs() async {
   final response = await http.get(Uri.parse('http://10.0.2.2:8080/utilisateur/read'));
 
   if (response.statusCode == 200) {
-    final List<dynamic> jsonData = json.decode(response.body);
+    final List<dynamic> jsonData = json.decode(utf8.decode(response.bodyBytes));
+    debugPrint(jsonData[0].toString());
     final List<Utilisateur> utilisateurs = jsonData.map((e) => Utilisateur.fromJson(e)).toList();
     return utilisateurs;
   } else {

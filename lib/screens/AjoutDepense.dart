@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../services/DepenseService.dart'; 
 
 class AjoutDepense extends StatefulWidget {
   const AjoutDepense({super.key});
@@ -8,7 +9,10 @@ class AjoutDepense extends StatefulWidget {
 }
 
 class _AjoutState extends State<AjoutDepense> {
-   DateTime selectedDate = DateTime.now();
+  DateTime selectedDate = DateTime.now();
+  String? selectedType;
+  TextEditingController descriptionController = TextEditingController();
+  TextEditingController montantController = TextEditingController();
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime picked = (await showDatePicker(
@@ -25,7 +29,32 @@ class _AjoutState extends State<AjoutDepense> {
       });
     }
   }
-  String? selectedType;
+
+  Future<void> _ajouterDepense() async {
+    try {
+      await DepenseService.ajouterDepense(
+        description: descriptionController.text,
+        montant: double.parse(montantController.text),
+        type: selectedType ?? "",
+        date: selectedDate,
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Dépense ajoutée avec succès'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Erreur lors de l\'ajout de la dépense : $e'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +62,7 @@ class _AjoutState extends State<AjoutDepense> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Container(
+               Container(
                 child: Padding(
                   padding: EdgeInsets.all(16.0),
                   child: Row(
@@ -56,46 +85,6 @@ class _AjoutState extends State<AjoutDepense> {
                     ],
                   ),
                 ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Stack(
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(
-                      right: 10,
-                      left: 10,
-                      bottom: 10,
-                      top: 50,
-                    ),
-                    height: 200,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Color.fromRGBO(47, 144, 98, 1),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          "assets/images/wallet.png",
-                          height: 147,
-                          width: 156,
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          "+ Ajouter Dépenses :",
-                          style: TextStyle(
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
               ),
               SizedBox(height: 12),
               Container(
@@ -121,13 +110,13 @@ class _AjoutState extends State<AjoutDepense> {
                         ),
                         Card(
                           color: Colors.white,
-                          // elevation: 4,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Padding(
                             padding: EdgeInsets.all(8.0),
                             child: TextField(
+                              controller: descriptionController,
                               maxLines: 4,
                               decoration: InputDecoration(
                                 border: InputBorder.none,
@@ -156,22 +145,24 @@ class _AjoutState extends State<AjoutDepense> {
                                 color: Color.fromRGBO(47, 144, 98, 1),
                               ),
                             ),
-                            SizedBox(width: 10),
-                            SizedBox(height: 15),
+
                             Expanded(
                               child: TextField(
+                                controller: montantController,
+                                keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
-                                    isDense: true,
-                                    contentPadding:
-                                        EdgeInsets.fromLTRB(10, 10, 10, 10),
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                    border: InputBorder.none,
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          width: 2, color: Colors.white),
-                                      borderRadius: BorderRadius.circular(15),
-                                    )),
+                                  isDense: true,
+                                  contentPadding:
+                                      EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                  border: InputBorder.none,
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide:
+                                        BorderSide(width: 2, color: Colors.white),
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                ),
                               ),
                             ),
                           ],
@@ -194,7 +185,7 @@ class _AjoutState extends State<AjoutDepense> {
                                 color: Color.fromRGBO(47, 144, 98, 1),
                               ),
                             ),
-                            SizedBox(width: 10),
+
                             Expanded(
                               child: Container(
                                 decoration: BoxDecoration(
@@ -244,6 +235,8 @@ class _AjoutState extends State<AjoutDepense> {
                                 ),
                               ),
                             ),
+
+                            
                           ],
                         ),
                         SizedBox(width: 10),
@@ -251,7 +244,7 @@ class _AjoutState extends State<AjoutDepense> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Image.asset(
+                           Image.asset(
                               'assets/images/calendar.png',
                               height: 40,
                               width: 40,
@@ -265,8 +258,7 @@ class _AjoutState extends State<AjoutDepense> {
                                 color: Color.fromRGBO(47, 144, 98, 1),
                               ),
                             ),
-                            SizedBox(width: 10),
-                            SizedBox(height: 15),
+
                             Expanded(
                               child: TextButton(
                                 onPressed: () => _selectDate(context),
@@ -297,35 +289,44 @@ class _AjoutState extends State<AjoutDepense> {
                                   ),
                                 ),
                               ),
-                            ),
+                              ),
+                            
                           ],
                         ),
                         SizedBox(width: 10),
                         SizedBox(height: 10),
                         ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                minimumSize: const Size.fromHeight(50),
-                                backgroundColor: Color.fromRGBO(47, 144, 98, 1),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10))),
-                            onPressed: () {},
-                            child: const Text(
-                              "Ajouter",
-                              style: TextStyle(fontSize: 24),
-                            )),
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size.fromHeight(50),
+                            backgroundColor: Color.fromRGBO(47, 144, 98, 1),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          onPressed: _ajouterDepense,
+                          child: const Text(
+                            "Ajouter",
+                            style: TextStyle(fontSize: 24),
+                          ),
+                        ),
                         SizedBox(width: 10),
                         SizedBox(height: 10),
                         ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                minimumSize: const Size.fromHeight(50),
-                                backgroundColor: Color.fromRGBO(228, 46, 46, 1),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10))),
-                            onPressed: () {},
-                            child: const Text(
-                              "Annuler",
-                              style: TextStyle(fontSize: 24),
-                            ))
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size.fromHeight(50),
+                            backgroundColor: Color.fromRGBO(228, 46, 46, 1),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context); 
+                          },
+                          child: const Text(
+                            "Annuler",
+                            style: TextStyle(fontSize: 24),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -338,3 +339,4 @@ class _AjoutState extends State<AjoutDepense> {
     );
   }
 }
+

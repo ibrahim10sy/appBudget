@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:ika_musaka/screens/AjoutDepense.dart';
 import 'package:ika_musaka/screens/ConnexionScreen.dart';
@@ -9,15 +8,28 @@ import 'package:ika_musaka/provider/UtilisateurProvider.dart';
 import 'package:ika_musaka/screens/ConnexionScreen.dart';
 import 'package:ika_musaka/screens/ProfilUtilisateur.dart';
 import 'package:provider/provider.dart';
-import 'model/utilisateur.dart';
+
+
+import 'package:get/get.dart';
+import 'package:ika_musaka/screens/ConnexionScreen.dart';
+import 'package:ika_musaka/screens/accueil.dart';
+import 'package:ika_musaka/screens/bottomNavigatorBar.dart';
+import 'package:ika_musaka/services/BottomNavigationService.dart';
+import 'package:ika_musaka/services/budgetService.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(
-    ChangeNotifierProvider(
-      create: (context) => UtilisateurProvider(),
-      child: MyApp(),
-    ),
-  );
+   runApp(
+     MultiProvider(
+       providers: [
+         ChangeNotifierProvider(create: (context) => BottomNavigationService()),
+         ChangeNotifierProvider(create: (context) => UtilisateurProvider()),
+         ChangeNotifierProvider(create: (context) => BudgetService()),
+         ChangeNotifierProvider(create: (context) => BudgetService()),
+         
+       ],
+       child:  MyApp()),
+     );
 }
 
 class MyApp extends StatefulWidget {
@@ -42,5 +54,3 @@ class _MyAppState extends State<MyApp> {
 }
 
 
-
- 
