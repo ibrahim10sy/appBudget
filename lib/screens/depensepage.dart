@@ -11,10 +11,10 @@ class Depenses {
   Map<String,dynamic>? budget;
   Map<String, dynamic>? type;
   Map<String,dynamic>? utilisateur;
-  Map<String, dynamic>? categorie;
+
 
   Depenses({this.idDepenses, this.description, this.montant, this.date,
-      this.budget, this.type, this.utilisateur, this.categorie});
+      this.budget, this.type, this.utilisateur});
 
   factory Depenses.fromJson(Map<String, dynamic> json) => Depenses(
     idDepenses : json["idDepense"],
@@ -24,7 +24,6 @@ class Depenses {
     budget: json["budget"],
     type: json["type"],
     utilisateur: json["utilisateur"],
-    categorie: json["categorie"]
   );
 
 }
