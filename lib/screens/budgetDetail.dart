@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ika_musaka/model/DepenceClasse.dart';
+import 'package:ika_musaka/screens/depensepage.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:badges/badges.dart' as badges;
@@ -397,42 +398,44 @@ class _BudgetDetaille extends State<BudgetDetaille> {
 
   //Card pour la liste des budget
   createCardBudget(String titre,int index,DepenseClass depense){
-    return Container(
-      margin: index == 0 ? const EdgeInsets.only(bottom: 15,top: 15) : const EdgeInsets.only(bottom: 15),
-      padding: const EdgeInsets.all(5),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: const [
-            BoxShadow(
-                offset: Offset(0.0,0.0),
-                blurRadius: 6,
-                color: Color.fromRGBO(0, 0, 0, 0.25)
+    return GestureDetector(
+      onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) => Depense(dedepenses: depense)));},
+      child: Container(
+        margin: index == 0 ? const EdgeInsets.only(bottom: 15,top: 15) : const EdgeInsets.only(bottom: 15),
+        padding: const EdgeInsets.all(5),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            boxShadow: const [
+              BoxShadow(
+                  offset: Offset(0.0,0.0),
+                  blurRadius: 6,
+                  color: Color.fromRGBO(0, 0, 0, 0.25)
+              ),
+            ],
+            borderRadius: BorderRadius.circular(17)
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(top: 5,bottom: 5),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(left: 5),
+                        child: Image.asset("assets/images/depenses 1.png",width: 33,height: 33),
+                      ),
+                      Expanded(
+                          child: Text(titre,style: const TextStyle(fontWeight: FontWeight.bold),overflow:TextOverflow.visible,textAlign: TextAlign.center,)
+                      )
+                    ],
+                  ),
+                )
             ),
-          ],
-          borderRadius: BorderRadius.circular(17)
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-              child: Padding(
-                padding: EdgeInsets.only(top: 5,bottom: 5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(left: 5),
-                      child: Image.asset("assets/images/depenses 1.png",width: 33,height: 33),
-                    ),
-                    Expanded(
-                        child: Text(titre,style: const TextStyle(fontWeight: FontWeight.bold),overflow:TextOverflow.visible,textAlign: TextAlign.center,)
-                    )
-                  ],
-                ),
-              )
-          ),
-          /*Expanded(
+            /*Expanded(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -531,7 +534,8 @@ class _BudgetDetaille extends State<BudgetDetaille> {
               ],
             ),
           )*/
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -545,6 +549,13 @@ class _BudgetDetaille extends State<BudgetDetaille> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
+        IconButton(
+          onPressed: (){
+            setState(() {
+              _futureListDepense = depenseService.getDepenseByIdBudget(widget.budget.idBudget!);
+            });
+          },
+          icon: const Icon(Icons.restart_alt,color: Color.fromRGBO(47, 144, 98, 1),size: 28)),
         IconButton(
             onPressed: () => showDialog(
                 context: context,
