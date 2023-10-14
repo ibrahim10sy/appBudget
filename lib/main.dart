@@ -51,7 +51,7 @@ class _MyAppState extends State<MyApp> {
       // title: "LogIn Screen",
       debugShowCheckedModeBanner: false,
       // home: BottomNavigationPage(),
-      home: Connexion(),
+      home: const Connexion(),
     );//Place SignUp function here to Observe SignUp Screen.
   }
   //adama

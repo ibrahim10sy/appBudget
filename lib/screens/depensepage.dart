@@ -277,7 +277,8 @@ class _DepenseState extends State<Depense> {
                                               color: Colors.green))),
                                 ),
                               )
-                            ]),
+                            ]
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(
@@ -336,7 +337,8 @@ class _DepenseState extends State<Depense> {
                                         },*/
                                 ),
                               ),
-                            ]),
+                            ]
+                        ),
                       ),
                       Padding(
                           padding: const EdgeInsets.only(
@@ -382,8 +384,7 @@ class _DepenseState extends State<Depense> {
                         padding: const EdgeInsets.only(
                             left: 15, right: 15, bottom: 20),
                         child: Row(
-                          mainAxisAlignment:
-                          MainAxisAlignment.spaceAround,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             SizedBox(
                               height: 30,

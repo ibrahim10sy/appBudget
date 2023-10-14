@@ -8,7 +8,7 @@ import 'package:ika_musaka/screens/categoriess.dart';
 
 import '../model/utilisateur.dart';
 
-class BudgetService{
+class BudgetServices{
   static const String apiUrl = 'http://10.0.2.2:8080/Budget';
 
   static Future<void> addBudget({
