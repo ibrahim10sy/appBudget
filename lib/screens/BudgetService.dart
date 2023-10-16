@@ -8,7 +8,7 @@ import 'package:ika_musaka/screens/categoriess.dart';
 
 import '../model/utilisateur.dart';
 
-class BudgetService{
+class BudgetServices{
   static const String apiUrl = 'https://buget-service-api-git.onrender.com/Budget';
 
   static Future<void> addBudget({
@@ -45,7 +45,7 @@ class BudgetService{
 
     }else{
       debugPrint(response.body);
-      throw Exception('Budget non ajouter');
+      throw Exception(jsonDecode(utf8.decode(response.bodyBytes))["message"]);
     }
   }
   }

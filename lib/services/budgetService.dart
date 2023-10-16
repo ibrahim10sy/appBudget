@@ -31,6 +31,7 @@ class BudgetService extends ChangeNotifier {
       budgets = body.map((dynamic item) => Budget.fromJson(item)).toList();
       return budgets;
     }else{
+      budgets = [];
       throw Exception(jsonDecode(utf8.decode(response.bodyBytes))["message"]);
     }
   }
