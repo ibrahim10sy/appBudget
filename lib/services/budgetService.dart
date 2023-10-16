@@ -6,10 +6,11 @@ import 'package:ika_musaka/model/Budget.dart';
 
 class BudgetService extends ChangeNotifier {
 
-  final String url = "http://10.0.2.2:8080/Budget/";
+  final String url = "https://buget-service-api-git.onrender.com/Budget/";
   
   List<Budget> budgets = [];
   String action = "all";
+  String lastAction = "";
   String desc = "";
   String sortValue ="";
 
@@ -53,6 +54,7 @@ class BudgetService extends ChangeNotifier {
       budgets = body.map((dynamic item) => Budget.fromJson(item)).toList();
       return budgets;
     }else{
+      budgets = [];
       throw Exception(jsonDecode(utf8.decode(response.bodyBytes))["message"]);
     }
   }
@@ -65,6 +67,7 @@ class BudgetService extends ChangeNotifier {
       budgets = body.map((dynamic item) => Budget.fromJson(item)).toList();
       return budgets;
     }else{
+      budgets = [];
       throw Exception(jsonDecode(utf8.decode(response.bodyBytes))["message"]);
     }
   }

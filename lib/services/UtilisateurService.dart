@@ -9,7 +9,7 @@ import '../model/utilisateur.dart';
 
 class UtilisateurService {
 
-  static const String apiUrl = 'http://10.0.2.2:8080/utilisateur/create'; // Mettez à jour l'URL correcte
+  static const String apiUrl = 'https://buget-service-api-git.onrender.com/utilisateur/create'; // Mettez à jour l'URL correcte
 
   static Future<Utilisateur> ajouterUtilisateur({
     required String nom,

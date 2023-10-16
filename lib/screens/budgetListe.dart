@@ -166,118 +166,108 @@ class _BudgetListeState extends State<BudgetListe> {
                                         )
                                     ),
                                     Consumer<BudgetService>(builder: (context,budgetService,child){
-                                      return FutureBuilder<Map<String, dynamic>>(
-                                          future: BudgetService().getBudgetTotal("somme/${utilisateur.idUtilisateur}") ,
-                                          builder: (context, snapshot){
-                                            if(snapshot.connectionState == ConnectionState.waiting){
-                                              return const CircularProgressIndicator();
-                                            }
-
-                                            if(snapshot.hasError){
-                                              /*return Center(
-                                                child: Text(snapshot.error.toString().replaceAll("Exception:", "")),
-                                              );*/
-                                              return const CircularProgressIndicator();
-                                            }
-
-                                            if(!snapshot.hasData){
-                                              return const Center(child:Text("Aucune donnée trouvée !"));
-                                            }
-                                            return Column(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                    "${snapshot.data?["Total"]} CFA",
-                                                    style: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 22,
-                                                        fontWeight: FontWeight.bold
-                                                    )
-                                                ),
-                                                Column(
+                                      int montantTotal = 0;
+                                      int montantRestant = 0;
+                                      List<Budget> budgetList = context.select((BudgetService value) => value.budgets);
+                                      if(budgetList.isNotEmpty){
+                                        budgetList.forEach((element) {
+                                          montantTotal = montantTotal + element.montant!;
+                                          montantRestant = montantRestant + element.montantRestant!;
+                                        });
+                                      }
+                                      return Column(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                              "$montantTotal FCFA",
+                                              style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 22,
+                                                  fontWeight: FontWeight.bold
+                                              )
+                                          ),
+                                          Column(
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(right: 10.0,bottom: 7.5,top: 7.5),
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                   children: [
-                                                    Padding(
-                                                      padding: const EdgeInsets.only(right: 10.0,bottom: 7.5,top: 7.5),
-                                                      child: Row(
-                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                        children: [
-                                                          Column(
-                                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                                            children: [
-                                                              const Text(
-                                                                  "Restant :",
-                                                                  style: TextStyle(
-                                                                      color: Colors.white,
-                                                                      fontSize: 17
-                                                                  )
-                                                              ),
-                                                              Text(
-                                                                  "${snapshot.data?["Restant"]}",
-                                                                  style: const TextStyle(
-                                                                      color: Colors.white,
-                                                                      fontSize: 17
-                                                                  )
-                                                              )
-                                                            ],
-                                                          ),
-                                                          Column(
-                                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                                            children: [
-                                                              const Text(
-                                                                  "Dépensé :",
-                                                                  style: TextStyle(
-                                                                      color: Colors.white,
-                                                                      fontSize: 17
-                                                                  )
-                                                              ),
-                                                              Text(
-                                                                  "${snapshot.data?["Total"]-snapshot.data?["Restant"]}",
-                                                                  style: const TextStyle(
-                                                                      color: Colors.white,
-                                                                      fontSize: 17
-                                                                  )
-                                                              )
-                                                            ],
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Row(
+                                                    Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
-                                                        GestureDetector(
-                                                          onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=> AjouterBudget()));},
-                                                          child: Container(
-                                                            padding: const EdgeInsets.all(5.0),
-                                                            decoration: BoxDecoration(
-                                                                border: Border.all(width: 2, color: Colors.white),
-                                                                borderRadius: BorderRadius.circular(23)
-                                                            ),
-                                                            child: const Row(
-                                                              children: [
-                                                                Icon(Icons.add_circle, color: Colors.white),
-                                                                Padding(
-                                                                  padding: EdgeInsets.only(left: 3.0),
-                                                                  child: Text(
-                                                                    "Ajouter budget",
-                                                                    style: TextStyle(
-                                                                        fontWeight: FontWeight.bold,
-                                                                        fontSize: 16,
-                                                                        color: Colors.white
-                                                                    ),
-                                                                  ),
-                                                                )
-                                                              ],
-                                                            ),
-                                                          ),
+                                                        const Text(
+                                                            "Restant :",
+                                                            style: TextStyle(
+                                                                color: Colors.white,
+                                                                fontSize: 17
+                                                            )
+                                                        ),
+                                                        Text(
+                                                            "$montantRestant FCFA",
+                                                            style: const TextStyle(
+                                                                color: Colors.white,
+                                                                fontSize: 17
+                                                            )
+                                                        )
+                                                      ],
+                                                    ),
+                                                    Column(
+                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        const Text(
+                                                            "Dépensé :",
+                                                            style: TextStyle(
+                                                                color: Colors.white,
+                                                                fontSize: 17
+                                                            )
+                                                        ),
+                                                        Text(
+                                                            "${montantTotal - montantRestant} FCFA",
+                                                            style: const TextStyle(
+                                                                color: Colors.white,
+                                                                fontSize: 17
+                                                            )
                                                         )
                                                       ],
                                                     )
                                                   ],
-                                                )
-                                              ],
-                                            );
-                                          }
+                                                ),
+                                              ),
+                                              Row(
+                                                children: [
+                                                  GestureDetector(
+                                                    onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=> AjouterBudget()));},
+                                                    child: Container(
+                                                      padding: const EdgeInsets.all(5.0),
+                                                      decoration: BoxDecoration(
+                                                          border: Border.all(width: 2, color: Colors.white),
+                                                          borderRadius: BorderRadius.circular(23)
+                                                      ),
+                                                      child: const Row(
+                                                        children: [
+                                                          Icon(Icons.add_circle, color: Colors.white),
+                                                          Padding(
+                                                            padding: EdgeInsets.only(left: 3.0),
+                                                            child: Text(
+                                                              "Ajouter budget",
+                                                              style: TextStyle(
+                                                                  fontWeight: FontWeight.bold,
+                                                                  fontSize: 16,
+                                                                  color: Colors.white
+                                                              ),
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  )
+                                                ],
+                                              )
+                                            ],
+                                          )
+                                        ],
                                       );
                                     })
                                   ],
@@ -351,36 +341,71 @@ class _BudgetListeState extends State<BudgetListe> {
                       ),
                       Consumer<BudgetService>(
                         builder: (context,budgetService,child){
-                          return FutureBuilder <List<Budget>>(
-                              future: budgetService.action == "all" ? budgetService.getBudgetByIdUser("list/${utilisateur.idUtilisateur}") :
-                              budgetService.action == "search" ? budgetService.searchBudgetByDesc(utilisateur.idUtilisateur) : budgetService.sortByMonthAndYear(utilisateur.idUtilisateur) ,
-                              builder: (context, snapshot){
-                                budgetService.action="all";
-                                if(snapshot.connectionState == ConnectionState.waiting){
-                                  return const CircularProgressIndicator();
-                                }
+                          if(budgetService.lastAction != budgetService.action){
+                            return FutureBuilder <List<Budget>>(
+                                future: budgetService.action == "all" ? budgetService.getBudgetByIdUser("list/${utilisateur.idUtilisateur}") :
+                                budgetService.action == "search" ? budgetService.searchBudgetByDesc(utilisateur.idUtilisateur) : budgetService.sortByMonthAndYear(utilisateur.idUtilisateur) ,
+                                builder: (context, snapshot){
+                                  //budgetService.action="all";
 
-                                if(snapshot.hasError){
-                                  return Center(
-                                    child: Text(snapshot.error.toString().replaceAll("Exception:", "")),
+                                  if(snapshot.connectionState == ConnectionState.waiting){
+                                    return const CircularProgressIndicator();
+                                  }
+
+                                  if(snapshot.hasError){
+                                    WidgetsBinding.instance.addPostFrameCallback((_){
+                                      Provider.of<BudgetService>(context, listen : false).lastAction = budgetService.action;
+                                      setState(() {
+
+                                      });
+                                    });
+                                    return Center(
+                                      child: Text(snapshot.error.toString().replaceAll("Exception:", "")),
+                                    );
+                                  }
+
+                                  if(!snapshot.hasData){
+                                    return const Center(child:Text("Aucune donnée trouvée !",));
+                                  }
+
+                                  WidgetsBinding.instance.addPostFrameCallback((_){
+                                    Provider.of<BudgetService>(context, listen : false).lastAction = budgetService.action;
+                                    setState(() {
+
+                                    });
+                                  });
+
+                                  budgets = snapshot.data;
+                                  return Expanded(
+                                    child: ListView.builder(
+                                        itemCount: budgets!.length,
+                                        itemBuilder: (context,index){
+                                          return createCardBudget(budgets![index].description!, index,budgets![index]);
+                                        }
+                                    ),
                                   );
                                 }
+                            );
+                          }else{
+                            Provider.of<BudgetService>(context, listen : false).lastAction = "";
+                            if(budgetService.budgets.isNotEmpty){
+                              budgets = budgetService.budgets;
+                              return Expanded(
+                                child: ListView.builder(
+                                    itemCount: budgets!.length,
+                                    itemBuilder: (context,index){
+                                      return createCardBudget(budgets![index].description!, index,budgets![index]);
+                                    }
+                                ),
+                              );
+                            }else{
+                              return const Center(
+                                child: Text("Aucun budget trouvé"),
+                              );
+                            }
 
-                                if(!snapshot.hasData){
-                                  return const Center(child:Text("Aucune donnée trouvée !"));
-                                }
+                          }
 
-                                budgets = snapshot.data;
-                                return Expanded(
-                                  child: ListView.builder(
-                                      itemCount: budgets!.length,
-                                      itemBuilder: (context,index){
-                                        return createCardBudget(budgets![index].description!, index,budgets![index]);
-                                      }
-                                  ),
-                                );
-                              }
-                          );
                         }
                       )
                     ],
@@ -542,6 +567,12 @@ class _BudgetListeState extends State<BudgetListe> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
+        IconButton(
+            onPressed: (){
+              Provider.of<BudgetService>(context, listen : false).action = "all";
+              Provider.of<BudgetService>(context, listen : false).applyChange();
+            },
+            icon: const Icon(Icons.restart_alt,color: Color.fromRGBO(47, 144, 98, 1),size: 28)),
         IconButton(
             onPressed: () => showDialog(
               context: context,

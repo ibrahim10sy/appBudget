@@ -9,7 +9,7 @@ class UpdateDepensesService{
 
   Future<DepenseClass> modifierdepense(DepenseClass depenses) async {
     final response = await http.put(
-      Uri.parse('http://10.0.2.2:8080/Depenses/update'),
+      Uri.parse('https://buget-service-api-git.onrender.com/Depenses/update'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

@@ -52,7 +52,7 @@ class _AjouterBudgetState extends State<AjouterBudget> {
     utilisateur = Provider.of<UtilisateurProvider>(context,listen: false).utilisateur!;
     fetchAlbum();
     _mesCategories =
-        http.get(Uri.parse('http://10.0.2.2:8080/Categorie/lire'));
+        http.get(Uri.parse('https://buget-service-api-git.onrender.com/Categorie/lire'));
 
     super.initState();
   }
@@ -65,7 +65,7 @@ class _AjouterBudgetState extends State<AjouterBudget> {
 
   Future fetchAlbum() async {
     final response =
-        await http.get(Uri.parse('http://10.0.2.2:8080/Budget/list'));
+        await http.get(Uri.parse('https://buget-service-api-git.onrender.com/Budget/list'));
 //print(response);
     if (response.statusCode == 200) {
       print("Bienvenu dans le console");

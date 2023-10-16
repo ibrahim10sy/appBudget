@@ -10,6 +10,7 @@ import '../model/utilisateur.dart';
 import '../provider/UtilisateurProvider.dart';
 import '../services/budgetService.dart';
 import '../services/depenseService.dart';
+import 'AjoutDepense.dart';
 import 'AjouterBudget.dart';
 
 class BudgetDetaille extends StatefulWidget {
@@ -246,7 +247,7 @@ class _BudgetDetaille extends State<BudgetDetaille> {
                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 children: [
                                                   GestureDetector(
-                                                    onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=> AjouterBudget()));},
+                                                    onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=> AjoutDepense()));},
                                                     child: Container(
                                                       padding: const EdgeInsets.all(5.0),
                                                       decoration: BoxDecoration(
@@ -273,7 +274,209 @@ class _BudgetDetaille extends State<BudgetDetaille> {
                                                   ),
                                                   Padding(
                                                     padding: const EdgeInsets.only(right: 3),
-                                                    child: IconButton(onPressed: (){}, icon: const Icon(Icons.info,color: Colors.white,size: 38)),
+                                                    child: IconButton(
+                                                      onPressed: () => showDialog(
+                                                          context: context,
+                                                          builder: (BuildContext context) => Dialog(
+                                                            shape: RoundedRectangleBorder(
+                                                              borderRadius: BorderRadius.circular(32)
+                                                            ),
+                                                            child: Column(
+                                                              mainAxisSize: MainAxisSize.min,
+                                                              children: [
+                                                                Container(
+                                                                  padding: const EdgeInsets.only(left: 15,top: 10,right: 15),
+                                                                  decoration: const BoxDecoration(
+                                                                      borderRadius: BorderRadius.only(topLeft: Radius.circular(32.0),topRight: Radius.circular(32.0)),
+                                                                      color: Color.fromRGBO(47, 144, 98, 1)
+                                                                  ),
+                                                                  child: Row(
+                                                                    children: [
+                                                                      Padding(
+                                                                        padding: const EdgeInsets.only(bottom: 3),
+                                                                        child: Image.asset("assets/images/budget.png",width: 53,height: 53),
+                                                                      ),
+                                                                      const Padding(
+                                                                        padding: EdgeInsets.only(left: 10),
+                                                                        child: Text(
+                                                                          "Information sur le budget",
+                                                                          style: TextStyle(
+                                                                              fontWeight: FontWeight.bold,
+                                                                              color: Colors.white,
+                                                                              fontSize: 18
+                                                                          ),
+                                                                          textAlign: TextAlign.center,
+                                                                          overflow: TextOverflow.visible,
+                                                                        ),
+                                                                      )
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                                Padding(
+                                                                  padding: const EdgeInsets.only(top: 10,left: 15, right: 15, bottom: 10),
+                                                                  child: Column(
+                                                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                                                    children: [
+                                                                      Container(
+                                                                        height: 64,
+                                                                        padding: const EdgeInsets.all(10),
+                                                                        margin: const EdgeInsets.only(bottom: 10),
+                                                                        decoration: BoxDecoration(
+                                                                            color : Colors.white,
+                                                                            borderRadius: BorderRadius.circular(13),
+                                                                            boxShadow: const [
+                                                                              BoxShadow(
+                                                                                  color: Color.fromRGBO(0, 0, 0, 0.25),
+                                                                                  blurRadius: 8
+                                                                              )
+                                                                            ]
+                                                                        ),
+                                                                        child: Text(budget.description!),
+                                                                      ),
+                                                                      Row(
+                                                                        children: [
+                                                                          const Text(
+                                                                            "Montant : ",
+                                                                            style: TextStyle(
+                                                                              fontSize: 14,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              color: Color.fromRGBO(47, 144, 98, 1)
+                                                                            ),
+                                                                          ),
+                                                                          Text(
+                                                                            "${budget.montant} FCFA",
+                                                                            style: const TextStyle(
+                                                                                fontSize: 14,
+                                                                            ),
+                                                                          )
+                                                                        ],
+                                                                      ),
+                                                                      Row(
+                                                                        children: [
+                                                                          const Text(
+                                                                            "Montant alerte : ",
+                                                                            style: TextStyle(
+                                                                                fontSize: 14,
+                                                                                fontWeight: FontWeight.bold,
+                                                                                color: Color.fromRGBO(47, 144, 98, 1)
+                                                                            ),
+                                                                          ),
+                                                                          Text(
+                                                                            "${budget.montantAlert} FCFA",
+                                                                            style: const TextStyle(
+                                                                              fontSize: 14,
+                                                                            ),
+                                                                          )
+                                                                        ],
+                                                                      ),
+                                                                      const Divider(
+                                                                        height : 15,
+                                                                        color : Colors.white
+                                                                      ),
+                                                                      Row(
+                                                                        children: [
+                                                                          const Text(
+                                                                            "Restant : ",
+                                                                            style: TextStyle(
+                                                                                fontSize: 14,
+                                                                                fontWeight: FontWeight.bold,
+                                                                                color: Color.fromRGBO(47, 144, 98, 1)
+                                                                            ),
+                                                                          ),
+                                                                          Text(
+                                                                            "${budget.montantRestant} FCFA",
+                                                                            style: const TextStyle(
+                                                                              fontSize: 14,
+                                                                            ),
+                                                                          )
+                                                                        ],
+                                                                      ),
+                                                                      Row(
+                                                                        children: [
+                                                                          const Text(
+                                                                            "Dépensé : ",
+                                                                            style: TextStyle(
+                                                                                fontSize: 14,
+                                                                                fontWeight: FontWeight.bold,
+                                                                                color: Color.fromRGBO(47, 144, 98, 1)
+                                                                            ),
+                                                                          ),
+                                                                          Text(
+                                                                            "${budget.montant! - budget.montantRestant!} FCFA",
+                                                                            style: const TextStyle(
+                                                                              fontSize: 14,
+                                                                            ),
+                                                                          )
+                                                                        ],
+                                                                      ),
+                                                                      const Divider(
+                                                                          height : 15,
+                                                                          color : Colors.white
+                                                                      ),
+                                                                      Row(
+                                                                        children : [
+                                                                          Expanded(
+                                                                            child : Row(
+                                                                              children: [
+                                                                                const Expanded(
+                                                                                    child : Text(
+                                                                                      "Date début : ",
+                                                                                      style: TextStyle(
+                                                                                          fontSize: 14,
+                                                                                          fontWeight: FontWeight.bold,
+                                                                                          color: Color.fromRGBO(47, 144, 98, 1)
+                                                                                      ),
+                                                                                    )
+                                                                                ),
+                                                                                Expanded(
+                                                                                  child : Text(
+                                                                                    "${budget.dateDebut}",
+                                                                                    overflow : TextOverflow.visible,
+                                                                                    style: const TextStyle(
+                                                                                      fontSize: 14,
+                                                                                    ),
+                                                                                  )
+                                                                                )
+                                                                              ],
+                                                                            )
+                                                                          ),
+                                                                          Expanded(
+                                                                            child : Row(
+                                                                              mainAxisAlignment: MainAxisAlignment.end,
+                                                                              children: [
+                                                                                const Expanded(
+                                                                                  child: Text(
+                                                                                    "Date fin : ",
+                                                                                    style: TextStyle(
+                                                                                        fontSize: 14,
+                                                                                        fontWeight: FontWeight.bold,
+                                                                                        color: Color.fromRGBO(47, 144, 98, 1)
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                                Expanded(
+                                                                                  child : Text(
+                                                                                    "${budget.dateFin}",
+                                                                                    overflow : TextOverflow.visible,
+                                                                                    style: const TextStyle(
+                                                                                      fontSize: 14,
+                                                                                    ),
+                                                                                  )
+                                                                                )
+                                                                              ],
+                                                                            )
+                                                                          )
+                                                                        ]
+                                                                      )
+                                                                    ],
+                                                                  ),
+                                                                )
+                                                              ],
+                                                            ),
+                                                          )
+                                                      ),
+                                                      icon: const Icon(Icons.info,color: Colors.white,size: 38)
+                                                    ),
                                                   )
                                                 ],
                                               )
