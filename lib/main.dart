@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ika_musaka/provider/CategoriesProvider.dart';
 import 'package:ika_musaka/provider/UtilisateurProvider.dart';
+import 'package:ika_musaka/screens/AjouterBudget.dart';
+import 'package:ika_musaka/screens/Categorie.dart';
 import 'package:ika_musaka/screens/ConnexionScreen.dart';
+import 'package:ika_musaka/screens/Depense.dart';
 import 'package:ika_musaka/screens/ProfilUtilisateur.dart';
+import 'package:ika_musaka/screens/categoriess.dart';
 import 'package:provider/provider.dart';
-
-
 import 'package:get/get.dart';
 import 'package:ika_musaka/screens/ConnexionScreen.dart';
 import 'package:ika_musaka/screens/accueil.dart';
@@ -23,6 +26,7 @@ void main() {
        providers: [
          ChangeNotifierProvider(create: (context) => BottomNavigationService()),
          ChangeNotifierProvider(create: (context) => UtilisateurProvider()),
+         ChangeNotifierProvider(create: (context) => CategoriesProvider()),
          ChangeNotifierProvider(create: (context) => BudgetService())
        ],
        child:  const MyApp()),
@@ -48,7 +52,7 @@ class _MyAppState extends State<MyApp> {
       // title: "LogIn Screen",
       debugShowCheckedModeBanner: false,
       // home: BottomNavigationPage(),
-      home: Connexion(),
+      home:  AjouterBudget(),
     );//Place SignUp function here to Observe SignUp Screen.
   }
   //adama

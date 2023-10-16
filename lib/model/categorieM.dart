@@ -10,8 +10,7 @@ class CategorieM {
   });
 
   factory CategorieM.fromJson(Map<String, dynamic> json) =>
-    CategorieM(titre: json["titre"], id: json["idCategorie"] as int?);
-
+      CategorieM(titre: json["titre"], id: json["idCategorie"] as int?);
 
   Map<String, dynamic> toJson() => {"titre": titre, "idCategorie": id};
 

@@ -9,7 +9,7 @@ import 'package:ika_musaka/screens/categoriess.dart';
 import '../model/utilisateur.dart';
 
 class BudgetService{
-  static const String apiUrl = 'http://10.0.2.2:8080/Budget';
+  static const String apiUrl = 'http://localhost:8080/Budget';
 
   static Future<void> addBudget({
     required String description,
@@ -17,13 +17,13 @@ class BudgetService{
     required String montantAlert,
     required String datedebut,
     required Categorie categorie,
-    required Utilisateur utilisateur
+    // required Utilisateur utilisateur
 })async{
     Map<String,int?> cate = {
       "idCategorie": categorie.id
     };
     Map<String,int> ut = {
-      "idUtilisateur" : utilisateur.idUtilisateur
+      "idUtilisateur" : 1
     };
     var budget = jsonEncode({
       'idBudget':null,
