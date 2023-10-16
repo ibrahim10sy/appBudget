@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 class AjoutDepense extends StatefulWidget {
   const AjoutDepense({super.key});
@@ -9,6 +11,7 @@ class AjoutDepense extends StatefulWidget {
 
 class _AjoutState extends State<AjoutDepense> {
    DateTime selectedDate = DateTime.now();
+   TextEditingController dateInput = TextEditingController();
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime picked = (await showDatePicker(
@@ -28,312 +31,379 @@ class _AjoutState extends State<AjoutDepense> {
   String? selectedType;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Container(
-                child: Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 30,
-                        backgroundImage:
-                            AssetImage('assets/images/photoprofil.png'),
-                      ),
-                      SizedBox(
-                        width: 16.0,
-                      ),
-                      Text(
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 15,right: 15, top: 30),
+            child: Container(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(31),
+                  boxShadow: const [
+                    BoxShadow(
+                        offset: Offset(0.0,0.0),
+                        blurRadius: 7.0,
+                        color: Color.fromRGBO(0, 0, 0, 0.25) //Color.fromRGBO(47, 144, 98, 1)
+                    )
+                  ]
+              ),
+              child: const Padding(
+                padding: EdgeInsets.all(5.0),
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 30,
+                      backgroundImage:
+                      AssetImage('assets/images/photoprofil.png'),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 10),
+                      child:Text(
                         "Name User",
                         style: TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.bold,
                         ),
-                      )
-                    ],
-                  ),
+                      ) ,
+                    )
+                  ],
                 ),
               ),
-              SizedBox(
-                height: 10,
-              ),
-              Stack(
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(
-                      right: 10,
-                      left: 10,
-                      bottom: 10,
-                      top: 50,
-                    ),
-                    height: 200,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Color.fromRGBO(47, 144, 98, 1),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          "assets/images/wallet.png",
-                          height: 147,
-                          width: 156,
-                        ),
-                        SizedBox(height: 10),
-                        Text(
-                          "+ Ajouter Dépenses :",
-                          style: TextStyle(
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-              SizedBox(height: 12),
+            ),
+          ),
+          Stack(
+            children: [
               Container(
-                width: 372,
-                height: 480,
+                margin: const EdgeInsets.only(left: 15, right: 15,top: 30, bottom: 30),
+                height:200,
+                width: double.infinity,
                 decoration: BoxDecoration(
-                  color: Color.fromRGBO(0, 0, 0, 0.1),
-                  borderRadius: BorderRadius.circular(30),
+                  color: const Color.fromRGBO(47, 144, 98, 1),
+                  borderRadius: BorderRadius.circular(23),
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Description des dépenses",
-                          style: TextStyle(
-                            fontSize: 15.0,
-                            fontWeight: FontWeight.bold,
-                            color: Color.fromRGBO(47, 144, 98, 1),
-                          ),
-                        ),
-                        Card(
-                          color: Colors.white,
-                          // elevation: 4,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: TextField(
-                              maxLines: 4,
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                isDense: true,
-                                contentPadding:
-                                    EdgeInsets.fromLTRB(10, 10, 10, 10),
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                        "assets/images/wallet.png"),
+                    const Padding(
+                        padding: EdgeInsets.only(top: 30),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Image.asset(
-                              'assets/images/share.png',
-                              height: 40,
-                              width: 40,
+                            Icon(Icons.add,
+                              color: Colors.white,
+                              size: 25,
                             ),
-                            SizedBox(width: 10),
-                            Text(
-                              "Montant",
-                              style: TextStyle(
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.bold,
-                                color: Color.fromRGBO(47, 144, 98, 1),
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            SizedBox(height: 15),
-                            Expanded(
-                              child: TextField(
-                                decoration: InputDecoration(
-                                    isDense: true,
-                                    contentPadding:
-                                        EdgeInsets.fromLTRB(10, 10, 10, 10),
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                    border: InputBorder.none,
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          width: 2, color: Colors.white),
-                                      borderRadius: BorderRadius.circular(15),
-                                    )),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Image.asset(
-                              'assets/images/programme.png',
-                              height: 40,
-                              width: 40,
-                            ),
-                            SizedBox(width: 10),
-                            Text(
-                              "Type",
-                              style: TextStyle(
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.bold,
-                                color: Color.fromRGBO(47, 144, 98, 1),
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            Expanded(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                        width: 2, color: Colors.white),
-                                    borderRadius: BorderRadius.circular(15),
-                                    color: Colors
-                                        .white // Même couleur que les autres champs
-                                    ),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10),
-                                  child: DropdownButton<String>(
-                                    isExpanded: true,
-                                    value: selectedType,
-                                    onChanged: (String? newValue) {
-                                      setState(() {
-                                        selectedType = newValue;
-                                      });
-                                    },
-                                    items: <String>[
-                                      'Option 1',
-                                      'Option 2',
-                                      'Option 3',
-                                      'Option 4'
-                                    ].map<DropdownMenuItem<String>>(
-                                        (String value) {
-                                      return DropdownMenuItem<String>(
-                                        value: value,
-                                        child: Text(
-                                          value,
-                                          style: TextStyle(
-                                            fontSize: 15.0,
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                      );
-                                    }).toList(),
-                                    style: TextStyle(
-                                      fontSize: 15.0,
-                                      color: Colors.black,
-                                    ),
-                                    dropdownColor: Colors
-                                        .white, // Même couleur que les autres champs
-                                    underline: Container(),
-                                  ),
+                            Padding(padding:EdgeInsets.only(left: 5.0),
+                              child: Text(
+                                "Ajouter Dépense",
+                                style: TextStyle(
+                                  fontSize: 25.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
                                 ),
                               ),
-                            ),
+                            )
                           ],
-                        ),
-                        SizedBox(width: 10),
-                        SizedBox(height: 10),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Image.asset(
-                              'assets/images/calendar.png',
-                              height: 40,
-                              width: 40,
-                            ),
-                            SizedBox(width: 10),
-                            Text(
-                              "Date",
-                              style: TextStyle(
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.bold,
-                                color: Color.fromRGBO(47, 144, 98, 1),
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            SizedBox(height: 15),
-                            Expanded(
-                              child: TextButton(
-                                onPressed: () => _selectDate(context),
-                                child: Container(
-                                  padding: EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    color: Colors.white,
-                                    border: Border.all(
-                                        width: 2, color: Colors.white),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Icon(
-                                        Icons.calendar_today,
-                                        color: Colors.black,
-                                      ),
-                                      SizedBox(width: 10),
-                                      Text(
-                                        "${selectedDate.toLocal()}"
-                                            .split(' ')[0],
-                                        style: TextStyle(
-                                          fontSize: 15.0,
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(width: 10),
-                        SizedBox(height: 10),
-                        ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                minimumSize: const Size.fromHeight(50),
-                                backgroundColor: Color.fromRGBO(47, 144, 98, 1),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10))),
-                            onPressed: () {},
-                            child: const Text(
-                              "Ajouter",
-                              style: TextStyle(fontSize: 24),
-                            )),
-                        SizedBox(width: 10),
-                        SizedBox(height: 10),
-                        ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                minimumSize: const Size.fromHeight(50),
-                                backgroundColor: Color.fromRGBO(228, 46, 46, 1),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10))),
-                            onPressed: () {},
-                            child: const Text(
-                              "Annuler",
-                              style: TextStyle(fontSize: 24),
-                            ))
-                      ],
-                    ),
-                  ),
+                        )
+                    )
+                  ],
                 ),
               )
             ],
           ),
-        ),
+          Padding(
+            padding: const EdgeInsets.only(left: 15, right: 15),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Container(
+                  margin:const EdgeInsets.only(top: 15.0, bottom: 15.0),
+                  decoration: BoxDecoration(
+                      color: const Color(0xfff9f7f7),
+                      borderRadius: BorderRadius.circular(31),
+                      boxShadow: const [
+                        BoxShadow(
+                          offset: Offset(0, 0),
+                          blurRadius: 7,
+                          color: Color.fromRGBO(0, 0, 0, 0.25),
+                        )
+                      ]
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Center(
+                      child: Column(
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.only(left: 20.0, top: 10.0),
+                            child: Text(
+                              'Description :',
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xff2f9062)),
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(
+                                top: 15, left: 15, right: 15, bottom: 15),
+                            height: 80,
+                            decoration: BoxDecoration(
+                              color: const Color(0xfff9f7f7),
+                              borderRadius: BorderRadius.circular(16),
+                              boxShadow: const [
+                                BoxShadow(
+                                    offset: Offset(0, 0),
+                                    blurRadius: 7,
+                                    color: Color.fromRGBO(0, 0, 0, 0.25))
+                              ],
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 10, top: 10),
+                              child: TextField(
+                                maxLines: 3,
+                                decoration: const InputDecoration.collapsed(
+                                    hintText:
+                                    "Une description pour la dépense"),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 15, right: 15, bottom: 15),
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Image.asset(
+                                    'assets/images/share.png',
+                                    width: 23,
+                                  ),
+                                  const Expanded(
+                                    child: Padding(
+                                        padding: EdgeInsets.only(left: 10),
+                                        child: Text(
+                                          'Montant :',
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              color: Color(0xff2f9062)),
+                                        )),
+                                  ),
+                                  Expanded(
+                                    flex: 2,
+                                    child: TextField(
+                                      keyboardType: TextInputType.number,
+                                      inputFormatters: <TextInputFormatter>[
+                                        FilteringTextInputFormatter.digitsOnly
+                                      ],
+                                      decoration: const InputDecoration(
+                                          labelText: 'Montant',
+                                          labelStyle:
+                                          TextStyle(color: Colors.green),
+                                          enabledBorder: OutlineInputBorder(
+                                              borderSide: BorderSide.none),
+                                          focusedBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  width: 3,
+                                                  color: Colors.green))),
+                                    ),
+                                  )
+                                ]
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Image.asset(
+                                  'assets/images/programme.png',
+                                  width: 23,
+                                ),
+                                const Expanded(
+                                  child: Padding(
+                                    padding: EdgeInsets.only(left: 10),
+                                    child: Text(
+                                      'Type :',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(0xff2f9062),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: TextField(
+                                    decoration: InputDecoration(
+                                      labelText: 'Type de dépense',
+                                      labelStyle: TextStyle(color: Colors.green),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide.none,
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          width: 3,
+                                          color: Colors.green,
+                                        ),
+                                      ),
+                                      suffixIcon: Padding(
+                                        padding: const EdgeInsets.only(right: 20),
+                                        child: DropdownButton<String>(
+                                          iconSize: 30,
+                                          isExpanded: true,
+                                          value: selectedType,
+                                          onChanged: (String? newValue) {
+                                            setState(() {
+                                              selectedType = newValue;
+                                            });
+                                          },
+                                          items: <String>[
+                                            'quotidien',
+                                            'hebdomadaire',
+                                            'mensuelle',
+                                          ].map<DropdownMenuItem<String>>(
+                                                (String value) {
+                                              return DropdownMenuItem<String>(
+                                                value: value,
+                                                child: Text(
+                                                  value,
+                                                  style: TextStyle(
+                                                    fontSize: 15.0,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ).toList(),
+                                          style: TextStyle(
+                                            fontSize: 15.0,
+                                            color: Colors.black,
+                                          ),
+                                          dropdownColor: Colors.white,
+                                          underline: Container(),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Image.asset(
+                                    'assets/images/calendar.png',
+                                    width: 23,
+                                  ),
+                                  const Expanded(
+                                    child: Padding(
+                                        padding: EdgeInsets.only(left: 5),
+                                        child: Text(
+                                          'Date début :',
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              color: Color(0xff2f9062)),
+                                        )),
+                                  ),
+                                  Expanded(
+                                    flex: 2,
+                                    child: TextField(
+                                      controller: dateInput,
+                                      decoration: const InputDecoration(
+                                          labelText: 'Date de création',
+                                          labelStyle:
+                                          TextStyle(color: Colors.green),
+                                          enabledBorder: OutlineInputBorder(
+                                              borderSide: BorderSide.none),
+                                          focusedBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  width: 3,
+                                                  color: Colors.green))),
+                                      onTap: () async {
+                                        DateTime? pickedDate =
+                                        await showDatePicker(
+                                            context: context,
+                                            initialDate: DateTime.now(),
+                                            firstDate: DateTime(1950),
+                                            //DateTime.now() - not to allow to choose before today.
+                                            lastDate: DateTime(2100));
+                                        if (pickedDate != null) {
+                                          print(pickedDate);
+                                          String formattedDate =
+                                          DateFormat('yyyy-MM-dd')
+                                              .format(pickedDate);
+                                          print(formattedDate);
+                                          setState(() {
+                                            dateInput.text = formattedDate;
+                                          });
+                                        } else {}
+                                      },
+                                    ),
+                                  ),
+                                ]
+                            ),
+                          ),
+                          Padding(
+                            padding:const EdgeInsets.only(top:10.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.green,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                            BorderRadius.circular(13))),
+                                    onPressed: () { },
+                                    child: const Text(
+                                      'Ajouter',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    )
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(top: 10.0),
+                                  child:  ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: const Color.fromRGBO(228, 46, 46, 1),
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                              BorderRadius.circular(13))),
+                                      onPressed: () { },
+                                      child: const Text(
+                                        'Annuler',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      )
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          )
+        ],
       ),
     );
   }
