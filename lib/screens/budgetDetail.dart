@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ika_musaka/model/DepenceClasse.dart';
+import 'package:ika_musaka/screens/AjoutDepense.dart';
 import 'package:ika_musaka/screens/depensepage.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -247,7 +248,7 @@ class _BudgetDetaille extends State<BudgetDetaille> {
                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 children: [
                                                   GestureDetector(
-                                                    onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=> AjoutDepense()));},
+                                                    onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=> const AjoutDepense()));},
                                                     child: Container(
                                                       padding: const EdgeInsets.all(5.0),
                                                       decoration: BoxDecoration(

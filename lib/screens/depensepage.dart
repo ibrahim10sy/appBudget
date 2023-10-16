@@ -187,7 +187,8 @@ class _DepenseState extends State<Depense> {
                       blurRadius: 7,
                       color: Color.fromRGBO(0, 0, 0, 0.25),
                     )
-                  ]),
+                  ]
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -281,8 +282,7 @@ class _DepenseState extends State<Depense> {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(
-                            left: 15, right: 15, bottom: 15),
+                        padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
@@ -381,8 +381,7 @@ class _DepenseState extends State<Depense> {
                               ])
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(
-                            left: 15, right: 15, bottom: 20),
+                        padding: const EdgeInsets.only(left: 15, right: 15, bottom: 20),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
