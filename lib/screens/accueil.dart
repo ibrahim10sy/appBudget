@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ika_musaka/provider/UtilisateurProvider.dart';
+import 'package:ika_musaka/screens/Categorie.dart';
 import 'package:ika_musaka/screens/budgetListe.dart';
 import 'package:ika_musaka/services/BottomNavigationService.dart';
 import 'package:ika_musaka/services/budgetService.dart';
@@ -201,6 +202,8 @@ class _AccueilState extends State<Accueil> {
       onTap: (){
         if(index == 4){
           Navigator.push(context, MaterialPageRoute(builder: (context)=> const Statistiques()));
+        }else if(index == 3){
+          Navigator.push(context, MaterialPageRoute(builder: (context)=> const Categoriees()));
         }else{
           Provider.of<BottomNavigationService>(context,listen: false).changeIndex(index);
         }
