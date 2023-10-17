@@ -1,14 +1,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ika_musaka/provider/CategoriesProvider.dart';
 import 'package:ika_musaka/provider/UtilisateurProvider.dart';
 import 'package:ika_musaka/screens/AjoutDepense.dart';
 import 'package:ika_musaka/screens/ConnexionScreen.dart';
+import 'package:ika_musaka/screens/Depense.dart';
 import 'package:ika_musaka/screens/ProfilUtilisateur.dart';
 import 'package:ika_musaka/services/depenseService.dart';
 import 'package:provider/provider.dart';
-
-
 import 'package:get/get.dart';
 import 'package:ika_musaka/screens/ConnexionScreen.dart';
 import 'package:ika_musaka/screens/accueil.dart';
@@ -27,7 +27,9 @@ void main() {
          ChangeNotifierProvider(create: (context) => BottomNavigationService()),
          ChangeNotifierProvider(create: (context) => UtilisateurProvider()),
          ChangeNotifierProvider(create: (context) => BudgetService()),
-         ChangeNotifierProvider(create: (context) => DepenseService())
+         ChangeNotifierProvider(create: (context) => DepenseService()),
+         ChangeNotifierProvider(create: (context) => CategoriesProvider())
+
        ],
        child:  const MyApp()),
      );
