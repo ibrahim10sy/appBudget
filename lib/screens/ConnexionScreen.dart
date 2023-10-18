@@ -1,5 +1,9 @@
 
 import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:ika_musaka/screens/accueil.dart';
 import 'package:ika_musaka/screens/bottomNavigatorBar.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +25,151 @@ class _ConnexionState extends State<Connexion> {
   TextEditingController motDePasseController = TextEditingController();
 
 
+
+Future<void> signInWithGoogle(BuildContext context) async {
+  try {
+    // Déclenche le flux d'authentification Google
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    if (googleUser != null) {
+      // Obtient les détails d'authentification à partir de la demande
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      // Crée une nouvelle crédentiation
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      // Une fois connecté, renvoie UserCredential
+      final userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+
+      // Redirige vers la page d'accueil en cas de succès de la connexion
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Accueil()),
+      );
+    } else {
+      debugPrint('L\'utilisateur a annulé la connexion Google');
+      throw Exception('L\'utilisateur a annulé la connexion Google');
+    }
+  } catch (e) {
+    // Gérer les erreurs, par exemple, en affichant un message d'erreur à l'utilisateur.
+    debugPrint('Erreur de connexion Google: $e');
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Erreur de connexion Google'),
+          content: Text('Une erreur s\'est produite lors de la connexion Google.'),
+          actions: <Widget>[
+            TextButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+//   Future<UserCredential> signInWithGoogle(BuildContext context) async {
+// //   try {
+// //     // Déclenche le flux d'authentification Google
+// //     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+// //     if (googleUser != null) {
+// //       // Obtient les détails d'authentification à partir de la demande
+// //       final GoogleSignInAuthentication googleAuth =
+// //           await googleUser.authentication;
+
+// //       // Crée une nouvelle crédentiation
+// //       final credential = GoogleAuthProvider.credential(
+// //         accessToken: googleAuth.accessToken,
+// //         idToken: googleAuth.idToken,
+// //       );
+
+// //       // Une fois connecté, renvoie UserCredential
+// //       final userCredential =
+// //           await FirebaseAuth.instance.signInWithCredential(credential);
+
+// //       // Redirige vers la page d'accueil en cas de succès de la connexion
+// //       Navigator.push(
+// //         context,
+// //         MaterialPageRoute(builder: (context) => Accueil()),
+// //       );
+
+// //       return userCredential;
+// //     } else {
+// //       debugPrint('L\'utilisateur a annulé la connexion Google');
+// //       throw Exception('L\'utilisateur a annulé la connexion Google');
+// //     }
+// //   } catch (e) {
+// //     // Gérer les erreurs, par exemple, en affichant un message d'erreur à l'utilisateur.
+// //     debugPrint('Erreur de connexion Google: $e');
+// //     showDialog(
+// //       context: context,
+// //       builder: (BuildContext context) {
+// //         return AlertDialog(
+// //           title: Text('Erreur de connexion Google'),
+// //           content: Text('Une erreur s\'est produite lors de la connexion Google.'),
+// //           actions: <Widget>[
+// //             TextButton(
+// //               child: Text('OK'),
+// //               onPressed: () {
+// //                 Navigator.of(context).pop();
+// //               },
+// //             ),
+// //           ],
+// //         );
+// //       },
+// //     );
+// //     return ;
+// //   }
+// // }
+
+
+   // methode authentification google:::::::::::::::::::::::::::::
+//   Future<UserCredential> signInWithGoogle() async {
+//   // Trigger the authentication flow
+//   final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+//   if (googleUser != null) {
+//     // Obtain the auth details from the request
+//     final GoogleSignInAuthentication googleAuth =
+//         await googleUser.authentication;
+        
+
+//     // Create a new credential
+//     final credential = GoogleAuthProvider.credential(
+//       accessToken: googleAuth.accessToken,
+//       idToken: googleAuth.idToken,
+//     );
+
+//     // Once signed in, return the UserCredential
+//     return await FirebaseAuth.instance.signInWithCredential(credential);
+//   } else {
+//     debugPrint('L\'utilisateur a annulé la connexion Google');
+//     throw Exception('L\'utilisateur a annulé la connexion Google');
+//   }
+// }
+
+
+   Future<void> intializeFirebase() async {
+    await Firebase.initializeApp();
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user == null) {
+        debugPrint('User is currently signed out!');
+      } else {
+        Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => const Accueil()),
+        );
+        debugPrint('User is signed in!');
+      }
+    });
+  }
 
 
   Future<void> loginUser() async {
@@ -132,6 +281,7 @@ class _ConnexionState extends State<Connexion> {
     // Initialisation des contrôleurs de texte avec des valeurs vides.
     emailController.clear();
     motDePasseController.clear();
+    intializeFirebase();
   }
 
   @override
@@ -371,6 +521,7 @@ class _ConnexionState extends State<Connexion> {
                       GestureDetector(
                         //Signin with google button.
                         onTap: () {
+                          signInWithGoogle(context);
                           //I changed it from raised button to container and then added gesture control to add an image of google.
                         },
                         child:  Container(
