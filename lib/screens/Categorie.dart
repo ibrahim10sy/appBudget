@@ -8,7 +8,9 @@ import 'package:ika_musaka/provider/CategoriesProvider.dart';
 import 'package:ika_musaka/screens/CategorieService.dart';
 import 'package:provider/provider.dart';
 import 'package:ika_musaka/provider/UtilisateurProvider.dart';
+import 'package:badges/badges.dart' as badges;
 
+import '../model/utilisateur.dart';
 import 'ActionCategorie.dart';
 
 class Categoriees extends StatefulWidget {
@@ -23,12 +25,14 @@ class Categoriees extends StatefulWidget {
 class MyCategorie extends State<Categoriees> {
   
   TextEditingController titre_controller = TextEditingController();
+  late Utilisateur utilisateur;
 
   
 
 List<dynamic> categories = [];
   @override
   void initState() {
+    utilisateur = Provider.of<UtilisateurProvider>(context,listen: false).utilisateur!;
     super.initState();
     // Initialisation des contrôleurs de texte avec des valeurs vides.
     titre_controller.clear();
@@ -63,45 +67,72 @@ List<dynamic> categories = [];
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Positioned(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
+              Padding(
+                  padding: const EdgeInsets.only(top: 30,bottom: 15.0, left : 15, right : 15),
                   child: Container(
-                    padding: const EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.2),
-                          spreadRadius: 3,
-                          blurRadius: 5,
-                          offset: const Offset(0, 2),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(31),
+                          boxShadow: const [
+                            BoxShadow(
+                                offset: Offset(0.0,0.0),
+                                blurRadius: 7.0,
+                                color: Color.fromRGBO(0, 0, 0, 0.25) //Color.fromRGBO(47, 144, 98, 1)
+                            )
+                          ]
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                utilisateur.photos == null || utilisateur.photos!.isEmpty ?
+                                CircleAvatar(
+                                  //backgroundImage: AssetImage("assets/images/avatar.png"),
+                                  //  child: Image.network(utilisateur.photos),
+                                  backgroundColor: const Color.fromRGBO(240, 176, 2, 1),
+                                  radius: 30,
+                                  child: Text(
+                                    "${utilisateur.prenom.substring(0,1).toUpperCase()}${utilisateur.nom.substring(0,1).toUpperCase()}",
+                                    style: const TextStyle(
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                        letterSpacing: 2
+                                    ),
+                                  ),
+                                ) :
+                                CircleAvatar(
+                                    backgroundImage: NetworkImage(utilisateur.photos!),
+                                    radius: 30
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                  child: Text(
+                                    "${utilisateur.prenom} ${utilisateur.nom}",
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                            Padding(
+                                padding: const EdgeInsets.only(right: 15),
+                                child: badges.Badge(
+                                  position: badges.BadgePosition.topEnd(top: -2,end: -2),
+                                  badgeContent: const Text("3",style: TextStyle(color: Colors.white),),
+                                  child: const Icon(Icons.notifications,color: Color.fromRGBO(240, 176, 2, 1),size: 40,),
+                                )
+                            )
+                          ],
                         ),
-                      ],
-                      borderRadius: BorderRadius.circular(40),
-                    ),
-                    child: const Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 25,
-                          backgroundImage: AssetImage('assets/images/signin.png'),
-                        ),
-                        SizedBox(
-                            width: 10), // Espacement entre le profil et le texte
-                        Text(
-                          'Saran Coulibaly', // Remplacez par votre nom
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 80,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                      )
+                  )
               ),
       ///////////////////////////////contenanire en vert//////////////
               const SizedBox(height: 5),
@@ -110,7 +141,7 @@ List<dynamic> categories = [];
                 child: Stack(children: [
                   Container(
                     child: const Image(
-                      image: AssetImage('images/ccc.png'),
+                      image: AssetImage('assets/images/ccc.png'),
                     ),
                   ),
                   Container(
@@ -144,7 +175,7 @@ List<dynamic> categories = [];
                                           padding: const EdgeInsets.only(
                                               top: 8, left: 10, right: 8),
                                           child: const Image(
-                                            image: AssetImage('images/img.png'),
+                                            image: AssetImage('assets/images/img.png'),
                                           ),
                                         ),
                                         const Text(
@@ -231,7 +262,7 @@ List<dynamic> categories = [];
                                                     try {
                                                       await CategorieService
                                                           .addCategorie(context: context,
-                                                              titre: titre);
+                                                              titre: titre, utilisateur:utilisateur);
       
                                                       titre_controller.clear();
                                                       
@@ -404,7 +435,7 @@ List<dynamic> categories = [];
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(40)),
                             child: ListTile(
-                              leading: Image.asset('images/888.png'),
+                              leading: Image.asset('assets/images/888.png'),
                               title: Text(
                                 category["titre"],
                                 style: const TextStyle(

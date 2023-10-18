@@ -1,23 +1,23 @@
 import 'dart:convert';
 
-
 // import 'dart:ffi';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:ika_musaka/model/utilisateur.dart';
 import 'package:ika_musaka/provider/CategoriesProvider.dart';
 import 'package:ika_musaka/screens/Categorie.dart';
 import 'package:provider/provider.dart';
 
 class CategorieService {
-  static const String apiUrl = 'http://localhost:8080/Categorie';
+  static const String apiUrl = 'http://10.0.2.2:8080/Categorie';
 
-  static Future<void> addCategorie({required BuildContext context,required String titre}) async {
+  static Future<void> addCategorie({required BuildContext context,required String titre,required Utilisateur utilisateur}) async {
     Map<String, dynamic> user = {
-      "idUtilisateur": 1,
-      "username": "SARA",
-      "nom": "COULIBY",
-      "email": "sc523644@gmail.com",
-      "motDePasse": "1234"
+      "idUtilisateur": utilisateur.idUtilisateur,
+      "prenom":utilisateur.prenom,
+      "nom":utilisateur.nom,
+      "email": utilisateur.email,
+      "motDePasse": utilisateur.motDePasse
     };
     // {
     //   "idUtilisateur":1
@@ -49,7 +49,7 @@ class CategorieService {
 
   Future fetchAlbum() async {
     final response =
-        await http.get(Uri.parse('http://localhost:8080/Categorie/lire'));
+        await http.get(Uri.parse('http://10.0.2.2:8080/Categorie/lire'));
  //print(response);
 
     if (response.statusCode == 200) {
@@ -135,22 +135,3 @@ class CategorieService {
     }
   }
 }
-
-// static const String apiUrl = 'http://localhost:8083/Categorie';
-
-// static Future<CategorieM> ajouterCategorie({
-//   required String titre,
-// }) async {
-
-//   final response = await http.post(
-//     Uri.parse('$apiUrl/creer'),
-//     headers: {'Content-Type': 'application/json'},
-//     body: jsonEncode({"idCategorie": null, "titre": titre}),
-//   );
-
-//   if (response.statusCode == 200) {
-//     return CategorieM.fromJson(jsonDecode(response.body));
-//   } else {
-//     throw Exception('Impossible d\'ajouter une catégorie');
-//   }
-// }

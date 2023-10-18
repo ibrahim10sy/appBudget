@@ -30,7 +30,7 @@ class DialogHelper {
               Container(
                 padding: const EdgeInsets.only(top: 8, left: 8),
                 child: const Image(
-                  image: AssetImage('images/img.png'),
+                  image: AssetImage('asset/images/img.png'),
                 ),
               ),
               Container(

@@ -25,7 +25,7 @@ class _ConnexionState extends State<Connexion> {
 
   Future<void> loginUser() async {
     // /utilisateur/login
-    final String baseUrl = 'https://10.0.2.2:8080/utilisateur'; // Remplacez par la base URL de votre API.
+    final String baseUrl = 'http://10.0.2.2:8080/utilisateur'; // Remplacez par la base URL de votre API.
     // final String baseUrl = 'https://buget-service-api-git.onrender.com/utilisateur'; // Remplacez par la base URL de votre API.
     final String email = emailController.text;
     final String password = motDePasseController.text;
