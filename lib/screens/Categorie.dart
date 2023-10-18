@@ -40,21 +40,30 @@ List<dynamic> categories = [];
   }
 
   final categorieService = CategorieService();
-
-  Future<dynamic> _chargerCategories() async {
-    final loadedCategories = await categorieService.fetchAlbum();
-    CategoriesProvider categoriesProvider = Provider.of<CategoriesProvider>(context, listen: false);
-      
-    setState(() {
-      categoriesProvider.setCategorie(loadedCategories);
-      //categories = loadedCategories;
-      print("je vais printer");
-      //print(categoriesProvider.getCategories()[0]);
-      print("fin du print");
-      //categories = context.watch<CategoriesProvider>().categories;
-     // debugPrint('reponse ${categories[0]["titre"]}');
-    }); // Rafraîchir l'interface pour afficher les catégories
+  Future<void> _chargerCategories() async {
+  try {
+    var categories = await CategorieService().fetchAlbum();
+    Provider.of<CategoriesProvider>(context, listen: false).setCategorie(categories);
+  } catch (e) {
+    // Gérer les erreurs ici
+    print("L'erreur est servenue lors de la chargement"+e.toString());
   }
+}
+
+  // Future<dynamic> _chargerCategories() async {
+  //   final loadedCategories = await categorieService.fetchAlbum();
+  //   CategoriesProvider categoriesProvider = Provider.of<CategoriesProvider>(context, listen: false);
+      
+  //   setState(() {
+  //     categoriesProvider.setCategorie(loadedCategories);
+  //     //categories = loadedCategories;
+  //     print("je vais printer");
+  //     //print(categoriesProvider.getCategories()[0]);
+  //     print("fin du print");
+  //     //categories = context.watch<CategoriesProvider>().categories;
+  //    // debugPrint('reponse ${categories[0]["titre"]}');
+  //   }); // Rafraîchir l'interface pour afficher les catégories
+  // }
 
   final _formKey = GlobalKey<FormState>();
   @override
@@ -232,7 +241,7 @@ List<dynamic> categories = [];
                                                         titre_controller.text;
                                                     if (titre.isEmpty) {
                                                       const String errorMessage =
-                                                          "Champs titre doit être charger";
+                                                          "Champs titre doit être renseigner";
                                                       showDialog(
                                                           context: context,
                                                           builder: (BuildContext
@@ -260,10 +269,11 @@ List<dynamic> categories = [];
                                                       return;
                                                     }
                                                     try {
-                                                      await CategorieService
-                                                          .addCategorie(context: context,
+                                                      await CategorieService.addCategorie(
+                                                        context: context,
                                                               titre: titre, utilisateur:utilisateur);
-      
+                                                       Provider.of<CategorieService>(context, listen: false).applyChange();
+
                                                       titre_controller.clear();
                                                       
                                                     } catch (e) {
@@ -329,11 +339,14 @@ List<dynamic> categories = [];
                                                 child: ElevatedButton(
                                                   onPressed: () {
                                                     // Your button's onPressed logic here
-                                                    if (_formKey.currentState!
-                                                        .validate()) {
-                                                      _formKey.currentState!
-                                                          .save();
+                                                    if (_formKey.currentState!.validate()) {
+                                                      _formKey.currentState!.save();
                                                     }
+                                                  
+                                                                    Navigator.of(
+                                                                            context)
+                                                                        .pop();
+                                                                
                                                   },
                                                   style: ElevatedButton.styleFrom(
                                                     elevation: 3,
@@ -472,7 +485,7 @@ List<dynamic> categories = [];
                                     onPressed: () {
                                       
                                        DialogHelper.showDeleteCategoryDialog(
-                                           context,category['idCategorie'],index);
+                                           context,category['idCategorie'],index,utilisateur);
                                       // Logique pour la suppression ici
                                     },
                                   ),

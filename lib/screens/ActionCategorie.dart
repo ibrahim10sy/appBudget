@@ -7,11 +7,14 @@ import 'package:ika_musaka/provider/CategoriesProvider.dart';
 import 'package:ika_musaka/screens/CategorieService.dart';
 import 'package:provider/provider.dart';
 
+import '../model/utilisateur.dart';
+
 final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
 
 class DialogHelper {
   static get id => null;
+  late Utilisateur utilisateur;
 
   static void showModifyCategoryDialog(BuildContext context,int index,dynamic categorieM) {
     final myController = TextEditingController();
@@ -30,7 +33,7 @@ class DialogHelper {
               Container(
                 padding: const EdgeInsets.only(top: 8, left: 8),
                 child: const Image(
-                  image: AssetImage('asset/images/img.png'),
+                  image: AssetImage('assets/images/img.png'),
                 ),
               ),
               Container(
@@ -163,7 +166,7 @@ class DialogHelper {
     );
   }
 
-  static void showDeleteCategoryDialog(BuildContext context,int idCategorie,index) {
+   static void showDeleteCategoryDialog(BuildContext context,int idCategorie,index,  Utilisateur utilisateur) {
      CategoriesProvider categoriesProvider = Provider.of<CategoriesProvider>(context, listen: false);
     showDialog(
       context: context,
@@ -178,7 +181,7 @@ class DialogHelper {
               Container(
                 padding: const EdgeInsets.only(top: 8, left: 10),
                 child: const Image(
-                  image: AssetImage('images/img.png'),
+                  image: AssetImage('assets/images/img.png'),
                 ),
               ),
               Center(
@@ -244,7 +247,7 @@ class DialogHelper {
                                           
                       try{
                        //String title = titre_controller.text;
-                       await CategorieService.suppresion(id: idCategorie, titre:'titre'); 
+                       await CategorieService.suppresion(id: idCategorie, titre:'titre', utilisateur:utilisateur); 
                        categoriesProvider.removeCategory(index);
                       
                       }catch (e){

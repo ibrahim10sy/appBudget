@@ -47,7 +47,7 @@ class Budget extends StatelessWidget{
              Container(
               padding: EdgeInsets.only(bottom: 45),
               child:Image(
-                image: AssetImage('images/88.png'))
+                image: AssetImage('assets/images/88.png'))
             ),
       // --------------------- // Footer-------------------      
 

@@ -9,7 +9,7 @@ import 'package:ika_musaka/screens/categoriess.dart';
 import '../model/utilisateur.dart';
 
 class BudgetServices{
-  static const String apiUrl = 'https://buget-service-api-git.onrender.com/Budget';
+  static const String apiUrl = 'https://10.0.2.2:8080/Budget';
 
   static Future<void> addBudget({
     required String description,
@@ -49,4 +49,3 @@ class BudgetServices{
     }
   }
   }
-

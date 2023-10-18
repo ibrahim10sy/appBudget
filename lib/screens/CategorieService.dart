@@ -8,7 +8,7 @@ import 'package:ika_musaka/provider/CategoriesProvider.dart';
 import 'package:ika_musaka/screens/Categorie.dart';
 import 'package:provider/provider.dart';
 
-class CategorieService {
+class CategorieService extends ChangeNotifier {
   static const String apiUrl = 'http://10.0.2.2:8080/Categorie';
 
   static Future<void> addCategorie({required BuildContext context,required String titre,required Utilisateur utilisateur}) async {
@@ -65,29 +65,10 @@ class CategorieService {
     }
   }
 
- /*static Future<void> updateCategorie({required int id, required String titre}) async {
-  final response = await http.put(
-    Uri.parse('$apiUrl/modifier/$id'),
-    headers: {'Content-Type': 'application/json'},
-    body: jsonEncode({'titre': titre}),
-  );
-
-  if (response.statusCode == 200) {
-  } else {
-    throw Exception('Impossible de modifier la catégorie');
-  }
-}*/
-
  // modifier
   static Future<void> updateCategorie(
       {required BuildContext context,required int index,required dynamic categorie}) async {
-    Map<String, dynamic> user = {
-     "idUtilisateur": 1,
-      "username": "SARA",
-      "nom": "COULIBY",
-      "email": "sc523644@gmail.com",
-      "motDePasse": "1234"
-    };
+   
 
     final response = await http.put(
       Uri.parse(
@@ -106,14 +87,14 @@ class CategorieService {
     }
   }
   //////////suppression
-  static Future<void> suppresion({required int id,required String titre}) async {
+  static Future<void> suppresion({required int id,required String titre, required Utilisateur utilisateur}) async {
     print("je commence la supprimer");
-    Map<String, dynamic> user = {
-      "idUtilisateur": 1,
-      "username": "SARA",
-      "nom": "COULIBY",
-      "email": "sc523644@gmail.com",
-      "motDePasse": "1234"
+   Map<String, dynamic> user = {
+      "idUtilisateur": utilisateur.idUtilisateur,
+      "prenom":utilisateur.prenom,
+      "nom":utilisateur.nom,
+      "email": utilisateur.email,
+      "motDePasse": utilisateur.motDePasse
     };
     // {
     //   "idUtilisateur":1
@@ -134,4 +115,49 @@ class CategorieService {
       throw Exception('Categorie non supprimer');
     }
   }
+  
+void applyChange(){
+    notifyListeners();
+  }
 }
+// import 'dart:convert';
+
+// // import 'dart:ffi';
+// import 'package:flutter/material.dart';
+// import 'package:http/http.dart' as http;
+// import 'package:ika_musaka/model/utilisateur.dart';
+// import 'package:ika_musaka/provider/CategoriesProvider.dart';
+// import 'package:ika_musaka/screens/Categorie.dart';
+// import 'package:provider/provider.dart';
+
+// class CategorieService {
+//   static const String apiUrl = 'http://10.0.2.2:8080/Categorie';
+
+//   static Future<void> addCategorie( { 
+//    required String titre,
+//    required Utilisateur utilisateur
+//     })async{
+//       Map<String , int?> ut = {
+//         "idUtilisateur" : utilisateur.idUtilisateur
+//       };
+//       var categorie = jsonEncode({
+//         'id' : null,
+//         'titre' : titre,
+//         'utilisateur' : ut
+//       });
+//       final response = await http.post(Uri.parse('$apiUrl/Categorie'),
+//       headers: {'Content-Type': 'application/json'},
+//       body : categorie
+//       );
+//       debugPrint(categorie);
+//       if(response.statusCode == 200){
+
+//       //return Budget.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
+
+//     }else{
+//       debugPrint(response.body);
+//       throw Exception(jsonDecode(utf8.decode(response.bodyBytes))["message"]);
+//     }
+//     }
+   
+// }

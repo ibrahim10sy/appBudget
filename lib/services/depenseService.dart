@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:ika_musaka/model/DepenceClasse.dart';
 
 class DepenseService extends ChangeNotifier {
-  final String url = "https://buget-service-api-git.onrender.com/Depenses/";
+  final String url = "http://10.0.2.2:8080/Depenses/";
 
   List<DepenseClass> depenses = [];
   String action = "all";
