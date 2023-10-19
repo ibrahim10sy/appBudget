@@ -18,7 +18,7 @@ class DialogHelper {
 
   static void showModifyCategoryDialog(BuildContext context,int index,dynamic categorieM) {
     final myController = TextEditingController();
-    myController.text = categorieM["titre"];
+    myController.text = categorieM["titre"]; 
     print(categorieM["titre"]);
     showDialog(
       context: context,

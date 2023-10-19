@@ -2,7 +2,9 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:ika_musaka/model/utilisateur.dart';
 import 'package:ika_musaka/screens/accueil.dart';
 import 'package:ika_musaka/screens/bottomNavigatorBar.dart';
@@ -28,6 +30,28 @@ class Inscription extends StatefulWidget {
   _InscriptionState createState() => _InscriptionState();
 }
 
+
+   Future<UserCredential> signInWithGoogle() async {
+  // Trigger the authentication flow
+  final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+  if (googleUser != null) {
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser.authentication;
+
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    // Once signed in, return the UserCredential
+    return await FirebaseAuth.instance.signInWithCredential(credential);
+  } else {
+    debugPrint('L\'utilisateur a annulé la connexion Google');
+    throw Exception('L\'utilisateur a annulé la connexion Google');
+  }
+}
 
 class _InscriptionState extends State<Inscription> {
  TextEditingController nom_controller = TextEditingController();
@@ -546,17 +570,25 @@ class _InscriptionState extends State<Inscription> {
                             ),
                         child: Row(
                           children: [
-                           const Text(
-                              "Continuer avec",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  color: Color(0xFF2F9062),
-                                  fontWeight: FontWeight.w700),
-                            ),
-                            Image.asset(
+                            GestureDetector(
+                              onTap: signInWithGoogle,
+                              child: 
+                                Image.asset(
                               "assets/images/google.png",
                               height: 40,
                             )
+                            ),
+                          //  const Text(
+                          //     "Continuer avec",
+                          //     style: TextStyle(
+                          //         fontSize: 14,
+                          //         color: Color(0xFF2F9062),
+                          //         fontWeight: FontWeight.w700),
+                          //   ),
+                          //   Image.asset(
+                          //     "assets/images/google.png",
+                          //     height: 40,
+                          //   )
                           ],
                         )),
                   )

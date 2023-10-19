@@ -950,17 +950,17 @@ TextFormField(
                                     //   _ajouterDepense();
                                     // },
                                     onPressed: () async{
-                                     if(_formKey.currentState!.validate()){
-                                      debugPrint("Debut de validation");
-                                      Depense depenses = Depense(
-                                        description: descriptionController.text, 
-                                        montant: double.parse(montantController.text), 
-                                        type: selectedType ?? "", 
-                                        date:  dateInput.value.text,
-                                        idDepenses: null
-                                        );
-                                        debugPrint(depenses.toString());
-                                     }
+                                    //  if(_formKey.currentState!.validate()){
+                                    //   debugPrint("Debut de validation");
+                                    //   Depense depenses = Depense(
+                                    //     description: descriptionController.text, 
+                                    //     montant: double.parse(montantController.text), 
+                                    //     type: selectedType ?? "", 
+                                    //     date:  dateInput.value.text,
+                                    //     idDepenses: null
+                                    //     );
+                                    //     debugPrint(depenses.toString());
+                                    //  }
                                     },
 
                                     child: const Text(
