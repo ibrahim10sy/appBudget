@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ika_musaka/provider/UtilisateurProvider.dart';
 import 'package:ika_musaka/screens/Categorie.dart';
-import 'package:ika_musaka/screens/budgetListe.dart';
+import 'package:ika_musaka/screens/AjoutDepense.dart';
 import 'package:ika_musaka/services/BottomNavigationService.dart';
 import 'package:ika_musaka/services/budgetService.dart';
 import 'package:badges/badges.dart' as badges;
@@ -204,7 +204,10 @@ class _AccueilState extends State<Accueil> {
           Navigator.push(context, MaterialPageRoute(builder: (context)=> const Statistiques()));
         }else if(index == 3){
           Navigator.push(context, MaterialPageRoute(builder: (context)=> const Categoriees()));
-        }else{
+        }else if (index ==2){
+         Navigator.push(context, MaterialPageRoute(builder: (context)=> const AjoutDepense()));
+        }
+        else{
           Provider.of<BottomNavigationService>(context,listen: false).changeIndex(index);
         }
       },

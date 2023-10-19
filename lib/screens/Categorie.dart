@@ -275,7 +275,9 @@ List<dynamic> categories = [];
                                                        Provider.of<CategorieService>(context, listen: false).applyChange();
 
                                                       titre_controller.clear();
-                                                      
+                                                       Navigator.of(
+                                                                            context)
+                                                                        .pop();
                                                     } catch (e) {
                                                       final String errorMessage =
                                                           e.toString();
