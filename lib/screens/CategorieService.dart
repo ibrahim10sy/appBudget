@@ -36,8 +36,9 @@ class CategorieService extends ChangeNotifier {
     //debugPrint(categories);
     if (response.statusCode == 200) {
       print("je vais te printer le retour json");
-       categorieListe.add(jsonDecode(response.body));
       print(response.body);
+      applyChange();
+      print("je vais te");
       return "succes";
     } else {
       debugPrint(response.reasonPhrase);
@@ -89,7 +90,7 @@ class CategorieService extends ChangeNotifier {
     }
   }
   //////////suppression
-  static Future<void> suppresion({required int id,required String titre, required Utilisateur utilisateur}) async {
+  Future<void> suppresion({required int id,required String titre, required Utilisateur utilisateur}) async {
     print("je commence la supprimer");
    Map<String, dynamic> user = {
       "idUtilisateur": utilisateur.idUtilisateur,
@@ -111,6 +112,7 @@ class CategorieService extends ChangeNotifier {
     );
     debugPrint(categories);
     if (response.statusCode == 200) {
+      applyChange();
     } else {
       debugPrint(response.reasonPhrase);
       debugPrint(response.body);

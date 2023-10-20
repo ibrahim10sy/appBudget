@@ -288,12 +288,9 @@ class MyCategorie extends State<Categoriees> {
                                                               utilisateur:
                                                                   utilisateur).then((value) {
                                                                     titre_controller.clear();
-                                                        setState(() {
-                                                          
-                                                        });
                                                                   }).catchError((onError){
                                                                     final String
-                                                          errorMessage =
+                                                            errorMessage =
                                                           onError.toString();
                                                       // ignore: use_build_context_synchronously
                                                       showDialog(
@@ -468,11 +465,14 @@ class MyCategorie extends State<Categoriees> {
                       child: Consumer<CategorieService>(
                         builder: (context, categorieService, child) {
                           debugPrint("edcvfr");
-                          return ListView.builder(
-                            itemCount: Provider.of<CategorieService>(context,listen: false).categorieListe.length,
+                          return FutureBuilder(
+                            future: categorieService.fetchAlbum(), 
+                            builder: ((context, snapshot) {
+                              if(snapshot.hasData){
+                                return ListView.builder(
+                            itemCount: snapshot.data.length,
                             itemBuilder: (context, index) {
-                              final Map<String,dynamic> category = Provider.of<CategorieService>(context,listen: false)
-                                  .categorieListe[index]; //categories[index];
+                              final Map<String,dynamic> category = snapshot.data[index]; //categories[index];
                               //print(category.toString());
                               return Card(
                                 margin: const EdgeInsets.all(8),
@@ -529,6 +529,10 @@ class MyCategorie extends State<Categoriees> {
                               );
                             },
                           );
+                              }else{
+                                return const CircularProgressIndicator();
+                              }
+                            }));
                         },
                       ),
                     ),

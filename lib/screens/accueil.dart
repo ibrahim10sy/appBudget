@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ika_musaka/provider/UtilisateurProvider.dart';
 import 'package:ika_musaka/screens/Categorie.dart';
-import 'package:ika_musaka/screens/AjoutDepense.dart';
 import 'package:ika_musaka/services/BottomNavigationService.dart';
 import 'package:ika_musaka/services/budgetService.dart';
 import 'package:badges/badges.dart' as badges;

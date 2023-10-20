@@ -247,7 +247,7 @@ class DialogHelper {
                                           
                       try{
                        //String title = titre_controller.text;
-                       await CategorieService.suppresion(id: idCategorie, titre:'titre', utilisateur:utilisateur); 
+                       await Provider.of<CategorieService>(context,listen : false).suppresion(id: idCategorie, titre:'titre', utilisateur:utilisateur); 
                        categoriesProvider.removeCategory(index);
                       
                       }catch (e){
