@@ -69,7 +69,7 @@ class CategorieService extends ChangeNotifier {
   }
 
  // modifier
-  static Future<void> updateCategorie(
+ Future<void> updateCategorie(
       {required BuildContext context,required int index,required dynamic categorie}) async {
    
 
@@ -81,8 +81,9 @@ class CategorieService extends ChangeNotifier {
     );
 
     if (response.statusCode == 200) {
-      context.read<CategoriesProvider>().editItem(index, categorie);
-      // La catégorie a été mise à jour avec succès.
+      // context.read<CategoriesProvider>().editItem(index, categorie);
+      // // La catégorie a été mise à jour avec succès.
+       applyChange();
     } else {
       debugPrint(response.reasonPhrase);
       debugPrint(response.body);

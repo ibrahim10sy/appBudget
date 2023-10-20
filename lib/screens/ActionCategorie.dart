@@ -92,7 +92,7 @@ class DialogHelper {
                     child: ElevatedButton(
                       onPressed: () async{
                         categorieM['titre'] = myController.text;
-                        await CategorieService.updateCategorie(context: context,index: index,categorie:categorieM); 
+                        await Provider.of<CategorieService>(context, listen: false).updateCategorie(context: context,index: index,categorie:categorieM); 
                         // Votre logique lorsque le bouton est pressé
                         if (_formKey.currentState!.validate()) {
                           print("deuxieme étapes");
