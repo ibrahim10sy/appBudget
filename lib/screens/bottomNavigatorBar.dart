@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ika_musaka/screens/accueil.dart';
 import 'package:ika_musaka/screens/budgetListe.dart';
-import 'package:ika_musaka/screens/depenseListe.dart';
 import 'package:ika_musaka/screens/profil.dart';
 import 'package:ika_musaka/services/BottomNavigationService.dart';
 import 'package:ika_musaka/services/budgetService.dart';
@@ -24,13 +23,16 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
   final List<GlobalKey<NavigatorState>> _navigatorKeys = [
     GlobalKey<NavigatorState>(),
     GlobalKey<NavigatorState>(),
-    GlobalKey<NavigatorState>()
+    GlobalKey<NavigatorState>(),
+    GlobalKey<NavigatorState>(),
   ];
   List pages = <Widget>[
     const Accueil(),
     const BudgetListe(),
-    const Center(child: Text("Page 3")),
-    const Center(child: Text("Page 4"))
+    const DepensesListes(),
+    const Profil()
+    // const Center(child: Text("Page 3")),
+    // const Center(child: Text("Page 4"))
   ];
 
   void _changeActivePageValue(int index){
@@ -68,6 +70,7 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
                 _buildOffstageNavigator(0),
                 _buildOffstageNavigator(1),
                 _buildOffstageNavigator(2),
+                _buildOffstageNavigator(3),
               ],
             );
           }
@@ -124,7 +127,7 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
         return [
           const Accueil(),
           const BudgetListe(),
-          const DepenseListe(),
+          const DepensesListes(),
           const Profil()
         ].elementAt(index);
       },

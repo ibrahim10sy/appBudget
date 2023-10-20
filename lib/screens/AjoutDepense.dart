@@ -736,7 +736,7 @@ class _AjoutState extends State<AjoutDepense> {
                                 maxLines: 3,
                                 decoration: const InputDecoration.collapsed(
                                     hintText:
-                                    "Une description pour la dépense"),
+                                    "Description pour la dépense"),
                               ),
                             ),
                           ),
