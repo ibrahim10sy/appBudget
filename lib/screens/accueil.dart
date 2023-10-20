@@ -204,8 +204,6 @@ class _AccueilState extends State<Accueil> {
           Navigator.push(context, MaterialPageRoute(builder: (context)=> const Statistiques()));
         }else if(index == 3){
           Navigator.push(context, MaterialPageRoute(builder: (context)=> const Categoriees()));
-        }else if (index ==2){
-         Navigator.push(context, MaterialPageRoute(builder: (context)=> const AjoutDepense()));
         }
         else{
           Provider.of<BottomNavigationService>(context,listen: false).changeIndex(index);

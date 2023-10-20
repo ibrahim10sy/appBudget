@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:ika_musaka/screens/accueil.dart';
 import 'package:ika_musaka/screens/budgetListe.dart';
+import 'package:ika_musaka/screens/depenseListe.dart';
+import 'package:ika_musaka/screens/profil.dart';
 import 'package:ika_musaka/services/BottomNavigationService.dart';
 import 'package:ika_musaka/services/budgetService.dart';
 import 'package:provider/provider.dart';
@@ -122,7 +124,8 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
         return [
           const Accueil(),
           const BudgetListe(),
-          const DepensesListes()
+          const DepenseListe(),
+          const Profil()
         ].elementAt(index);
       },
     };

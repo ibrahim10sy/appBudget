@@ -10,8 +10,9 @@ import 'package:provider/provider.dart';
 
 class CategorieService extends ChangeNotifier {
   static const String apiUrl = 'http://10.0.2.2:8080/Categorie';
+  List<dynamic> categorieListe = [];
 
-  static Future<void> addCategorie({required BuildContext context,required String titre,required Utilisateur utilisateur}) async {
+  Future<String> addCategorie({required BuildContext context,required String titre,required Utilisateur utilisateur}) async {
     Map<String, dynamic> user = {
       "idUtilisateur": utilisateur.idUtilisateur,
       "prenom":utilisateur.prenom,
@@ -32,11 +33,12 @@ class CategorieService extends ChangeNotifier {
       headers: {'Content-Type': 'application/json'},
       body: categories,
     );
-    debugPrint(categories);
+    //debugPrint(categories);
     if (response.statusCode == 200) {
       print("je vais te printer le retour json");
-       context.read<CategoriesProvider>().addItem(jsonDecode(response.body));
+       categorieListe.add(jsonDecode(response.body));
       print(response.body);
+      return "succes";
     } else {
       debugPrint(response.reasonPhrase);
       debugPrint(response.body);
