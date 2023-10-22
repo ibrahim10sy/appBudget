@@ -1,4 +1,5 @@
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ika_musaka/provider/CategoriesProvider.dart';
@@ -15,9 +16,10 @@ import 'package:ika_musaka/screens/accueil.dart';
 import 'package:ika_musaka/screens/bottomNavigatorBar.dart';
 import 'package:ika_musaka/services/BottomNavigationService.dart';
 import 'package:ika_musaka/services/budgetService.dart';
-import 'package:provider/provider.dart';
 
-void main() {
+Future<void> main() async {
+//  WidgetsFlutterBinding.ensureInitialized();
+//  await Firebase.initializeApp();
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Color.fromRGBO(47, 144, 98, 1),
   ));

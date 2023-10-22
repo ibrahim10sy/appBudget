@@ -82,7 +82,7 @@ class _AccueilState extends State<Accueil> {
                               Padding(
                                 padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
                                 child: Text(
-                                  "${utilisateur.prenom} ${utilisateur.nom}",
+                                  "${utilisateur.prenom.toUpperCase()} ${utilisateur.nom.toUpperCase()}",
                                   overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
                                       fontSize: 20,
