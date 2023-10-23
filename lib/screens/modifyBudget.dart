@@ -1,62 +1,47 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:http/http.dart' as http;
+import 'package:ika_musaka/model/utilisateur.dart';
+import 'package:ika_musaka/provider/UtilisateurProvider.dart';
+import 'package:ika_musaka/screens/BudgetService.dart';
 import 'package:ika_musaka/screens/categoriess.dart';
+import 'package:badges/badges.dart' as badges;
+import 'package:ika_musaka/services/budgetService.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:badges/badges.dart' as badges;
-import '../model/utilisateur.dart';
-import '../provider/UtilisateurProvider.dart';
-import 'package:ika_musaka/screens/BudgetService.dart';
+import '../model/Budget.dart';
 
-import '../services/budgetService.dart';
-
-class AjouterBudget extends StatefulWidget {
-  const AjouterBudget({super.key});
+class ModifyBudget extends StatefulWidget {
+  final Budget budget;
+  
+  const ModifyBudget({super.key, required this.budget});
 
   @override
-  State<AjouterBudget> createState() => _AjouterBudgetState();
+  State<ModifyBudget> createState() => _ModifyBudgetState();
 }
 
-class _AjouterBudgetState extends State<AjouterBudget> {
-  // ignore: non_constant_identifier_names
-  TextEditingController description_control = TextEditingController();
-  // ignore: non_constant_identifier_names
-  TextEditingController montant_control = TextEditingController();
-  // ignore: non_constant_identifier_names
-  TextEditingController montantalert_control = TextEditingController();
-  // ignore: non_constant_identifier_names
-  TextEditingController categorie_control = TextEditingController();
-  // ignore: non_constant_identifier_names
-  TextEditingController datedebut_control = TextEditingController();
+class _ModifyBudgetState extends State<ModifyBudget> {
+    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+    TextEditingController description_control = TextEditingController();
+    // ignore: non_constant_identifier_names
+    TextEditingController montant_control = TextEditingController();
+    // ignore: non_constant_identifier_names
+    TextEditingController montantalert_control = TextEditingController();
+    // ignore: non_constant_identifier_names
+    TextEditingController categorie_control = TextEditingController();
+    // ignore: non_constant_identifier_names
+    TextEditingController datedebut_control = TextEditingController();
+
+    
+   
+  DateTime selectedDate = DateTime.now();
+  late Future<Map<String, dynamic>> future;
+  TextEditingController inputController = TextEditingController();
+  late Utilisateur utilisateur;
   int? catValue;
   late Categorie maCat;
   late Future _mesCategories;
-  late Utilisateur utilisateur;
-
-  @override
-  void initState() {
-    description_control.clear();
-    montant_control.clear();
-    montant_control.clear();
-    montantalert_control.clear();
-    categorie_control.clear();
-    datedebut_control.clear();
-    utilisateur = Provider.of<UtilisateurProvider>(context,listen: false).utilisateur!;
-    fetchAlbum();
-    _mesCategories = http.get(Uri.parse('http://10.0.2.2:8080/Categorie/lire'));
-
-    super.initState();
-  }
-
-  @override
-  onDispose() {
-    description_control.dispose();
-    super.dispose();
-  }
-
   Future fetchAlbum() async {
     final response =
         await http.get(Uri.parse('http://10.0.2.2:8080/Budget/list'));
@@ -74,10 +59,53 @@ class _AjouterBudgetState extends State<AjouterBudget> {
     }
   }
 
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate) {
+      String formattedDate = DateFormat('yyyy-MM').format(picked);
+      setState(() {
+        inputController.text = formattedDate;
+        selectedDate = picked;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    description_control =  TextEditingController(text: widget.budget.description);
+    montant_control =  TextEditingController(text: widget.budget.montant.toString());
+    montantalert_control =  TextEditingController(text: widget.budget.montantAlert.toString());
+    categorie_control =  TextEditingController(text: widget.budget.categorie.toString());
+    datedebut_control =  TextEditingController(text: widget.budget.dateDebut);
+    utilisateur =
+        Provider.of<UtilisateurProvider>(context, listen: false).utilisateur!;
+   
+    // utilisateur = Provider.of<UtilisateurProvider>(context,listen: false).utilisateur!;
+    fetchAlbum();
+    _mesCategories = http.get(Uri.parse('http://10.0.2.2:8080/Categorie/lire'));
+    utilisateur =
+        Provider.of<UtilisateurProvider>(context, listen: false).utilisateur!;
+  }
+
+  @override
+  void dispose() {
+    description_control.dispose();
+    montant_control.dispose();
+    montantalert_control.dispose();
+    categorie_control.dispose();
+    datedebut_control.dispose();
+    super.dispose();
+  }
+  
+
   @override
   Widget build(BuildContext context) {
-    // fetchAlbum();
-    return SingleChildScrollView(
+     return SingleChildScrollView(
       child: SafeArea(
         child: Column(
           children: [
@@ -165,15 +193,11 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                   const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(
-                        Icons.add,
-                        color: Colors.white,
-                        size: 25,
-                      ),
+                     
                       Padding(
                           padding: EdgeInsets.only(left: 10.0),
                         child:  Text(
-                          'Ajout Budget',
+                          'Modifier Budget',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 26,
@@ -237,8 +261,9 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                                   controller: description_control,
                                   maxLines: 3,
                                   decoration: const InputDecoration.collapsed(
-                                      hintText:
-                                      "Une description pour le budget"),
+                                      hintText: 'Enter a description',
+                                    
+                                      ),
                                 ),
                               ),
                             ),
@@ -466,6 +491,10 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                           padding: EdgeInsets.only(bottom: 15.0),
                           child:  TextButton(
                             onPressed: () async {
+                               widget.budget.description = description_control.text;
+                                 widget.budget.description = montant_control.text;
+                                 widget.budget.description = montantalert_control.text;
+                                 widget.budget.description = datedebut_control.text;
                               final description = description_control.text;
                               final montant = montant_control.text;
                               final montantAlert = montantalert_control.text;
@@ -496,13 +525,15 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                                 return;
                               }
                               try {
-                                await BudgetServices.addBudget(
+                                await BudgetServices.updateBudget(
+                                    id : widget.budget.idBudget ?? 0,
                                     description: description,
                                     montant: montant,
                                     montantAlert: montantAlert,
                                     datedebut: datedebut,
                                     categorie: maCat,
-                                    utilisateur: utilisateur);
+                                    utilisateur: utilisateur
+                                    );
                                 Provider.of<BudgetService>(context, listen: false).applyChange();
                                 // Budget ajouté avec succès, afficher une boîte de dialogue de succès.
                                 showDialog(
@@ -510,7 +541,7 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                                   builder: (BuildContext context) {
                                     return AlertDialog(
                                       title: Center(child: Text('Succès')),
-                                      content: Text("Budget ajouté avec succès"),
+                                      content: Text("Budget modifier avec succès"),
                                       actions: <Widget>[
                                         TextButton(
                                           onPressed: () {

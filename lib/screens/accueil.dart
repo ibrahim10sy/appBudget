@@ -60,8 +60,6 @@ class _AccueilState extends State<Accueil> {
                             children: [
                               utilisateur.photos == null || utilisateur.photos!.isEmpty ?
                               CircleAvatar(
-                                //backgroundImage: AssetImage("assets/images/avatar.png"),
-                                //  child: Image.network(utilisateur.photos),
                                 backgroundColor: const Color.fromRGBO(240, 176, 2, 1),
                                 radius: 30,
                                 child: Text(

@@ -61,7 +61,7 @@ class _AjoutState extends State<AjoutDepense> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              // ... Votre code existant
+              
 
               ElevatedButton(
                 style: ElevatedButton.styleFrom(

@@ -42,8 +42,7 @@ Future<void> signInWithGoogle(BuildContext context) async {
       );
 
       // Une fois connecté, renvoie UserCredential
-      final userCredential =
-          await FirebaseAuth.instance.signInWithCredential(credential);
+      final userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
 
       // Redirige vers la page d'accueil en cas de succès de la connexion
       Navigator.push(
@@ -291,8 +290,7 @@ Future<void> signInWithGoogle(BuildContext context) async {
       body: SingleChildScrollView(
         child: Container(
           
-          height: MediaQuery.of(context).size.height -
-              70, //For moving according to the screen when the keyboard popsup.
+         //For moving according to the screen when the keyboard popsup.
           alignment: Alignment.bottomCenter,
           child: Container(
               padding: const EdgeInsets.all(30),

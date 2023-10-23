@@ -3,8 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:ika_musaka/model/categorieM.dart';
 import 'package:ika_musaka/provider/CategoriesProvider.dart';
-// import 'package:http/http.dart' as http;
-// import 'package:ika_musaka/model/categorieM.dart';
 import 'package:ika_musaka/screens/CategorieService.dart';
 import 'package:provider/provider.dart';
 import 'package:ika_musaka/provider/UtilisateurProvider.dart';
@@ -49,20 +47,6 @@ class MyCategorie extends State<Categoriees> {
     }
   }
 
-  // Future<dynamic> _chargerCategories() async {
-  //   final loadedCategories = await categorieService.fetchAlbum();
-  //   CategoriesProvider categoriesProvider = Provider.of<CategoriesProvider>(context, listen: false);
-
-  //   setState(() {
-  //     categoriesProvider.setCategorie(loadedCategories);
-  //     //categories = loadedCategories;
-  //     print("je vais printer");
-  //     //print(categoriesProvider.getCategories()[0]);
-  //     print("fin du print");
-  //     //categories = context.watch<CategoriesProvider>().categories;
-  //    // debugPrint('reponse ${categories[0]["titre"]}');
-  //   }); // Rafraîchir l'interface pour afficher les catégories
-  // }
 
   final _formKey = GlobalKey<FormState>();
   @override
@@ -489,7 +473,7 @@ class MyCategorie extends State<Categoriees> {
                                       color: Color.fromARGB(255, 31, 31, 31),
                                     ),
                                   ),
-                                  trailing: Row(
+                                   trailing: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       IconButton(

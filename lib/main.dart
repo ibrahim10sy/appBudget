@@ -3,20 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ika_musaka/provider/CategoriesProvider.dart';
 import 'package:ika_musaka/provider/UtilisateurProvider.dart';
-import 'package:ika_musaka/screens/AjoutDepense.dart';
 import 'package:ika_musaka/screens/CategorieService.dart';
 import 'package:ika_musaka/screens/ConnexionScreen.dart';
-import 'package:ika_musaka/screens/Depense.dart';
-import 'package:ika_musaka/screens/ProfilUtilisateur.dart';
 import 'package:ika_musaka/services/depenseService.dart';
 import 'package:provider/provider.dart';
-import 'package:get/get.dart';
-import 'package:ika_musaka/screens/ConnexionScreen.dart';
-import 'package:ika_musaka/screens/accueil.dart';
 import 'package:ika_musaka/screens/bottomNavigatorBar.dart';
 import 'package:ika_musaka/services/BottomNavigationService.dart';
 import 'package:ika_musaka/services/budgetService.dart';
-import 'package:provider/provider.dart';
+
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -49,7 +43,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return  MaterialApp(
         routes: {
-          '/profilUtilisateur': (context) => ProfilUtilisateur(),
+          // '/profilUtilisateur': (context) => ProfilUtilisateur(),
           '/BottomNavigationPage':(context) => BottomNavigationPage(),
           // Autres routes...
         },
