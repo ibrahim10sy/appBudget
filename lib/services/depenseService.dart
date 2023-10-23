@@ -3,10 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:ika_musaka/model/DepenceClasse.dart';
-import 'package:ika_musaka/model/Depense.dart';
 
 class DepenseService extends ChangeNotifier {
-  final String url = "http://10.0.2.2:8080/Depenses/";
+  final String url = "https://buget-service-api-git.onrender.com/Depenses/";
 
   List<DepenseClass> depenses = [];
   String action = "all";
@@ -81,26 +80,6 @@ class DepenseService extends ChangeNotifier {
     }
   }
 
-  Future<Depense?> createDepense(Depense depense) async{
-    final response = await http.post(
-      Uri.parse('http://10.0.2.2:8080/Depenses/create'),
-      body: json.encode(depense),
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-      }
-    );
-
-    print(jsonEncode(depense));
-
-    if(response.statusCode == 200){
-      var responseData = json.decode(response.body);
-      Depense createDepense = Depense.fromJson(responseData);
-      print("Je suis l\'instance de depense : $createDepense");
-      return createDepense;
-    }else{
-      print("Erreur lors de la création. $response.statusCode");
-    }
-  }
   Future<DepenseClass> ajouterDepense({
     required String description,
     required double montant,
@@ -108,7 +87,7 @@ class DepenseService extends ChangeNotifier {
     required DateTime date,
   }) async {
     try {
-      var request = http.MultipartRequest('POST', Uri.parse("http://10.0.2.2:8080/Depenses/create"));
+      var request = http.MultipartRequest('POST', Uri.parse("$url/create"));
 
       // Ajoutez les autres champs requis à la requête
       request.fields['depense'] = jsonEncode({
@@ -121,7 +100,7 @@ class DepenseService extends ChangeNotifier {
       var response = await request.send();
       var responsed = await http.Response.fromStream(response);
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 201) {
         final responseData = json.decode(responsed.body);
         debugPrint(responsed.body);
         return DepenseClass.fromJson(responseData);

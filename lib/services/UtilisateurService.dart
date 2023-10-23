@@ -11,6 +11,7 @@ import '../model/utilisateur.dart';
 class UtilisateurService {
 
   static const String apiUrl = 'http://10.0.2.2:8080/utilisateur/create'; // Mettez à jour l'URL correcte
+  // static const String apiUrl2 = 'http://10.0.2.2:8080/utilisateur/update'; // Mettez à jour l'URL correcte
   static const String apiUrl2 = 'http://10.0.2.2:8080/utilisateur/update2'; // Mettez à jour l'URL correcte
   
   
@@ -47,7 +48,7 @@ class UtilisateurService {
       var response = await request.send();
     
       var responsed = await http.Response.fromStream(response);
-      if (response.statusCode == 201) {
+      if (response.statusCode == 200) {
         final responseData = json.decode(responsed.body);
         debugPrint(responsed.body);
         return Utilisateur.fromJson(responseData);
@@ -101,5 +102,45 @@ class UtilisateurService {
         throw Exception('Une erreur s\'est produite lors de la mise à jour de l\'utilisateur : $e');
       }
     }
-    // ENDUPDATE
+//   static Future<Utilisateur> updateUtilisateur({
+//   required int idUtilisateur,
+//   required String nom,
+//   required String prenom,
+//   required String email,
+//   required String motDePasse,
+//   File? photos,
+// }) async {
+//   try {
+//     var request = http.MultipartRequest('PUT', Uri.parse('$apiUrl2/$idUtilisateur'));
+//     // request.headers.addAll({"Authorization": "Bearer token"});
+
+//     if (photos != null) {
+//       request.files.add(
+//         http.MultipartFile.fromBytes(
+//           'photo',
+//           await photos.readAsBytes(),
+//           filename: basename(photos.path),
+//         ),
+//       );
+//     }
+
+//     request.fields['nom'] = nom;
+//     request.fields['prenom'] = prenom;
+//     request.fields['email'] = email;
+//     request.fields['motDePasse'] = motDePasse;
+
+//     var response = await request.send();
+//     var responsed = await http.Response.fromStream(response);
+
+//     if (response.statusCode == 200) {
+//       final responseData = json.decode(responsed.body);
+//       return Utilisateur.fromJson(responseData);
+//     } else {
+//       throw Exception('Impossible de mettre à jour l\'utilisateur : ${response.statusCode}');
+//     }
+//   } catch (e) {
+//     throw Exception('Une erreur s\'est produite lors de la mise à jour de l\'utilisateur : $e');
+//   }
+//     // ENDUPDATE
+// }
 }
