@@ -453,7 +453,7 @@ Future<UserCredential> signInWithGoogle() async {
                     onPressed: loginUser,
                     style: ElevatedButton.styleFrom(
                       elevation: 3,
-                      fixedSize: Size(180,50),
+                      fixedSize: const Size(170,50),
                       padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 40),
                       backgroundColor: const Color(0xFF2F9062),
                       shape: RoundedRectangleBorder(
