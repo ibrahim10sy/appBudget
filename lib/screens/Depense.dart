@@ -11,7 +11,7 @@ class Depense extends StatelessWidget {
             Container(
               padding: const EdgeInsets.only(bottom: 45),
               child: Image.asset(
-                "images/depense.png",
+                "assets/images/depense.png",
                 height: 210,
                 width: 210,
               ),
@@ -39,7 +39,7 @@ class Depense extends StatelessWidget {
             ),
             Container(
                 padding: EdgeInsets.only(bottom: 45),
-                child: Image(image: AssetImage('images/89.png'))),
+                child: Image(image: AssetImage('assets/images/89.png'))),
             // --------------------- // Footer-------------------
 
             Container(

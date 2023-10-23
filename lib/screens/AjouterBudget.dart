@@ -1,8 +1,9 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:ika_musaka/screens/categoriess.dart';
+ import 'package:ika_musaka/screens/categoriess.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'dart:convert';
@@ -44,7 +45,7 @@ class _AjouterBudgetState extends State<AjouterBudget> {
 
   }*/
 
-  late List<dynamic> _mesCategories;
+   late Future _mesCategories;
   late Utilisateur utilisateur;
 
   @override
@@ -57,19 +58,10 @@ class _AjouterBudgetState extends State<AjouterBudget> {
     datedebut_control.clear();
     utilisateur = Provider.of<UtilisateurProvider>(context,listen: false).utilisateur!;
     fetchAlbum();
+    _mesCategories =
+        http.get(Uri.parse('http://10.0.2.2:8080/Categorie/lire'));
 
     super.initState();
-  }
-
-  Future<dynamic> getCategories() async {
-    var response =
-    await http.get(Uri.parse('https://buget-service-api-git.onrender.com/Categorie/lire'));
-    if (response.statusCode == 200) {
-      _mesCategories = jsonDecode(response.body);
-      return _mesCategories;
-    } else {
-      _mesCategories = [];
-    }
   }
 
   @override
@@ -80,7 +72,7 @@ class _AjouterBudgetState extends State<AjouterBudget> {
 
   Future fetchAlbum() async {
     final response =
-    await http.get(Uri.parse('https://buget-service-api-git.onrender.com/Budget/list'));
+        await http.get(Uri.parse('http://10.0.2.2:8080/Budget/list'));
 //print(response);
     if (response.statusCode == 200) {
       print("Bienvenue dans le console");
@@ -103,71 +95,71 @@ class _AjouterBudgetState extends State<AjouterBudget> {
         child: Column(
           children: [
             Padding(
-                padding: const EdgeInsets.only(left: 15.0,top: 30,right: 15.0,bottom: 15.0),
-                child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(31),
-                        boxShadow: const [
-                          BoxShadow(
-                              offset: Offset(0.0,0.0),
-                              blurRadius: 7.0,
-                              color: Color.fromRGBO(0, 0, 0, 0.25) //Color.fromRGBO(47, 144, 98, 1)
-                          )
-                        ]
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              utilisateur.photos == null || utilisateur.photos!.isEmpty ?
-                              CircleAvatar(
-                                //backgroundImage: AssetImage("assets/images/avatar.png"),
-                                //  child: Image.network(utilisateur.photos),
-                                backgroundColor: const Color.fromRGBO(240, 176, 2, 1),
-                                radius: 30,
-                                child: Text(
-                                  "${utilisateur.prenom.substring(0,1).toUpperCase()}${utilisateur.nom.substring(0,1).toUpperCase()}",
-                                  style: const TextStyle(
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                      letterSpacing: 2
-                                  ),
-                                ),
-                              ) :
-                              CircleAvatar(
-                                  backgroundImage: NetworkImage(utilisateur.photos!),
-                                  radius: 30
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                child: Text(
-                                  "${utilisateur.prenom} ${utilisateur.nom}",
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    fontSize: 20,
+              padding: const EdgeInsets.only(left: 15.0,top: 30,right: 15.0,bottom: 15.0),
+              child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(31),
+                      boxShadow: const [
+                        BoxShadow(
+                            offset: Offset(0.0,0.0),
+                            blurRadius: 7.0,
+                            color: Color.fromRGBO(0, 0, 0, 0.25) //Color.fromRGBO(47, 144, 98, 1)
+                        )
+                      ]
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            utilisateur.photos == null || utilisateur.photos!.isEmpty ?
+                            CircleAvatar(
+                              //backgroundImage: AssetImage("assets/images/avatar.png"),
+                              //  child: Image.network(utilisateur.photos),
+                              backgroundColor: const Color.fromRGBO(240, 176, 2, 1),
+                              radius: 30,
+                              child: Text(
+                                "${utilisateur.prenom.substring(0,1).toUpperCase()}${utilisateur.nom.substring(0,1).toUpperCase()}",
+                                style: const TextStyle(
+                                    fontSize: 25,
                                     fontWeight: FontWeight.bold,
-                                  ),
+                                    color: Colors.white,
+                                    letterSpacing: 2
                                 ),
-                              )
-                            ],
-                          ),
-                          Padding(
-                              padding: const EdgeInsets.only(right: 15),
-                              child: badges.Badge(
-                                position: badges.BadgePosition.topEnd(top: -2,end: -2),
-                                badgeContent: const Text("3",style: TextStyle(color: Colors.white),),
-                                child: const Icon(Icons.notifications,color: Color.fromRGBO(240, 176, 2, 1),size: 40,),
-                              )
-                          )
-                        ],
-                      ),
-                    )
-                )
+                              ),
+                            ) :
+                            CircleAvatar(
+                                backgroundImage: NetworkImage(utilisateur.photos!),
+                                radius: 30
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                              child: Text(
+                                "${utilisateur.prenom} ${utilisateur.nom}",
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        Padding(
+                            padding: const EdgeInsets.only(right: 15),
+                            child: badges.Badge(
+                              position: badges.BadgePosition.topEnd(top: -2,end: -2),
+                              badgeContent: const Text("3",style: TextStyle(color: Colors.white),),
+                              child: const Icon(Icons.notifications,color: Color.fromRGBO(240, 176, 2, 1),size: 40,),
+                            )
+                        )
+                      ],
+                    ),
+                  )
+              )
             ),
             Container(
               margin:
@@ -192,13 +184,13 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                         size: 25,
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: 10.0),
+                          padding: EdgeInsets.only(left: 10.0),
                         child:  Text(
                           'Ajout Budget',
                           style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 26,
-                              fontWeight: FontWeight.bold
+                            color: Colors.white,
+                            fontSize: 26,
+                            fontWeight: FontWeight.bold
                           ),
                         ),
                       ),
@@ -358,29 +350,29 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Image.asset(
-                                "assets/images/categories.png",
-                                width: 23,
-                              ),
+                                    "assets/images/categories.png",
+                                    width: 23,
+                                  ),
                               Expanded (
-                                  flex: 2,
-                                  child: Padding(
+                                flex: 2,
+                                child: Padding(
                                     padding: EdgeInsets.only(left: 5.0),
-                                    child: Text("Catégorie",style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: Color(0xff2f9062)),
-                                    ),
-                                  )
+                                  child: Text("Catégorie",style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xff2f9062)),
+                                  ),
+                                )
                               ),
                               Expanded(
-                                  flex: 2,
+                                flex: 2,
                                   child: FutureBuilder(
-                                    future: getCategories(),
+                                    future: _mesCategories,
                                     builder: (_, snapshot) {
                                       if (snapshot.connectionState ==
                                           ConnectionState.waiting) {
                                         return DropdownButton(
-                                            dropdownColor: Colors.green,
+                                          dropdownColor: Colors.green,
                                             items: [], onChanged: (value) {}
 
                                         );
@@ -426,7 +418,7 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(left: 15, right: 15, bottom: 15),
+                            padding: EdgeInsets.only(left: 15, right: 15, bottom: 15),
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
@@ -460,156 +452,118 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                                                 width: 3,
                                                 color: Colors.green))),
                                     onTap: () async {
-                                      DateTime? pickedDate =
-                                      await showDatePicker(
-                                          context: context,
-                                          initialDate: DateTime.now(),
-                                          firstDate: DateTime(1950),
-                                          //DateTime.now() - not to allow to choose before today.
-                                          lastDate: DateTime(2100));
-                                      if (pickedDate != null) {
-                                        print(pickedDate);
-                                        String formattedDate =
-                                        DateFormat('yyyy-MM-dd')
-                                            .format(pickedDate);
-                                        print(formattedDate);
-                                        setState(() {
-                                          datedebut_control.text = formattedDate;
-                                        });
-                                      } else {}
-                                    },
+                                          DateTime? pickedDate =
+                                              await showDatePicker(
+                                                  context: context,
+                                                  initialDate: DateTime.now(),
+                                                  firstDate: DateTime(1950),
+                                                  //DateTime.now() - not to allow to choose before today.
+                                                  lastDate: DateTime(2100));
+                                          if (pickedDate != null) {
+                                            print(pickedDate);
+                                            String formattedDate =
+                                                DateFormat('yyyy-MM-dd')
+                                                    .format(pickedDate);
+                                            print(formattedDate);
+                                            setState(() {
+                                              datedebut_control.text = formattedDate;
+                                            });
+                                          } else {}
+                                        },
                                   ),
                                 ),
                               ]
                           ),
                         ),
                         Padding(
-                            padding: EdgeInsets.only(bottom: 15.0),
-                            child:  TextButton(
-                              onPressed: () async {
-                                final description = description_control.text;
-                                final montant = montant_control.text;
-                                final montantAlert = montantalert_control.text;
-                                final datedebut = datedebut_control.text;
+                          padding: EdgeInsets.only(bottom: 15.0),
+                          child:  TextButton(
+                            onPressed: () async {
+                              final description = description_control.text;
+                              final montant = montant_control.text;
+                              final montantAlert = montantalert_control.text;
+                              final datedebut = datedebut_control.text;
 
-                                if (description.isEmpty ||
-                                    montant.isEmpty ||
-                                    montantAlert.isEmpty ||
-                                    datedebut.isEmpty) {
-                                  final String errorMessage = "Tous les champs doivent être remplis";
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: Center(child: Text('Erreur')),
-                                        content: Text(errorMessage),
-                                        actions: <Widget>[
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                            child: Text('OK'),
-                                          )
-                                        ],
-                                      );
-                                    },
-                                  );
-                                  return;
-                                }
-                                try {
-                                  await BudgetServices.addBudget(
-                                      description: description,
-                                      montant: montant,
-                                      montantAlert: montantAlert,
-                                      datedebut: datedebut,
-                                      categorie: maCat,
-                                      utilisateur: utilisateur);
-                                  Provider.of<BudgetService>(context, listen: false).applyChange();
-                                  // Budget ajouté avec succès, afficher une boîte de dialogue de succès.
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: Center(child: Text('Succès')),
-                                        content: Text("Budget ajouté avec succès"),
-                                        actions: <Widget>[
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.of(context).pop(context);
-                                            },
-                                            child: Text('OK'),
-                                          )
-                                        ],
-                                      );
-                                    },
-                                  );
+                              if (description.isEmpty ||
+                                  montant.isEmpty ||
+                                  montantAlert.isEmpty ||
+                                  datedebut.isEmpty) {
+                                final String errorMessage = "Tous les champs doivent être remplis";
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Center(child: Text('Erreur')),
+                                      content: Text(errorMessage),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text('OK'),
+                                        )
+                                      ],
+                                    );
+                                  },
+                                );
+                                return;
+                              }
+                              try {
+                                await BudgetServices.addBudget(
+                                    description: description,
+                                    montant: montant,
+                                    montantAlert: montantAlert,
+                                    datedebut: datedebut,
+                                    categorie: maCat,
+                                    utilisateur: utilisateur);
+                                Provider.of<BudgetService>(context, listen: false).applyChange();
+                                // Budget ajouté avec succès, afficher une boîte de dialogue de succès.
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Center(child: Text('Succès')),
+                                      content: Text("Budget ajouté avec succès"),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop(context);
+                                          },
+                                          child: Text('OK'),
+                                        )
+                                      ],
+                                    );
+                                  },
+                                );
 
-                                  description_control.clear();
-                                  montant_control.clear();
-                                  montantalert_control.clear();
-                                  datedebut_control.clear();
-                                  categorie_control.clear();
-                                } catch (e) {
-                                  final String errorMessage = e.toString();
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: Center(child: Text('Erreur')),
-                                        content: Text(errorMessage.replaceAll("Exception:", "")),
-                                        actions: <Widget>[
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                            child: Text('OK'),
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
-                                }
-                              },
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF2F9062),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                  side: const BorderSide(color: Colors.white70),
-                                ),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: const Color(0xFF2F9062),
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      child: const Padding(
-                                        padding: EdgeInsets.all(5.0),
-                                        child: Text(
-                                          "Ajouter",
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20,
-                                          ),
-                                          textAlign: TextAlign.center,
+                                description_control.clear();
+                                montant_control.clear();
+                                montantalert_control.clear();
+                                datedebut_control.clear();
+                                categorie_control.clear();
+                              } catch (e) {
+                                final String errorMessage = e.toString();
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Center(child: Text('Erreur')),
+                                      content: Text(errorMessage.replaceAll("Exception:", "")),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text('OK'),
                                         ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            )
-
-                        ),
-                        TextButton(
-                            onPressed: () {},
+                                      ],
+                                    );
+                                  },
+                                );
+                              }
+                            },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFFE42E2E), // Button color
+                              backgroundColor: const Color(0xFF2F9062),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20),
                                 side: const BorderSide(color: Colors.white70),
@@ -619,27 +573,65 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                  padding: const EdgeInsets.only(left: 15.0, right: 15.0),
                                   child: Container(
-                                      decoration: BoxDecoration(
-                                        color:const Color(0xFFE42E2E),
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      child: const Padding(
-                                        padding:  EdgeInsets.all(5.0),
-                                        child: Text(
-                                          "Annuler",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold),
-                                          textAlign: TextAlign.center,
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xFF2F9062),
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: const Padding(
+                                      padding: EdgeInsets.all(5.0),
+                                      child: Text(
+                                        "Ajouter",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20,
                                         ),
-                                      )
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
                                   ),
-                                )
+                                ),
                               ],
-                            )
+                            ),
+                          )
+
+                        ),
+                        TextButton(
+                          onPressed: () {},
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFFE42E2E), // Button color
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                              side: const BorderSide(color: Colors.white70),
+                            ),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Padding(
+                                  padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                                child: Container(
+                                    decoration: BoxDecoration(
+                                      color:const Color(0xFFE42E2E),
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: const Padding(
+                                      padding:  EdgeInsets.all(5.0),
+                                      child: Text(
+                                        "Annuler",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    )
+                                ),
+                              )
+                            ],
+                          )
                         ),
                       ],
                     ),

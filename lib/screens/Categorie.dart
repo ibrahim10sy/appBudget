@@ -23,16 +23,14 @@ class Categoriees extends StatefulWidget {
 }
 
 class MyCategorie extends State<Categoriees> {
-  
   TextEditingController titre_controller = TextEditingController();
   late Utilisateur utilisateur;
 
-  
-
-List<dynamic> categories = [];
+  List<dynamic> categories = [];
   @override
   void initState() {
-    utilisateur = Provider.of<UtilisateurProvider>(context,listen: false).utilisateur!;
+    utilisateur =
+        Provider.of<UtilisateurProvider>(context, listen: false).utilisateur!;
     super.initState();
     // Initialisation des contrôleurs de texte avec des valeurs vides.
     titre_controller.clear();
@@ -40,47 +38,57 @@ List<dynamic> categories = [];
   }
 
   final categorieService = CategorieService();
-
-  Future<dynamic> _chargerCategories() async {
-    final loadedCategories = await categorieService.fetchAlbum();
-    CategoriesProvider categoriesProvider = Provider.of<CategoriesProvider>(context, listen: false);
-      
-    setState(() {
-      categoriesProvider.setCategorie(loadedCategories);
-      //categories = loadedCategories;
-      print("je vais printer");
-      //print(categoriesProvider.getCategories()[0]);
-      print("fin du print");
-      //categories = context.watch<CategoriesProvider>().categories;
-     // debugPrint('reponse ${categories[0]["titre"]}');
-    }); // Rafraîchir l'interface pour afficher les catégories
+  Future<void> _chargerCategories() async {
+    try {
+      var categories = await CategorieService().fetchAlbum();
+      Provider.of<CategorieService>(context, listen: false)
+          .categorieListe = categories;
+    } catch (e) {
+      // Gérer les erreurs ici
+      print("L'erreur est servenue lors de la chargement" + e.toString());
+    }
   }
+
+  // Future<dynamic> _chargerCategories() async {
+  //   final loadedCategories = await categorieService.fetchAlbum();
+  //   CategoriesProvider categoriesProvider = Provider.of<CategoriesProvider>(context, listen: false);
+
+  //   setState(() {
+  //     categoriesProvider.setCategorie(loadedCategories);
+  //     //categories = loadedCategories;
+  //     print("je vais printer");
+  //     //print(categoriesProvider.getCategories()[0]);
+  //     print("fin du print");
+  //     //categories = context.watch<CategoriesProvider>().categories;
+  //    // debugPrint('reponse ${categories[0]["titre"]}');
+  //   }); // Rafraîchir l'interface pour afficher les catégories
+  // }
 
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-      
     return Scaffold(
       body: ChangeNotifierProvider(
-        create: (BuildContext context) {  },
+        create: (BuildContext context) {},
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Padding(
-                  padding: const EdgeInsets.only(top: 30,bottom: 15.0, left : 15, right : 15),
+                  padding: const EdgeInsets.only(
+                      top: 30, bottom: 15.0, left: 15, right: 15),
                   child: Container(
                       decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(31),
                           boxShadow: const [
                             BoxShadow(
-                                offset: Offset(0.0,0.0),
+                                offset: Offset(0.0, 0.0),
                                 blurRadius: 7.0,
-                                color: Color.fromRGBO(0, 0, 0, 0.25) //Color.fromRGBO(47, 144, 98, 1)
-                            )
-                          ]
-                      ),
+                                color: Color.fromRGBO(0, 0, 0,
+                                    0.25) //Color.fromRGBO(47, 144, 98, 1)
+                                )
+                          ]),
                       child: Padding(
                         padding: const EdgeInsets.all(5.0),
                         child: Row(
@@ -88,28 +96,30 @@ List<dynamic> categories = [];
                           children: [
                             Row(
                               children: [
-                                utilisateur.photos == null || utilisateur.photos!.isEmpty ?
-                                CircleAvatar(
-                                  //backgroundImage: AssetImage("assets/images/avatar.png"),
-                                  //  child: Image.network(utilisateur.photos),
-                                  backgroundColor: const Color.fromRGBO(240, 176, 2, 1),
-                                  radius: 30,
-                                  child: Text(
-                                    "${utilisateur.prenom.substring(0,1).toUpperCase()}${utilisateur.nom.substring(0,1).toUpperCase()}",
-                                    style: const TextStyle(
-                                        fontSize: 25,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                        letterSpacing: 2
-                                    ),
-                                  ),
-                                ) :
-                                CircleAvatar(
-                                    backgroundImage: NetworkImage(utilisateur.photos!),
-                                    radius: 30
-                                ),
+                                utilisateur.photos == null ||
+                                        utilisateur.photos!.isEmpty
+                                    ? CircleAvatar(
+                                        //backgroundImage: AssetImage("assets/images/avatar.png"),
+                                        //  child: Image.network(utilisateur.photos),
+                                        backgroundColor: const Color.fromRGBO(
+                                            240, 176, 2, 1),
+                                        radius: 30,
+                                        child: Text(
+                                          "${utilisateur.prenom.substring(0, 1).toUpperCase()}${utilisateur.nom.substring(0, 1).toUpperCase()}",
+                                          style: const TextStyle(
+                                              fontSize: 25,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                              letterSpacing: 2),
+                                        ),
+                                      )
+                                    : CircleAvatar(
+                                        backgroundImage:
+                                            NetworkImage(utilisateur.photos!),
+                                        radius: 30),
                                 Padding(
-                                  padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(10, 0, 0, 0),
                                   child: Text(
                                     "${utilisateur.prenom} ${utilisateur.nom}",
                                     overflow: TextOverflow.ellipsis,
@@ -124,17 +134,22 @@ List<dynamic> categories = [];
                             Padding(
                                 padding: const EdgeInsets.only(right: 15),
                                 child: badges.Badge(
-                                  position: badges.BadgePosition.topEnd(top: -2,end: -2),
-                                  badgeContent: const Text("3",style: TextStyle(color: Colors.white),),
-                                  child: const Icon(Icons.notifications,color: Color.fromRGBO(240, 176, 2, 1),size: 40,),
-                                )
-                            )
+                                  position: badges.BadgePosition.topEnd(
+                                      top: -2, end: -2),
+                                  badgeContent: const Text(
+                                    "3",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  child: const Icon(
+                                    Icons.notifications,
+                                    color: Color.fromRGBO(240, 176, 2, 1),
+                                    size: 40,
+                                  ),
+                                ))
                           ],
                         ),
-                      )
-                  )
-              ),
-      ///////////////////////////////contenanire en vert//////////////
+                      ))),
+              ///////////////////////////////contenanire en vert//////////////
               const SizedBox(height: 5),
               Container(
                 margin: const EdgeInsets.all(7),
@@ -175,7 +190,8 @@ List<dynamic> categories = [];
                                           padding: const EdgeInsets.only(
                                               top: 8, left: 10, right: 8),
                                           child: const Image(
-                                            image: AssetImage('assets/images/img.png'),
+                                            image: AssetImage(
+                                                'assets/images/img.png'),
                                           ),
                                         ),
                                         const Text(
@@ -208,7 +224,8 @@ List<dynamic> categories = [];
                                                     decoration: BoxDecoration(
                                                       border: Border.all(
                                                         color: Colors.black12,
-                                                        style: BorderStyle.solid,
+                                                        style:
+                                                            BorderStyle.solid,
                                                         width: 1.0,
                                                       ),
                                                       borderRadius:
@@ -225,14 +242,16 @@ List<dynamic> categories = [];
                                                     ),
                                                   )),
                                               Padding(
-                                                padding: const EdgeInsets.all(8),
+                                                padding:
+                                                    const EdgeInsets.all(8),
                                                 child: ElevatedButton(
                                                   onPressed: () async {
                                                     final titre =
                                                         titre_controller.text;
                                                     if (titre.isEmpty) {
-                                                      const String errorMessage =
-                                                          "Champs titre doit être charger";
+                                                      const String
+                                                          errorMessage =
+                                                          "Champs titre doit être renseigner";
                                                       showDialog(
                                                           context: context,
                                                           builder: (BuildContext
@@ -245,7 +264,8 @@ List<dynamic> categories = [];
                                                                   errorMessage),
                                                               actions: <Widget>[
                                                                 TextButton(
-                                                                  onPressed: () {
+                                                                  onPressed:
+                                                                      () {
                                                                     Navigator.of(
                                                                             context)
                                                                         .pop();
@@ -259,16 +279,19 @@ List<dynamic> categories = [];
                                                           });
                                                       return;
                                                     }
-                                                    try {
-                                                      await CategorieService
-                                                          .addCategorie(context: context,
-                                                              titre: titre, utilisateur:utilisateur);
-      
-                                                      titre_controller.clear();
-                                                      
-                                                    } catch (e) {
-                                                      final String errorMessage =
-                                                          e.toString();
+                                                    await Provider.of<CategorieService>(
+                                                                context,
+                                                                listen: false)
+                                                          .addCategorie(
+                                                              context: context,
+                                                              titre: titre,
+                                                              utilisateur:
+                                                                  utilisateur).then((value) {
+                                                                    titre_controller.clear();
+                                                                  }).catchError((onError){
+                                                                    final String
+                                                            errorMessage =
+                                                          onError.toString();
                                                       // ignore: use_build_context_synchronously
                                                       showDialog(
                                                           context: context,
@@ -282,7 +305,8 @@ List<dynamic> categories = [];
                                                                   errorMessage),
                                                               actions: <Widget>[
                                                                 TextButton(
-                                                                  onPressed: () {
+                                                                  onPressed:
+                                                                      () {
                                                                     Navigator.of(
                                                                             context)
                                                                         .pop();
@@ -294,10 +318,13 @@ List<dynamic> categories = [];
                                                               ],
                                                             );
                                                           });
-                                                    }
-                                                    Navigator.of(context).pop(); // Ferme la boîte de dialogue
+                                                                  });
+                                                    
+                                                    Navigator.of(context)
+                                                        .pop(); // Ferme la boîte de dialogue
                                                   },
-                                                  style: ElevatedButton.styleFrom(
+                                                  style:
+                                                      ElevatedButton.styleFrom(
                                                     elevation: 3,
                                                     padding: const EdgeInsets
                                                         .symmetric(
@@ -305,12 +332,14 @@ List<dynamic> categories = [];
                                                         horizontal: 80),
                                                     backgroundColor: const Color(
                                                         0xFF2F9062), // Button color
-                                                    shape: RoundedRectangleBorder(
+                                                    shape:
+                                                        RoundedRectangleBorder(
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               30),
                                                       side: const BorderSide(
-                                                          color: Colors.white70),
+                                                          color:
+                                                              Colors.white70),
                                                     ),
                                                   ),
                                                   child: const Text(
@@ -318,14 +347,16 @@ List<dynamic> categories = [];
                                                     style: TextStyle(
                                                       fontSize: 14,
                                                       color: Colors.white,
-                                                      fontWeight: FontWeight.w700,
+                                                      fontWeight:
+                                                          FontWeight.w700,
                                                     ),
                                                   ),
                                                 ),
                                               ), // Fin button ajouter
                                               Padding(
                                                 // Debut button annuler
-                                                padding: const EdgeInsets.all(8),
+                                                padding:
+                                                    const EdgeInsets.all(8),
                                                 child: ElevatedButton(
                                                   onPressed: () {
                                                     // Your button's onPressed logic here
@@ -334,26 +365,31 @@ List<dynamic> categories = [];
                                                       _formKey.currentState!
                                                           .save();
                                                     }
+
+                                                    Navigator.of(context).pop();
                                                   },
-                                                  style: ElevatedButton.styleFrom(
+                                                  style:
+                                                      ElevatedButton.styleFrom(
                                                     elevation: 3,
                                                     padding: const EdgeInsets
                                                         .symmetric(
                                                         vertical: 15,
                                                         horizontal: 80),
-      
+
                                                     backgroundColor:
                                                         const Color.fromARGB(
                                                             255,
                                                             230,
                                                             10,
                                                             10), // Button color
-                                                    shape: RoundedRectangleBorder(
+                                                    shape:
+                                                        RoundedRectangleBorder(
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               30),
                                                       side: const BorderSide(
-                                                          color: Colors.white70),
+                                                          color:
+                                                              Colors.white70),
                                                     ),
                                                   ),
                                                   child: const Text(
@@ -361,7 +397,8 @@ List<dynamic> categories = [];
                                                     style: TextStyle(
                                                       fontSize: 14,
                                                       color: Colors.white,
-                                                      fontWeight: FontWeight.w700,
+                                                      fontWeight:
+                                                          FontWeight.w700,
                                                     ),
                                                   ),
                                                 ),
@@ -376,7 +413,8 @@ List<dynamic> categories = [];
                         elevation: 3,
                         padding: const EdgeInsets.symmetric(
                             vertical: 15, horizontal: 50),
-                        backgroundColor: const Color(0xFF2F9062), // Button color
+                        backgroundColor:
+                            const Color(0xFF2F9062), // Button color
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                           side: const BorderSide(color: Colors.white70),
@@ -420,66 +458,81 @@ List<dynamic> categories = [];
                         color: Color(0xFF2F9062), // Couleur du texte en vert
                       ),
                     ),
-      
+
                     /////////////////////////////////////////liste////////////
                     const SizedBox(height: 5),
                     Expanded(
-                      child: ListView.builder(
-                        itemCount: context.watch<CategoriesProvider>().categories.length,
-                        itemBuilder: (context, index) {
-                          final category =  context.watch<CategoriesProvider>().categories[index];//categories[index];
-                          //print(category.toString());
-                          return Card(
-                            margin: const EdgeInsets.all(8),
-                            elevation: 5, // Niveau d'élévation pour l'ombre
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(40)),
-                            child: ListTile(
-                              leading: Image.asset('assets/images/888.png'),
-                              title: Text(
-                                category["titre"],
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color.fromARGB(255, 31, 31, 31),
-                                ),
-                              ),
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  IconButton(
-                                    icon: const Icon(Icons.edit_sharp,
-                                        color: Color(
-                                            0xFF2F9062)), // Icône pour modifier
-      
-                                    onPressed: () async {
-                                     // print(category);
-                                      DialogHelper.showModifyCategoryDialog(
-                                          context,index,category);
-                                          
+                      child: Consumer<CategorieService>(
+                        builder: (context, categorieService, child) {
+                          debugPrint("edcvfr");
+                          return FutureBuilder(
+                            future: categorieService.fetchAlbum(), 
+                            builder: ((context, snapshot) {
+                              if(snapshot.hasData){
+                                return ListView.builder(
+                            itemCount: snapshot.data.length,
+                            itemBuilder: (context, index) {
+                              final Map<String,dynamic> category = snapshot.data[index]; //categories[index];
+                              //print(category.toString());
+                              return Card(
+                                margin: const EdgeInsets.all(8),
+                                elevation: 5, // Niveau d'élévation pour l'ombre
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(40)),
+                                child: ListTile(
+                                  leading: Image.asset('assets/images/888.png'),
+                                  title: Text(
+                                    category["titre"],
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color.fromARGB(255, 31, 31, 31),
+                                    ),
+                                  ),
+                                  trailing: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      IconButton(
+                                        icon: const Icon(Icons.edit_sharp,
+                                            color: Color(
+                                                0xFF2F9062)), // Icône pour modifier
+
+                                        onPressed: () async {
+                                          // print(category);
+                                          DialogHelper.showModifyCategoryDialog(
+                                              context, index, category);
+
                                           //  String newTitre = titre_controller.text;
-                                           // await CategorieService.updateCategorie(id: 1, titre: newTitre); 
-                                            // Rafraîchir la liste
-                                            //await _chargerCategories();
-                                            // Fermeture du popup
+                                          // await CategorieService.updateCategorie(id: 1, titre: newTitre);
+                                          // Rafraîchir la liste
+                                          //await _chargerCategories();
+                                          // Fermeture du popup
                                           //  Navigator.of(context).pop();
-      
-                                    },
+                                        },
+                                      ),
+                                      IconButton(
+                                        icon: const Icon(Icons.delete,
+                                            color: Color.fromARGB(255, 255, 0,
+                                                0)), // Icône pour supprimer
+                                        onPressed: () {
+                                          DialogHelper.showDeleteCategoryDialog(
+                                              context,
+                                              category['idCategorie'],
+                                              index,
+                                              utilisateur);
+                                          // Logique pour la suppression ici
+                                        },
+                                      ),
+                                    ],
                                   ),
-                                  IconButton(
-                                    icon: const Icon(Icons.delete,
-                                        color: Color.fromARGB(255, 255, 0, 0)), // Icône pour supprimer
-                                    onPressed: () {
-                                      
-                                       DialogHelper.showDeleteCategoryDialog(
-                                           context,category['idCategorie'],index);
-                                      // Logique pour la suppression ici
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
+                                ),
+                              );
+                            },
                           );
+                              }else{
+                                return const CircularProgressIndicator();
+                              }
+                            }));
                         },
                       ),
                     ),

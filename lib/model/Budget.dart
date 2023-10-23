@@ -1,6 +1,4 @@
-import 'dart:collection';
 
-import 'package:ika_musaka/model/utilisateur.dart';
 
 class Budget {
   int? idBudget;

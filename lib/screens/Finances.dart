@@ -49,7 +49,7 @@ class Finances extends StatelessWidget{
             Container(
               padding: EdgeInsets.only(bottom: 45),
               child:Image(
-                image: AssetImage('images/ggg.png'))
+                image: AssetImage('assets/images/ggg.png'))
             ),
       // --------------------- // Footer-------------------      
 

@@ -15,6 +15,7 @@ class CategoriesProvider with ChangeNotifier{
 
     void addItem(dynamic category) {
     _categories.add(category);
+    debugPrint("${_categories.length}");
     notifyListeners();
   }
 
@@ -27,6 +28,9 @@ class CategoriesProvider with ChangeNotifier{
       _categories.removeAt(index);
       print("removedddd");
       notifyListeners();
+   }
+   void applyChange(){
+    notifyListeners();
    }
 
 }
