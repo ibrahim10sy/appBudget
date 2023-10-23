@@ -1,4 +1,3 @@
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,6 +8,7 @@ import 'package:ika_musaka/screens/CategorieService.dart';
 import 'package:ika_musaka/screens/ConnexionScreen.dart';
 import 'package:ika_musaka/screens/Depense.dart';
 import 'package:ika_musaka/screens/ProfilUtilisateur.dart';
+import 'package:ika_musaka/screens/demarrage.dart';
 import 'package:ika_musaka/services/depenseService.dart';
 import 'package:provider/provider.dart';
 import 'package:get/get.dart';
@@ -58,7 +58,7 @@ class _MyAppState extends State<MyApp> {
       // title: "LogIn Screen",
       debugShowCheckedModeBanner: false,
       // home: BottomNavigationPage(),
-      home: const Connexion(),
+      home:  Connexion(),
     );//Place SignUp function here to Observe SignUp Screen.
   }
   //adama

@@ -543,7 +543,7 @@ class BudgetListeGetx extends StatelessWidget {
                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                     Text(
-                                                        "${snapshot.data?["Total"]} CFA",
+                                                        "${snapshot.data?["Total"]} FCFA",
                                                         style: const TextStyle(
                                                             color: Colors.white,
                                                             fontSize: 22,

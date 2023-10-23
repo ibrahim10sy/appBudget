@@ -33,7 +33,7 @@ class _DepenseState extends State<DepensesListes> {
       final List<dynamic> data = json.decode(response.body);
       return List<Map<String, dynamic>>.from(data);
     } else {
-      throw Exception(response.body);
+      throw Exception("erreur");
     }
   }
 
@@ -43,7 +43,11 @@ class _DepenseState extends State<DepensesListes> {
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: depenses,
         builder: (context, snapshot) {
+
+
+      
           if (snapshot.hasData) {
+            
             return SingleChildScrollView(
               child: Column(
                 children: [
@@ -219,6 +223,7 @@ class _DepenseState extends State<DepensesListes> {
                                       title: Text(depense['description']),
                                     ),
                                   );
+                                 
                                 },
                               ),
                             ),
@@ -230,11 +235,17 @@ class _DepenseState extends State<DepensesListes> {
                 ],
               ),
             );
-          } else if (snapshot.hasError) {
+          }
+          
+          else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           }
+          
+          else{
 
-          return CircularProgressIndicator();
+          return  const CircularProgressIndicator();
+          }
+
         },
       ),
     );
