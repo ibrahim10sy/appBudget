@@ -43,15 +43,15 @@ class _ProfilState extends State<Profil> {
               SizedBox(
                 height: 50,
               ),
-              Consumer<UtilisateurProvider>(builder: (context, value, child) {
-                return utilisateur.photos == null || utilisateur.photos!.isEmpty
+              Consumer<UtilisateurProvider>(builder: (context, utilisateurProvider, child) {
+                return utilisateurProvider.utilisateur!.photos == null || utilisateurProvider.utilisateur!.photos!.isEmpty
                   ? Column(
                     children: [
                       CircleAvatar(
                         backgroundColor: const Color.fromRGBO(47, 144, 98, 1),
                         radius: 120,
                         child: Text(
-                          "${utilisateur.prenom.substring(0, 1).toUpperCase()}${utilisateur.nom.substring(0, 1).toUpperCase()}",
+                          "${utilisateurProvider.utilisateur!.prenom.substring(0, 1).toUpperCase()}${utilisateurProvider.utilisateur!.nom.substring(0, 1).toUpperCase()}",
                           style: TextStyle(
                             fontSize: 50,
                             fontWeight: FontWeight.bold,
@@ -63,7 +63,7 @@ class _ProfilState extends State<Profil> {
                       Padding(
                         padding: const EdgeInsets.all(20),
                         child: Text(
-                          "${utilisateur.prenom.toUpperCase()} ${utilisateur.nom.toUpperCase()}",
+                          "${utilisateurProvider.utilisateur!.prenom.toUpperCase()} ${utilisateurProvider.utilisateur!.nom.toUpperCase()}",
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: 20,
@@ -74,7 +74,7 @@ class _ProfilState extends State<Profil> {
                       Padding(
                         padding: const EdgeInsets.all(5),
                         child: Text(
-                          "${utilisateur.email}",
+                          "${utilisateurProvider.utilisateur!.email}",
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: 20,
@@ -87,14 +87,14 @@ class _ProfilState extends State<Profil> {
                   : Column(
                     children: [
                       CircleAvatar(
-                        backgroundImage: NetworkImage(utilisateur.photos!),
+                        backgroundImage: NetworkImage(utilisateurProvider.utilisateur!.photos!),
                         backgroundColor: Color.fromRGBO(47, 144, 98, 1),
                         radius: 120,
                       ),
                       Padding(
                         padding: const EdgeInsets.all(20),
                         child: Text(
-                          "${utilisateur.prenom.toUpperCase()} ${utilisateur.nom.toUpperCase()}",
+                          "${utilisateurProvider.utilisateur!.prenom.toUpperCase()} ${utilisateurProvider.utilisateur!.nom.toUpperCase()}",
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: 20,
@@ -105,7 +105,7 @@ class _ProfilState extends State<Profil> {
                       Padding(
                         padding: const EdgeInsets.all(5),
                         child: Text(
-                          "${utilisateur.email}",
+                          "${utilisateurProvider.utilisateur!.email}",
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             fontSize: 20,
