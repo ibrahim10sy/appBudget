@@ -5,6 +5,7 @@ import 'package:ika_musaka/provider/CategoriesProvider.dart';
 import 'package:ika_musaka/provider/UtilisateurProvider.dart';
 import 'package:ika_musaka/screens/CategorieService.dart';
 import 'package:ika_musaka/screens/ConnexionScreen.dart';
+import 'package:ika_musaka/services/UtilisateurService.dart';
 import 'package:ika_musaka/services/depenseService.dart';
 import 'package:provider/provider.dart';
 import 'package:ika_musaka/screens/bottomNavigatorBar.dart';
@@ -25,6 +26,7 @@ void main() {
          ChangeNotifierProvider(create: (context) => DepenseService()),
          ChangeNotifierProvider(create: (context) => CategoriesProvider()),
          ChangeNotifierProvider(create: (context) => CategorieService())
+        //  ChangeNotifierProvider(create: (context) => UtilisateurService())
 
        ],
        child:  const MyApp()),

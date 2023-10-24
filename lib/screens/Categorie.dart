@@ -269,8 +269,7 @@ class MyCategorie extends State<Categoriees> {
                                                           .addCategorie(
                                                               context: context,
                                                               titre: titre,
-                                                              utilisateur:
-                                                                  utilisateur).then((value) {
+                                                              utilisateur: utilisateur).then((value) {
                                                                     titre_controller.clear();
                                                                   }).catchError((onError){
                                                                     final String

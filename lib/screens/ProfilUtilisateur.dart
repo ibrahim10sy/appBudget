@@ -102,6 +102,26 @@ class _ProfilUtilisateurState extends State<ProfilUtilisateur> {
           motDePasse: motDePasse,
         );
       }
+      // showDialog(context: context, 
+      // builder: (BuildContext context){
+      //   return AlertDialog(
+      //     title: const Center(
+      //       child:  Text('Succèss'),
+      //     ),
+      //     content: Text('Profil modifier avec succèss'),
+      //     actions: <Widget>[
+      //      TextButton(
+      //        onPressed:() {
+      //        Navigator.of(
+      //        context).pop();},
+      //         child:
+      //          const Text(
+      //           'Ok'),
+      //        )
+      //       ],                                                     
+      //   );
+      // }
+      // );
 
       // Le profil utilisateur a été mis à jour avec succès, vous pouvez gérer la réponse ici.
       print(
@@ -421,6 +441,7 @@ class _ProfilUtilisateurState extends State<ProfilUtilisateur> {
             child: ElevatedButton(
               onPressed: (){
                 _updateUtilisateur();
+
                 Navigator.push(context, MaterialPageRoute(builder: (context) => Profil()));
                 debugPrint(utilisateur.toString());
               },
