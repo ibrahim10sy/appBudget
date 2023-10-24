@@ -85,7 +85,7 @@ class _ProfilUtilisateurState extends State<ProfilUtilisateur> {
 
     try {
       if (image != null) {
-        utilisateurMaj = await UtilisateurService.updateUtilisateur(
+        utilisateurMaj = await Provider.of<UtilisateurService>(context, listen: false).updateUtilisateur(
           idUtilisateur: utilisateur.idUtilisateur,
           nom: nom,
           prenom: prenom,
@@ -93,14 +93,16 @@ class _ProfilUtilisateurState extends State<ProfilUtilisateur> {
           motDePasse: motDePasse,
           photos: image as File,
         );
+        Provider.of<UtilisateurProvider>(context, listen: false).setUtilisateur(utilisateurMaj);
       } else {
-        utilisateurMaj = await UtilisateurService.updateUtilisateur(
+        utilisateurMaj = await Provider.of<UtilisateurService>(context, listen: false).updateUtilisateur(
           idUtilisateur: utilisateur.idUtilisateur,
           nom: nom,
           prenom: prenom,
           email: email,
           motDePasse: motDePasse,
         );
+        Provider.of<UtilisateurProvider>(context, listen: false).setUtilisateur(utilisateurMaj);
       }
       // showDialog(context: context, 
       // builder: (BuildContext context){

@@ -8,11 +8,11 @@ import 'package:provider/provider.dart';
 // import 'package:image_picker/image_picker.dart';
 import '../model/utilisateur.dart';
 
-class UtilisateurService {
+class UtilisateurService extends ChangeNotifier {
 
   static const String apiUrl = 'http://10.0.2.2:8080/utilisateur/create'; // Mettez à jour l'URL correcte
   static const String apiUrl2 = 'http://10.0.2.2:8080/utilisateur/update2'; // Mettez à jour l'URL correcte
-  
+   
   
   static Future<Utilisateur> ajouterUtilisateur({
     required String nom,
@@ -60,7 +60,7 @@ class UtilisateurService {
     }
   }
     // UPDATE
-      static Future<Utilisateur> updateUtilisateur({
+       Future<Utilisateur> updateUtilisateur({
       required int idUtilisateur,
       required String nom,
       required String prenom,
@@ -102,4 +102,8 @@ class UtilisateurService {
       }
     }
     // ENDUPDATE
+
+    void applyChange(){
+    notifyListeners();
+  }
 }

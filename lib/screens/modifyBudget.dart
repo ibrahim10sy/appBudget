@@ -530,6 +530,7 @@ class _ModifyBudgetState extends State<ModifyBudget> {
                                     description: description,
                                     montant: montant,
                                     montantAlert: montantAlert,
+                                    montantRestant: widget.budget.montantRestant.toString(),
                                     datedebut: datedebut,
                                     categorie: maCat,
                                     utilisateur: utilisateur

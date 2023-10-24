@@ -56,6 +56,7 @@ class BudgetServices{
     required String description,
     required String montant,
     required String montantAlert,
+    required String montantRestant,
     required String datedebut,
     required Categorie categorie,
     required Utilisateur utilisateur
@@ -71,6 +72,7 @@ class BudgetServices{
       'description': description,
       'montant': int.parse(montant),         
       'montantAlerte': int.parse(montantAlert),
+      'montantRestant': int.parse(montantRestant),
       'dateDebut': datedebut,
       'categorie': categorie.toMap(),
       'utilisateur': ut

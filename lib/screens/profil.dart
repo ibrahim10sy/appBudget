@@ -43,47 +43,79 @@ class _ProfilState extends State<Profil> {
               SizedBox(
                 height: 50,
               ),
-              utilisateur.photos == null || utilisateur.photos!.isEmpty
-                  ? CircleAvatar(
-                      backgroundColor: const Color.fromRGBO(47, 144, 98, 1),
-                      radius: 120,
-                      child: Text(
-                        "${utilisateur.prenom.substring(0, 1).toUpperCase()}${utilisateur.nom.substring(0, 1).toUpperCase()}",
-                        style: TextStyle(
-                          fontSize: 50,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          letterSpacing: 2,
+              Consumer<UtilisateurProvider>(builder: (context, value, child) {
+                return utilisateur.photos == null || utilisateur.photos!.isEmpty
+                  ? Column(
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: const Color.fromRGBO(47, 144, 98, 1),
+                        radius: 120,
+                        child: Text(
+                          "${utilisateur.prenom.substring(0, 1).toUpperCase()}${utilisateur.nom.substring(0, 1).toUpperCase()}",
+                          style: TextStyle(
+                            fontSize: 50,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            letterSpacing: 2,
+                          ),
                         ),
                       ),
-                    )
-                  : CircleAvatar(
-                      backgroundImage: NetworkImage(utilisateur.photos!),
-                      backgroundColor: Color.fromRGBO(47, 144, 98, 1),
-                      radius: 120,
-                    ),
-              Padding(
-                padding: const EdgeInsets.all(20),
-                child: Text(
-                  "${utilisateur.prenom.toUpperCase()} ${utilisateur.nom.toUpperCase()}",
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(5),
-                child: Text(
-                  "${utilisateur.email}",
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
+                      Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Text(
+                          "${utilisateur.prenom.toUpperCase()} ${utilisateur.nom.toUpperCase()}",
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(5),
+                        child: Text(
+                          "${utilisateur.email}",
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      )
+                    ],
+                  )
+                  : Column(
+                    children: [
+                      CircleAvatar(
+                        backgroundImage: NetworkImage(utilisateur.photos!),
+                        backgroundColor: Color.fromRGBO(47, 144, 98, 1),
+                        radius: 120,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Text(
+                          "${utilisateur.prenom.toUpperCase()} ${utilisateur.nom.toUpperCase()}",
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(5),
+                        child: Text(
+                          "${utilisateur.email}",
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      )
+                    ],
+                  );
+              },),
               SizedBox(height: 40,),
               OutlinedButton(
                 onPressed: () {

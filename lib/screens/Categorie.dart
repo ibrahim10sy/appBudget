@@ -89,7 +89,7 @@ class MyCategorie extends State<Categoriees> {
                                             240, 176, 2, 1),
                                         radius: 30,
                                         child: Text(
-                                          "${utilisateur.prenom.substring(0, 1).toUpperCase()}${utilisateur.nom.substring(0, 1).toUpperCase()}",
+                                        "${utilisateur.prenom.substring(0,1).toUpperCase()}${utilisateur.nom.substring(0,1).toUpperCase()}",
                                           style: const TextStyle(
                                               fontSize: 25,
                                               fontWeight: FontWeight.bold,
