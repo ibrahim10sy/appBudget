@@ -32,11 +32,7 @@ class UtilisateurService extends ChangeNotifier {
         // debugPrint("MMM======== "+photos.path);
       }
 
-      // Ajoutez les autres champs requis à la requête
-      // request.fields['nom'] = nom;
-      // request.fields['prenom'] = prenom;
-      // request.fields['email'] = email;
-      // request.fields['motDePasse'] = motDePasse;
+      
       request.fields['utilisateur'] = jsonEncode({
         'nom' : nom,
         'prenom' : prenom,
@@ -58,7 +54,7 @@ class UtilisateurService extends ChangeNotifier {
     } catch (e) {
       throw Exception('Une erreur s\'est produite lors de l\'ajout de l\'utilisateur : $e');
     }
-  }
+  } 
     // UPDATE
        Future<Utilisateur> updateUtilisateur({
       required int idUtilisateur,

@@ -424,7 +424,7 @@ class _ProfilUtilisateurState extends State<ProfilUtilisateur> {
                     controller: RepmotDePasse_controller,
                     obscureText: true,
                     decoration: const InputDecoration(
-                      hintText: "Repetermot de passe",
+                      hintText: "Repeter mot de passe",
                       border: InputBorder.none,
                       prefixIcon: Icon(
                         Icons.vpn_key,

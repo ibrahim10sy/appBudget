@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ika_musaka/provider/CategoriesProvider.dart';
+import 'package:ika_musaka/provider/DepenseProvider.dart';
 import 'package:ika_musaka/provider/UtilisateurProvider.dart';
 import 'package:ika_musaka/screens/CategorieService.dart';
 import 'package:ika_musaka/screens/ConnexionScreen.dart';
@@ -24,6 +25,7 @@ void main() {
          ChangeNotifierProvider(create: (context) => UtilisateurProvider()),
          ChangeNotifierProvider(create: (context) => BudgetService()),
          ChangeNotifierProvider(create: (context) => DepenseService()),
+         ChangeNotifierProvider(create: (context) => DepensesProvider()),
          ChangeNotifierProvider(create: (context) => CategoriesProvider()),
          ChangeNotifierProvider(create: (context) => CategorieService()),
          ChangeNotifierProvider(create: (context) => UtilisateurService()) 

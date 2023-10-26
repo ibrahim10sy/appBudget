@@ -251,6 +251,7 @@ class _AjoutState extends State<AjoutDepense> {
                             child: Padding(
                               padding: const EdgeInsets.only(left: 10, top: 10),
                               child: TextField(
+                                controller: descriptionController,
                                 maxLines: 3,
                                 decoration: const InputDecoration.collapsed(
                                     hintText:
@@ -507,7 +508,7 @@ class _AjoutState extends State<AjoutDepense> {
                                 final dateDepenses = datedeDepense_control.text;
                                 final budgets = widget.budget;
                                 // Validation pour s'assurer que montants est un nombre valide
-                                if ( montants.isEmpty || descriptions.isEmpty || dateDepenses.isEmpty) {
+                                if (int.tryParse(montants) != null && widget.budget != null && montants.isEmpty || descriptions.isEmpty || dateDepenses.isEmpty) {
                                 final String errorMessage = "Tous les champs doivent être remplis";
                                    showDialog(
                                   context: context,
@@ -556,7 +557,7 @@ class _AjoutState extends State<AjoutDepense> {
                                       },
                                     );
                                   }
-                                } else if(int.tryParse(montants) != null || widget.budget != null ){
+                                } else{
                                   showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
@@ -574,25 +575,7 @@ class _AjoutState extends State<AjoutDepense> {
                                       );
                                     },
                                   );
-                                } else{
-                                    showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: Center(child: Text('Erreur')),
-                                      content: Text("L'objet Budget est nul. Veuillez le vérifier."),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: Text('OK'),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
-                              }
+                                } 
                                 
                               },
                               child: const Text(

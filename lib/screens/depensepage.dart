@@ -316,25 +316,7 @@ class _DepenseState extends State<Depense> {
                                               width: 3,
                                               color: Colors.green))),
                                   readOnly: true,
-                                  /*onTap: () async {
-                                          DateTime? pickedDate =
-                                              await showDatePicker(
-                                                  context: context,
-                                                  initialDate: DateTime.now(),
-                                                  firstDate: DateTime(1950),
-                                                  //DateTime.now() - not to allow to choose before today.
-                                                  lastDate: DateTime(2100));
-                                          if (pickedDate != null) {
-                                            print(pickedDate);
-                                            String formattedDate =
-                                                DateFormat('yyyy-MM-dd')
-                                                    .format(pickedDate);
-                                            print(formattedDate);
-                                            setState(() {
-                                              dateInput.text = formattedDate;
-                                            });
-                                          } else {}
-                                        },*/
+                                  
                                 ),
                               ),
                             ]
@@ -397,37 +379,22 @@ class _DepenseState extends State<Depense> {
                                   });
                                   UpdateDepensesService().modifierdepense(depenses).then((value) {
                                     showDialog(
-                                        context: context,
-                                        builder: (BuildContext context){
-                                          return Dialog(
-                                              shadowColor: const Color.fromRGBO(0, 0, 0, 0.25),
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(15.0),
-                                              ),
-                                              child: Container(
-                                                padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-                                                height: 100,
-                                                child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: [
-                                                    const Text('Modifier avec succès',
-                                                      style: TextStyle(
-                                                          fontSize: 20,
-                                                          fontWeight: FontWeight.bold,
-                                                          color: Colors.green
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding: const EdgeInsets.only(left: 15.0),
-                                                      child: Image.asset('assets/images/img.png',
-                                                        height: 30,
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                              )
-                                          );
-                                        });
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: Center(child: Text('Succès')),
+                                              content: Text("Dépense modifié avec succès"),
+                                              actions: <Widget>[
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop(context);
+                                                  },
+                                                  child: Text('OK'),
+                                                )
+                                              ],
+                                            );
+                                          },
+                                        );
                                   }).catchError((onError){
                                     showDialog(
                                         context: context,
@@ -487,38 +454,23 @@ class _DepenseState extends State<Depense> {
                               child: ElevatedButton(
                                 onPressed: (){
                                   SupprimerDepensesService().supprimerdepense(depenses.idDepense!).then((value) {
-                                    showDialog(
-                                        context: context,
-                                        builder: (BuildContext context){
-                                          return Dialog(
-                                              shadowColor: const Color.fromRGBO(0, 0, 0, 0.25),
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(15.0),
-                                              ),
-                                              child: Container(
-                                                padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-                                                height: 100,
-                                                child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: [
-                                                    const Text('Supprimer avec succès',
-                                                      style: TextStyle(
-                                                          fontSize: 20,
-                                                          fontWeight: FontWeight.bold,
-                                                          color: Colors.green
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding: const EdgeInsets.only(left: 15.0),
-                                                      child: Image.asset('assets/images/img.png',
-                                                        height: 30,
-                                                      ),
-                                                    )
-                                                  ],
-                                                ),
-                                              )
-                                          );
-                                        });
+                                   showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: Center(child: Text('Succès')),
+                                              content: Text("Dépense supprimé avec succès"),
+                                              actions: <Widget>[
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop(context);
+                                                  },
+                                                  child: Text('OK'),
+                                                )
+                                              ],
+                                            );
+                                          },
+                                        );
                                   }).catchError((onError){
                                     showDialog(
                                         context: context,

@@ -105,7 +105,6 @@ static Future<void> ajouterDepense({
       "idBudget" : budget.idBudget
     };
   var depenses = jsonEncode({
-    'idDepense' : null,
     'description': description,
     'montant': int.parse(montant), 
     'type': type.toMap(),
@@ -129,40 +128,7 @@ static Future<void> ajouterDepense({
   }
 }
 
-  // Future<DepenseClass> ajouterDepense({
-  //   required String description,
-  //   required double montant,
-  //   required String type,
-  //   required DateTime date,
-  //   required Budget budget,
-  //   required Utilisateur utilisateur
-  // }) async {
-  //   try {
-  //     var request = http.MultipartRequest('POST', Uri.parse("$url/create"));
-
-  //     // Ajoutez les autres champs requis à la requête
-  //     request.fields['depense'] = jsonEncode({
-  //       'description': description,
-  //       'montant': montant.toString(),
-  //       'type': type,
-  //       'date': date.toIso8601String(),
-  //     });
-
-  //     var response = await request.send();
-  //     var responsed = await http.Response.fromStream(response);
-
-  //     if (response.statusCode == 201) {
-  //       final responseData = json.decode(responsed.body);
-  //       debugPrint(responsed.body);
-  //       return DepenseClass.fromJson(responseData);
-  //     } else {
-  //       debugPrint(responsed.body);
-  //       throw Exception('Impossible d\'ajouter la dépense ${response.statusCode}');
-  //     }
-  //   } catch (e) {
-  //     throw Exception('Une erreur s\'est produite lors de l\'ajout de la dépense : $e');
-  //   }
-  // }
+  
 
   void applyChange(){
     notifyListeners();
