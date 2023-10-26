@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 
 class CategorieService extends ChangeNotifier {
   static const String apiUrl = 'http://10.0.2.2:8080/Categorie';
+  static const String apiUrl2 = 'http://10.0.2.2:8080/Categorie/list';
   List<dynamic> categorieListe = [];
 
   Future<String> addCategorie({required BuildContext context,required String titre,required Utilisateur utilisateur}) async {
@@ -53,6 +54,23 @@ class CategorieService extends ChangeNotifier {
   Future fetchAlbum() async {
     final response =
         await http.get(Uri.parse('http://10.0.2.2:8080/Categorie/lire'));
+ //print(response);
+
+    if (response.statusCode == 200) {
+      print("Bienvenu au categorie");
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      print(jsonDecode(response.body));
+      return jsonDecode(response.body);
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to lire');
+    }
+  }
+  Future catByUser(int id) async {
+    final response =
+        await http.get(Uri.parse('$apiUrl2/$id'));
  //print(response);
 
     if (response.statusCode == 200) {

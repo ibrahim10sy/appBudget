@@ -449,7 +449,7 @@ class MyCategorie extends State<Categoriees> {
                         builder: (context, categorieService, child) {
                           debugPrint("edcvfr");
                           return FutureBuilder(
-                            future: categorieService.fetchAlbum(), 
+                            future: categorieService.catByUser(utilisateur.idUtilisateur), 
                             builder: ((context, snapshot) {
                               if(snapshot.hasData){
                                 return ListView.builder(

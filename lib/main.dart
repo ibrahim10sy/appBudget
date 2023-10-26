@@ -26,7 +26,7 @@ void main() {
          ChangeNotifierProvider(create: (context) => DepenseService()),
          ChangeNotifierProvider(create: (context) => CategoriesProvider()),
          ChangeNotifierProvider(create: (context) => CategorieService()),
-         ChangeNotifierProvider(create: (context) => UtilisateurService())
+         ChangeNotifierProvider(create: (context) => UtilisateurService()) 
 
        ],
        child:  const MyApp()),

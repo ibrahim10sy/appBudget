@@ -3,9 +3,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:ika_musaka/model/DepenceClasse.dart';
+import 'package:ika_musaka/model/types.dart';
+import 'package:ika_musaka/model/utilisateur.dart';
+
+import '../model/Budget.dart';
 
 class DepenseService extends ChangeNotifier {
-  final String url = "https://buget-service-api-git.onrender.com/Depenses/";
+  final String url = "http://10.0.2.2:8080/Depenses/";
+  final String url1 = "http://10.0.2.2:8080/Depenses/create";
 
   List<DepenseClass> depenses = [];
   String action = "all";
@@ -34,8 +39,8 @@ class DepenseService extends ChangeNotifier {
   }
 
   Future<List<DepenseClass>> getDepenseByIdBudget(int idBudget) async{
-    final response = await http.get(Uri.parse("$url$idBudget"));
-    debugPrint("$url$idBudget");
+    final response = await http.get(Uri.parse('http://10.0.2.2:8080/Depenses/$idBudget'));
+    // debugPrint("$url$idBudget");
     if(response.statusCode == 200){
       List<dynamic> body = jsonDecode(utf8.decode(response.bodyBytes));
       depenses = body.map((dynamic item) => DepenseClass.fromJson(item)).toList();
@@ -80,38 +85,84 @@ class DepenseService extends ChangeNotifier {
     }
   }
 
-  Future<DepenseClass> ajouterDepense({
-    required String description,
-    required double montant,
-    required String type,
-    required DateTime date,
-  }) async {
-    try {
-      var request = http.MultipartRequest('POST', Uri.parse("$url/create"));
+ 
+static Future<void> ajouterDepense({
+  required String description,
+  required String montant,
+  required String dateDepense,
+  required Types type,
+  required Budget budget,
+  required Utilisateur utilisateur,
+}) async {
 
-      // Ajoutez les autres champs requis à la requête
-      request.fields['depense'] = jsonEncode({
-        'description': description,
-        'montant': montant.toString(),
-        'type': type,
-        'date': date.toIso8601String(),
-      });
+  Map<String, int?> typeMap = {
+    "idType": type.idType
+  };
+  Map<String,int?> ut = {
+      "idUtilisateur" : utilisateur.idUtilisateur
+    };
+  Map<String,int?> bud = {
+      "idBudget" : budget.idBudget
+    };
+  var depenses = jsonEncode({
+    'idDepense' : null,
+    'description': description,
+    'montant': int.parse(montant), 
+    'type': type.toMap(),
+    'date': dateDepense,
+    'budget': budget.toMap(),
+    'utilisateur': ut,
+  });
 
-      var response = await request.send();
-      var responsed = await http.Response.fromStream(response);
+  final response = await http.post(Uri.parse('http://10.0.2.2:8080/Depenses/create'),
+    headers: {'Content-Type': 'application/json'},
+    body: depenses,
+  );
+ 
 
-      if (response.statusCode == 201) {
-        final responseData = json.decode(responsed.body);
-        debugPrint(responsed.body);
-        return DepenseClass.fromJson(responseData);
-      } else {
-        debugPrint(responsed.body);
-        throw Exception('Impossible d\'ajouter la dépense');
-      }
-    } catch (e) {
-      throw Exception('Une erreur s\'est produite lors de l\'ajout de la dépense : $e');
-    }
+  if (response.statusCode == 200) {
+    debugPrint(response.body);
+    debugPrint(depenses.toString());
+  } else {
+    debugPrint(response.body);
+    throw Exception('Impossible d\'ajouter une dépense ${response.statusCode}');
   }
+}
+
+  // Future<DepenseClass> ajouterDepense({
+  //   required String description,
+  //   required double montant,
+  //   required String type,
+  //   required DateTime date,
+  //   required Budget budget,
+  //   required Utilisateur utilisateur
+  // }) async {
+  //   try {
+  //     var request = http.MultipartRequest('POST', Uri.parse("$url/create"));
+
+  //     // Ajoutez les autres champs requis à la requête
+  //     request.fields['depense'] = jsonEncode({
+  //       'description': description,
+  //       'montant': montant.toString(),
+  //       'type': type,
+  //       'date': date.toIso8601String(),
+  //     });
+
+  //     var response = await request.send();
+  //     var responsed = await http.Response.fromStream(response);
+
+  //     if (response.statusCode == 201) {
+  //       final responseData = json.decode(responsed.body);
+  //       debugPrint(responsed.body);
+  //       return DepenseClass.fromJson(responseData);
+  //     } else {
+  //       debugPrint(responsed.body);
+  //       throw Exception('Impossible d\'ajouter la dépense ${response.statusCode}');
+  //     }
+  //   } catch (e) {
+  //     throw Exception('Une erreur s\'est produite lors de l\'ajout de la dépense : $e');
+  //   }
+  // }
 
   void applyChange(){
     notifyListeners();

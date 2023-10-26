@@ -43,6 +43,7 @@ class _ProfilState extends State<Profil> {
               SizedBox(
                 height: 50,
               ),
+              //pour la mis à jours global
               Consumer<UtilisateurProvider>(builder: (context, utilisateurProvider, child) {
                 return utilisateurProvider.utilisateur!.photos == null || utilisateurProvider.utilisateur!.photos!.isEmpty
                   ? Column(
