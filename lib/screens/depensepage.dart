@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ika_musaka/model/DepenceClasse.dart';
+import 'package:ika_musaka/screens/budgetDetail.dart';
+import 'package:ika_musaka/screens/budgetListe.dart';
 import 'package:ika_musaka/services/Deletedepenseservice.dart';
 import 'package:ika_musaka/services/updatedepenseservice.dart';
 import 'package:provider/provider.dart';
@@ -387,7 +389,7 @@ class _DepenseState extends State<Depense> {
                                               actions: <Widget>[
                                                 TextButton(
                                                   onPressed: () {
-                                                    Navigator.of(context).pop(context);
+                                                    Navigator.push(context, MaterialPageRoute(builder: ((context) =>  BudgetListe())));
                                                   },
                                                   child: Text('OK'),
                                                 )
@@ -453,7 +455,7 @@ class _DepenseState extends State<Depense> {
                               width: 142,
                               child: ElevatedButton(
                                 onPressed: (){
-                                  SupprimerDepensesService().supprimerdepense(depenses.idDepense!).then((value) {
+                                  SupprimerDepensesService().supprimerdepense(depenses.idDepenses!).then((value) {
                                    showDialog(
                                           context: context,
                                           builder: (BuildContext context) {

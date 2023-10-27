@@ -106,7 +106,7 @@ static Future<void> ajouterDepense({
     };
   var depenses = jsonEncode({
     'description': description,
-    'montant': int.parse(montant), 
+    'montant': int.tryParse(montant), 
     'type': type.toMap(),
     'date': dateDepense,
     'budget': budget.toMap(),

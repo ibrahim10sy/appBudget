@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:http/http.dart' as http;
 
+import '../model/DepenceClasse.dart';
 import '../model/utilisateur.dart';
 import '../provider/UtilisateurProvider.dart';
 import '../services/depenseService.dart';
@@ -27,58 +28,14 @@ class _AjoutState extends State<AjoutDepense> {
   String? selectedType;
   // late Budget budget ;
   TextEditingController descriptionController = TextEditingController();
-  TextEditingController montant_control = TextEditingController();
-  TextEditingController typeController = TextEditingController();
+ TextEditingController montant_control = TextEditingController();
+ TextEditingController typeController = TextEditingController();
   TextEditingController datedeDepense_control = TextEditingController();
    int? typeValue;
    late Types maType;
   late Utilisateur utilisateur;
+  late DepenseClass depenses;
   late Future _mesType;
-
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime picked = (await showDatePicker(
-          context: context,
-          initialDate: selectedDate,
-          firstDate: DateTime(2000),
-          lastDate: DateTime(2101),
-        )) ??
-        selectedDate;
-
-    if (picked != true && picked != selectedDate) {
-      setState(() {
-        selectedDate = picked;
-      });
-    }
-  }
-@override
-  onDispose() {
-    descriptionController.dispose();
-    super.dispose();
-  }
-  // Future<void> _ajouterDepense() async {
-  //   try {
-  //     await DepenseService().ajouterDepense(
-  //       description: descriptionController.text,
-  //       montant: double.parse(montantController.text),
-  //       type: maType.toString(),
-  //       date: selectedDate,
-  //     );
-
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(
-  //         content: Text('Dépense ajoutée avec succès'),
-  //         duration: Duration(seconds: 2),
-  //       ),
-  //     );
-  //   } catch (e) {
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(
-  //         content: Text('Erreur lors de l\'ajout de la dépense : $e'),
-  //         duration: Duration(seconds: 2),
-  //       ),
-  //     );
-  //   }
-  // }
 
 
   @override
@@ -377,64 +334,7 @@ class _AjoutState extends State<AjoutDepense> {
                               ],
                             ),
                           ),
-                          // Padding(
-                          //   padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
-                          //   child: Row(
-                          //       mainAxisAlignment: MainAxisAlignment.start,
-                          //       children: [
-                          //         Image.asset(
-                          //           'assets/images/calendar.png',
-                          //           width: 23,
-                          //         ),
-                          //         const Expanded(
-                          //           child: Padding(
-                          //               padding: EdgeInsets.only(left: 5),
-                          //               child: Text(
-                          //                 'Date début :',
-                          //                 style: TextStyle(
-                          //                     fontSize: 16,
-                          //                     fontWeight: FontWeight.bold,
-                          //                     color: Color(0xff2f9062)),
-                          //               )),
-                          //         ),
-                          //         Expanded(
-                          //           flex: 2,
-                          //           child: TextField(
-                          //             controller: dateInput,
-                          //             decoration: const InputDecoration(
-                          //                 labelText: 'Date de création',
-                          //                 labelStyle:
-                          //                 TextStyle(color: Colors.green),
-                          //                 enabledBorder: OutlineInputBorder(
-                          //                     borderSide: BorderSide.none),
-                          //                 focusedBorder: OutlineInputBorder(
-                          //                     borderSide: BorderSide(
-                          //                         width: 3,
-                          //                         color: Colors.green))),
-                          //             onTap: () async {
-                          //               DateTime? pickedDate =
-                          //               await showDatePicker(
-                          //                   context: context,
-                          //                   initialDate: DateTime.now(),
-                          //                   firstDate: DateTime(1950),
-                          //                   //DateTime.now() - not to allow to choose before today.
-                          //                   lastDate: DateTime(2100));
-                          //               if (pickedDate != null) {
-                          //                 print(pickedDate);
-                          //                 String formattedDate =
-                          //                 DateFormat('yyyy-MM-dd')
-                          //                     .format(pickedDate);
-                          //                 print(formattedDate);
-                          //                 setState(() {
-                          //                   dateInput.text = formattedDate;
-                          //                 });
-                          //               } else {}
-                          //             },
-                          //           ),
-                          //         ),
-                          //       ]
-                          //   ),
-                          // ),
+                         
                            Padding(
                             padding: EdgeInsets.only(left: 15, right: 15, bottom: 15),
                           child: Row(
@@ -528,6 +428,26 @@ class _AjoutState extends State<AjoutDepense> {
                                     );
                                   },
                                 );
+                                if(depenses.montant! > widget.budget.montant!){
+                                  final String errorMessage = "Le montant du depense ne doit pas surpasse celle du budget";
+                                   showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Center(child: Text('Erreur')),
+                                      content: Text(errorMessage),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text('OK'),
+                                        )
+                                      ],
+                                    );
+                                  },
+                                );
+                                }else{
                                  try{
                                           await DepenseService.ajouterDepense(
                                               description: descriptions,
@@ -557,7 +477,7 @@ class _AjoutState extends State<AjoutDepense> {
                                         );
                                       },
                                     );
-                                  }
+                                  }}
                                 } else{
                                   showDialog(
                                     context: context,

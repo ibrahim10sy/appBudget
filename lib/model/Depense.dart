@@ -33,7 +33,7 @@ import 'package:ika_musaka/model/Budget.dart';
 class Depense {
   final  int? idDepenses;
   final String description;
-  final  double montant;
+  final  int montant ;
   final  String date;
   final  Budget budget;
   final  String type;
