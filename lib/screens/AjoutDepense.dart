@@ -37,37 +37,6 @@ class _AjoutState extends State<AjoutDepense> {
   late DepenseClass depenses;
   late Future _mesType;
 
- 
-// @override
-//   onDispose() {
-//     descriptionController.dispose();
-//     super.dispose();
-//   }
-  // Future<void> _ajouterDepense() async {
-  //   try {
-  //     await DepenseService().ajouterDepense(
-  //       description: descriptionController.text,
-  //       montant: double.parse(montantController.text),
-  //       type: maType.toString(),
-  //       date: selectedDate,
-  //     );
-
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(
-  //         content: Text('Dépense ajoutée avec succès'),
-  //         duration: Duration(seconds: 2),
-  //       ),
-  //     );
-  //   } catch (e) {
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       SnackBar(
-  //         content: Text('Erreur lors de l\'ajout de la dépense : $e'),
-  //         duration: Duration(seconds: 2),
-  //       ),
-  //     );
-  //   }
-  // }
-
 
   @override
   void initState() {
