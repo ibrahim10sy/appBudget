@@ -1,5 +1,4 @@
-
-import 'package:flutter/material.dart';
+ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ika_musaka/provider/CategoriesProvider.dart';
 import 'package:ika_musaka/provider/UtilisateurProvider.dart';
@@ -15,7 +14,7 @@ import 'package:ika_musaka/screens/accueil.dart';
 import 'package:ika_musaka/screens/bottomNavigatorBar.dart';
 import 'package:ika_musaka/services/BottomNavigationService.dart';
 import 'package:ika_musaka/services/budgetService.dart';
-import 'package:provider/provider.dart';
+
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
