@@ -41,6 +41,7 @@ class DialogHelper {
                 child:const  Icon(
                   Icons.edit_sharp,
                   color: Color.fromARGB(255, 233, 85, 0),
+                  // color: Color.fromARGB(255, 233, 85, 0),
                 ),
               ),
               const Text(
@@ -82,7 +83,7 @@ class DialogHelper {
                       child: TextFormField(
                         controller: myController,
                         decoration: const InputDecoration(
-                          hintText: "Ma catégories",
+                          hintText: "Ma catégorie",
                         ),
                       ),
                     ),

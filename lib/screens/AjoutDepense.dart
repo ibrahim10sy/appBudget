@@ -83,6 +83,7 @@ class _AjoutState extends State<AjoutDepense> {
 
   @override
   void initState() {
+    super.initState();
     _mesType =  http.get(Uri.parse('http://10.0.2.2:8080/Type/lire'));
     utilisateur = Provider.of<UtilisateurProvider>(context,listen: false).utilisateur!;
   }

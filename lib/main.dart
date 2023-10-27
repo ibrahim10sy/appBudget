@@ -47,7 +47,7 @@ class _MyAppState extends State<MyApp> {
     return  MaterialApp(
         routes: {
           // '/profilUtilisateur': (context) => ProfilUtilisateur(),
-          '/BottomNavigationPage':(context) => BottomNavigationPage(),
+          '/BottomNavigationPage':(context) => const BottomNavigationPage(),
           // Autres routes...
         },
       // title: "LogIn Screen",
@@ -56,7 +56,6 @@ class _MyAppState extends State<MyApp> {
       home: const Connexion(),
     );//Place SignUp function here to Observe SignUp Screen.
   }
-  //adama
 }
 
 
