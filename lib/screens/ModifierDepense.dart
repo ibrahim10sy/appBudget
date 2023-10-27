@@ -48,7 +48,7 @@ class _ModifierState extends State<ModifierDepense> {
                         width: 16.0,
                       ),
                       Text(
-                        "Name User",
+                        "Nom",
                         style: TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.bold,

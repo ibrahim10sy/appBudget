@@ -40,7 +40,6 @@ class _AjoutState extends State<AjoutDepense> {
 
   @override
   void initState() {
-    super.initState();
     _mesType =  http.get(Uri.parse('http://10.0.2.2:8080/Type/lire'));
     utilisateur = Provider.of<UtilisateurProvider>(context,listen: false).utilisateur!;
   }
@@ -403,100 +402,257 @@ class _AjoutState extends State<AjoutDepense> {
                                 backgroundColor: Colors.green,
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(13)),
                               ),
-                              onPressed: () async {
-                                final descriptions = descriptionController.text;
-                                final montants = montant_control.text;
-                                final dateDepenses = datedeDepense_control.text;
-                                final budgets = widget.budget;
-                                // Validation pour s'assurer que montants est un nombre valide
-                                if (int.tryParse(montants) != null && widget.budget != null && montants.isEmpty || descriptions.isEmpty || dateDepenses.isEmpty) {
-                                final String errorMessage = "Tous les champs doivent être remplis";
-                                   showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: Center(child: Text('Erreur')),
-                                      content: Text(errorMessage),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: Text('OK'),
-                                        )
-                                      ],
-                                    );
-                                  },
-                                );
-                                if(depenses.montant! > widget.budget.montant!){
-                                  final String errorMessage = "Le montant du depense ne doit pas surpasse celle du budget";
-                                   showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: Center(child: Text('Erreur')),
-                                      content: Text(errorMessage),
-                                      actions: <Widget>[
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: Text('OK'),
-                                        )
-                                      ],
-                                    );
-                                  },
-                                );
-                                }else{
-                                 try{
-                                          await DepenseService.ajouterDepense(
-                                              description: descriptions,
-                                              montant : montants,
-                                              type : maType,
-                                              dateDepense : dateDepenses,
-                                              budget : budgets,
-                                              utilisateur : utilisateur,
-                                          );
 
-                                  } catch (e) {
-                                    final String errorMessage = e.toString();
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: Center(child: Text('Erreur')),
-                                          content: Text(errorMessage.replaceAll("Exception:", "")),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: Text('OK'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  }}
-                                } else{
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: Center(child: Text('Erreur de format')),
-                                        content: Text("Le montant doit être un nombre valide."),
-                                        actions: <Widget>[
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                            child: Text('OK'),
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  );
-                                } 
+                              onPressed: () async {
+  final descriptions = descriptionController.text;
+  final montants = montant_control.text;
+  int? mt;
+  final dateDepenses = datedeDepense_control.text;
+  final budgets = widget.budget;
+  
+  // Validation pour s'assurer que montants est un nombre valide
+  if (montants.isEmpty || descriptions.isEmpty || dateDepenses.isEmpty) {
+    final String errorMessage = "Tous les champs doivent être remplis";
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Center(child: Text('Erreur')),
+          content: Text(errorMessage),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            )
+          ],
+        );
+      },
+    );
+  } else {
+    try {
+      // Convertir la saisie en un nombre
+      mt = int.tryParse(montants);
+
+      if (mt == null) {
+        // La saisie n'est pas un nombre valide
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Center(child: Text('Erreur de format')),
+              content: Text("Le montant doit être un nombre valide."),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      } else if (mt > widget.budget.montant!) {
+        // Le montant de la dépense dépasse le montant du budget
+        final String errorMessage = "Le montant de la dépense ne doit pas dépasser celui du budget";
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Center(child: Text('Erreur')),
+              content: Text(errorMessage),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'),
+                )
+              ],
+            );
+          },
+        );
+      } else {
+        // Le montant est valide et ne dépasse pas le budget, ajouter la dépense.
+        await DepenseService.ajouterDepense(
+          description: descriptions,
+          montant: montants,
+          type: maType,
+          dateDepense: dateDepenses,
+          budget: budgets,
+          utilisateur: utilisateur,
+        );
+
+        Provider.of<DepenseService>(context, listen: false).applyChange();
+
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Center(child: Text('Succès')),
+              content: Text("Dépense ajoutée avec succès"),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(context);
+                  },
+                  child: Text('OK'),
+                )
+              ],
+            );
+          },
+        );
+
+        descriptionController.clear();
+        montant_control.clear();
+        typeController.clear();
+        datedeDepense_control.clear();
+      }
+    } catch (e) {
+      final String errorMessage = e.toString();
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Center(child: Text('Erreur')),
+            content: Text(errorMessage.replaceAll("Exception:", "")),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+
+                              // onPressed: () async {
+                              //   final descriptions = descriptionController.text;
+                              //   final montants = montant_control.text;
+                              //   int mt ;
+                              //   final dateDepenses = datedeDepense_control.text;
+                              //   final budgets = widget.budget;
+                              //   // Validation pour s'assurer que montants est un nombre valide
+                              //   if (montants.isEmpty || descriptions.isEmpty || dateDepenses.isEmpty) {
+                              //   final String errorMessage = "Tous les champs doivent être remplis";
+                              //      showDialog(
+                              //     context: context,
+                              //     builder: (BuildContext context) {
+                              //       return AlertDialog(
+                              //         title: Center(child: Text('Erreur')),
+                              //         content: Text(errorMessage),
+                              //         actions: <Widget>[
+                              //           TextButton(
+                              //             onPressed: () {
+                              //               Navigator.of(context).pop();
+                              //             },
+                              //             child: Text('OK'),
+                              //           )
+                              //         ],
+                              //       );
+                              //     },
+                              //   );
+                              //   if(depenses.montant! > widget.budget.montant!){
+                              //     final String errorMessage = "Le montant du depense ne doit pas surpasse celle du budget";
+                              //      showDialog(
+                              //     context: context,
+                              //     builder: (BuildContext context) {
+                              //       return AlertDialog(
+                              //         title: Center(child: Text('Erreur')),
+                              //         content: Text(errorMessage),
+                              //         actions: <Widget>[
+                              //           TextButton(
+                              //             onPressed: () {
+                              //               Navigator.of(context).pop();
+                              //             },
+                              //             child: Text('OK'),
+                              //           )
+                              //         ],
+                              //       );
+                              //     },
+                              //   );
+                              //   }else{
+                              //    try{
+                              //             await DepenseService.ajouterDepense(
+                              //                 description: descriptions,
+                              //                 montant : montants,
+                              //                 type : maType,
+                              //                 dateDepense : dateDepenses,
+                              //                 budget : budgets,
+                              //                 utilisateur : utilisateur,
+                              //             );
+                              //  Provider.of<DepenseService>(context, listen: false).applyChange();
+
+                              //    showDialog(
+                              //     context: context,
+                              //     builder: (BuildContext context) {
+                              //       return AlertDialog(
+                              //         title: Center(child: Text('Succès')),
+                              //         content: Text("Depense ajouté avec succès"),
+                              //         actions: <Widget>[
+                              //           TextButton(
+                              //             onPressed: () {
+                              //               Navigator.of(context).pop(context);
+                              //             },
+                              //             child: Text('OK'),
+                              //           )
+                              //         ],
+                              //       );
+                              //     },
+                              //   );
+                              //   descriptionController.clear();
+                              //   montant_control.clear();
+                              //   typeController.clear();
+                              //   datedeDepense_control.clear();
+                        
+
+                              //     } catch (e) {
+                              //       final String errorMessage = e.toString();
+                              //       showDialog(
+                              //         context: context,
+                              //         builder: (BuildContext context) {
+                              //           return AlertDialog(
+                              //             title: Center(child: Text('Erreur')),
+                              //             content: Text(errorMessage.replaceAll("Exception:", "")),
+                              //             actions: <Widget>[
+                              //               TextButton(
+                              //                 onPressed: () {
+                              //                   Navigator.of(context).pop();
+                              //                 },
+                              //                 child: Text('OK'),
+                              //               ),
+                              //             ],
+                              //           );
+                              //         },
+                              //       );
+                              //     }
+                              //     }
+                              //   } else{
+                              //     showDialog(
+                              //       context: context,
+                              //       builder: (BuildContext context) {
+                              //         return AlertDialog(
+                              //           title: Center(child: Text('Erreur de format')),
+                              //           content: Text("Le montant doit être un nombre valide."),
+                              //           actions: <Widget>[
+                              //             TextButton(
+                              //               onPressed: () {
+                              //                 Navigator.of(context).pop();
+                              //               },
+                              //               child: Text('OK'),
+                              //             ),
+                              //           ],
+                              //         );
+                              //       },
+                              //     );
+                              //   } 
                                 
                               },
                               child: const Text(

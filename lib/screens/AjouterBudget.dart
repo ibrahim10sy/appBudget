@@ -528,7 +528,8 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                                 montantalert_control.clear();
                                 datedebut_control.clear();
                                 categorie_control.clear();
-                              } catch (e) {
+                              } 
+                              catch (e) {
                                 final String errorMessage = e.toString();
                                 showDialog(
                                   context: context,
