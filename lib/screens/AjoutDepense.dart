@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ika_musaka/model/Budget.dart';
 import 'package:ika_musaka/model/types.dart';
+import 'package:ika_musaka/screens/DepenseListes.dart';
+import 'package:ika_musaka/screens/budgetDetail.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:badges/badges.dart' as badges;
@@ -36,6 +38,7 @@ class _AjoutState extends State<AjoutDepense> {
   late Utilisateur utilisateur;
   late DepenseClass depenses;
   late Future _mesType;
+  int budget = 0;
 
 
   @override
@@ -673,7 +676,10 @@ class _AjoutState extends State<AjoutDepense> {
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
                                               BorderRadius.circular(13))),
-                                      onPressed: () { },
+                                      onPressed: () { 
+                                        Navigator.push(context, MaterialPageRoute(builder: 
+                                        ((context) =>  BudgetDetaille(budget:widget.budget ,))));
+                                      },
                                       child: const Text(
                                         'Annuler',
                                         style: TextStyle(

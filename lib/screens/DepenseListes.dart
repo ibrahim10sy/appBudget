@@ -213,7 +213,7 @@ class _DepenseState extends State<DepensesListes> {
                                     ),
                                     child: ListTile(
                                       leading: CircleAvatar(
-                                        backgroundImage: AssetImage(
+                                        child: Image.asset(
                                             "assets/images/wallet.png"),
                                       ),
                                       title: Text(depense['description']),
