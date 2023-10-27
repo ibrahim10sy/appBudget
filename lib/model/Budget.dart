@@ -1,6 +1,4 @@
-import 'dart:collection';
 
-import 'package:ika_musaka/model/utilisateur.dart';
 
 class Budget {
   int? idBudget;
@@ -13,6 +11,17 @@ class Budget {
   //Utilisateur? utilisateur;
   Map<String,dynamic>? categorie;
 
+  Map<String, dynamic> toMap(){
+    return{
+      "idBudget":idBudget,
+      "description" :description,
+      "montant" : montant ,
+      "montantRestant":montantRestant,
+      "montantAlert":montantAlert,
+      "dateDebut": dateDebut,
+      "dateFin":dateFin,
+    };
+  }
   Budget({this.idBudget,this.description,this.montant,this.montantRestant,this.montantAlert,this.dateDebut,this.dateFin
   ,this.categorie});
 

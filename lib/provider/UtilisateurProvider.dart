@@ -9,6 +9,6 @@ class UtilisateurProvider with ChangeNotifier {
 
   void setUtilisateur(Utilisateur utilisateur) {
     _utilisateur = utilisateur;
-    notifyListeners();
+    notifyListeners(); 
   }
 }

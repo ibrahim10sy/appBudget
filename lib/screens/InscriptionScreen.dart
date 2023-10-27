@@ -433,6 +433,8 @@ class _InscriptionState extends State<Inscription> {
                             ),
                           ),
                         ),
+        
+        
                         ],
         
                       ),
@@ -476,6 +478,7 @@ class _InscriptionState extends State<Inscription> {
                       debugPrint(errorMessage);
                       return;
                     }
+
                     Utilisateur nouveauUtilisateur;
 
                     try {

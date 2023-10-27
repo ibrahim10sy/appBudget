@@ -1,15 +1,22 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ika_musaka/model/Budget.dart';
+import 'package:ika_musaka/model/types.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:http/http.dart' as http;
 
 import '../model/utilisateur.dart';
 import '../provider/UtilisateurProvider.dart';
 import '../services/depenseService.dart';
 
 class AjoutDepense extends StatefulWidget {
-  const AjoutDepense({super.key});
+  const AjoutDepense({super.key, required this.budget});
+
+  final Budget budget;
 
   @override
   _AjoutState createState() => _AjoutState();
@@ -18,10 +25,15 @@ class AjoutDepense extends StatefulWidget {
 class _AjoutState extends State<AjoutDepense> {
   DateTime selectedDate = DateTime.now();
   String? selectedType;
+  // late Budget budget ;
   TextEditingController descriptionController = TextEditingController();
-  TextEditingController montantController = TextEditingController();
-   TextEditingController dateInput = TextEditingController();
+  TextEditingController montant_control = TextEditingController();
+  TextEditingController typeController = TextEditingController();
+  TextEditingController datedeDepense_control = TextEditingController();
+   int? typeValue;
+   late Types maType;
   late Utilisateur utilisateur;
+  late Future _mesType;
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime picked = (await showDatePicker(
@@ -38,35 +50,40 @@ class _AjoutState extends State<AjoutDepense> {
       });
     }
   }
-
-  Future<void> _ajouterDepense() async {
-    try {
-      await DepenseService().ajouterDepense(
-        description: descriptionController.text,
-        montant: double.parse(montantController.text),
-        type: selectedType ?? "",
-        date: selectedDate,
-      );
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Dépense ajoutée avec succès'),
-          duration: Duration(seconds: 2),
-        ),
-      );
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Erreur lors de l\'ajout de la dépense : $e'),
-          duration: Duration(seconds: 2),
-        ),
-      );
-    }
+@override
+  onDispose() {
+    descriptionController.dispose();
+    super.dispose();
   }
+  // Future<void> _ajouterDepense() async {
+  //   try {
+  //     await DepenseService().ajouterDepense(
+  //       description: descriptionController.text,
+  //       montant: double.parse(montantController.text),
+  //       type: maType.toString(),
+  //       date: selectedDate,
+  //     );
+
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(
+  //         content: Text('Dépense ajoutée avec succès'),
+  //         duration: Duration(seconds: 2),
+  //       ),
+  //     );
+  //   } catch (e) {
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       SnackBar(
+  //         content: Text('Erreur lors de l\'ajout de la dépense : $e'),
+  //         duration: Duration(seconds: 2),
+  //       ),
+  //     );
+  //   }
+  // }
 
 
   @override
   void initState() {
+    _mesType =  http.get(Uri.parse('http://10.0.2.2:8080/Type/lire'));
     utilisateur = Provider.of<UtilisateurProvider>(context,listen: false).utilisateur!;
   }
 
@@ -103,7 +120,7 @@ class _AjoutState extends State<AjoutDepense> {
                               backgroundColor: const Color.fromRGBO(240, 176, 2, 1),
                               radius: 30,
                               child: Text(
-                                "${utilisateur.prenom.substring(0,1).toUpperCase()}${utilisateur.nom.substring(0,1).toUpperCase()}",
+                                  "${utilisateur.prenom.substring(0,1).toUpperCase()}${utilisateur.nom.substring(0,1).toUpperCase()}",
                                 style: const TextStyle(
                                     fontSize: 25,
                                     fontWeight: FontWeight.bold,
@@ -234,6 +251,7 @@ class _AjoutState extends State<AjoutDepense> {
                             child: Padding(
                               padding: const EdgeInsets.only(left: 10, top: 10),
                               child: TextField(
+                                controller: descriptionController,
                                 maxLines: 3,
                                 decoration: const InputDecoration.collapsed(
                                     hintText:
@@ -262,25 +280,26 @@ class _AjoutState extends State<AjoutDepense> {
                                               color: Color(0xff2f9062)),
                                         )),
                                   ),
-                                  Expanded(
-                                    flex: 2,
-                                    child: TextField(
-                                      keyboardType: TextInputType.number,
-                                      inputFormatters: <TextInputFormatter>[
-                                        FilteringTextInputFormatter.digitsOnly
-                                      ],
-                                      decoration: const InputDecoration(
-                                          labelText: 'Montant',
-                                          labelStyle:
-                                          TextStyle(color: Colors.green),
-                                          enabledBorder: OutlineInputBorder(
-                                              borderSide: BorderSide.none),
-                                          focusedBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  width: 3,
-                                                  color: Colors.green))),
-                                    ),
-                                  )
+                                   Expanded(
+                                      flex: 2,
+                                      child: TextField(
+                                        controller: montant_control,
+                                        keyboardType: TextInputType.number,
+                                        inputFormatters: <TextInputFormatter>[
+                                          FilteringTextInputFormatter.digitsOnly
+                                        ],
+                                        decoration: const InputDecoration(
+                                            labelText: 'Montant',
+                                            labelStyle:
+                                            TextStyle(color: Colors.green),
+                                            enabledBorder: OutlineInputBorder(
+                                                borderSide: BorderSide.none),
+                                            focusedBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    width: 3,
+                                                    color: Colors.green))),
+                                      ),
+                                    )
                                 ]
                             ),
                           ),
@@ -293,156 +312,282 @@ class _AjoutState extends State<AjoutDepense> {
                                   'assets/images/programme.png',
                                   width: 23,
                                 ),
+                                const Expanded (
+                                flex: 2,
+                                child: Padding(
+                                    padding: EdgeInsets.only(left: 5.0),
+                                  child: Text("Types",style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xff2f9062)),
+                                  ),
+                                )
+                              ),
+                              Expanded(
+                                flex: 2,
+                                  child: FutureBuilder(
+                                    future: _mesType,
+                                    builder: (_, snapshot) {
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return DropdownButton(
+                                          dropdownColor: Colors.green,
+                                            items: [], onChanged: (value) {}
+
+                                        );
+                                      }
+                                      if (snapshot.hasError) {
+                                        return Text("${snapshot.error}");
+                                      }
+                                      if (snapshot.hasData) {
+                                        //debugPrint(snapshot.data.body.toString());
+                                        final reponse =
+                                        json.decode(snapshot.data.body)
+                                        as List;
+                                        final mesTypes = reponse
+                                            .map((e) => Types.fromMap(e))
+                                            .toList();
+                                        //debugPrint(mesCategories.length.toString());
+                                        return DropdownButton(
+                                            items: mesTypes
+                                                .map((e) => DropdownMenuItem(
+                                              child: Text(e.titre),
+                                              value: e.idType,
+                                            ))
+                                                .toList(),
+                                            value: typeValue,
+                                            onChanged: (newValue) {
+                                              setState(() {
+                                                typeValue = newValue;
+                                                maType = mesTypes
+                                                    .firstWhere((element) =>
+                                                element.idType ==
+                                                    newValue);
+                                                debugPrint(
+                                                    maType.idType.toString());
+                                              });
+                                            });
+                                      }
+                                      return DropdownButton(
+                                          items: const [], onChanged: (value) {});
+                                    },
+                                  )
+                              )
+                              ],
+                            ),
+                          ),
+                          // Padding(
+                          //   padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
+                          //   child: Row(
+                          //       mainAxisAlignment: MainAxisAlignment.start,
+                          //       children: [
+                          //         Image.asset(
+                          //           'assets/images/calendar.png',
+                          //           width: 23,
+                          //         ),
+                          //         const Expanded(
+                          //           child: Padding(
+                          //               padding: EdgeInsets.only(left: 5),
+                          //               child: Text(
+                          //                 'Date début :',
+                          //                 style: TextStyle(
+                          //                     fontSize: 16,
+                          //                     fontWeight: FontWeight.bold,
+                          //                     color: Color(0xff2f9062)),
+                          //               )),
+                          //         ),
+                          //         Expanded(
+                          //           flex: 2,
+                          //           child: TextField(
+                          //             controller: dateInput,
+                          //             decoration: const InputDecoration(
+                          //                 labelText: 'Date de création',
+                          //                 labelStyle:
+                          //                 TextStyle(color: Colors.green),
+                          //                 enabledBorder: OutlineInputBorder(
+                          //                     borderSide: BorderSide.none),
+                          //                 focusedBorder: OutlineInputBorder(
+                          //                     borderSide: BorderSide(
+                          //                         width: 3,
+                          //                         color: Colors.green))),
+                          //             onTap: () async {
+                          //               DateTime? pickedDate =
+                          //               await showDatePicker(
+                          //                   context: context,
+                          //                   initialDate: DateTime.now(),
+                          //                   firstDate: DateTime(1950),
+                          //                   //DateTime.now() - not to allow to choose before today.
+                          //                   lastDate: DateTime(2100));
+                          //               if (pickedDate != null) {
+                          //                 print(pickedDate);
+                          //                 String formattedDate =
+                          //                 DateFormat('yyyy-MM-dd')
+                          //                     .format(pickedDate);
+                          //                 print(formattedDate);
+                          //                 setState(() {
+                          //                   dateInput.text = formattedDate;
+                          //                 });
+                          //               } else {}
+                          //             },
+                          //           ),
+                          //         ),
+                          //       ]
+                          //   ),
+                          // ),
+                           Padding(
+                            padding: EdgeInsets.only(left: 15, right: 15, bottom: 15),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Image.asset(
+                                  'assets/images/calendrier.png',
+                                  width: 23,
+                                ),
                                 const Expanded(
                                   child: Padding(
-                                    padding: EdgeInsets.only(left: 10),
-                                    child: Text(
-                                      'Type :',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: Color(0xff2f9062),
-                                      ),
-                                    ),
-                                  ),
+                                      padding: EdgeInsets.only(left: 5),
+                                      child: Text(
+                                        'Date début :',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold,
+                                            color: Color(0xff2f9062)),
+                                      )),
                                 ),
                                 Expanded(
                                   flex: 2,
                                   child: TextField(
-                                    decoration: InputDecoration(
-                                      labelText: 'Type de dépense',
-                                      labelStyle: TextStyle(color: Colors.green),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide.none,
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                          width: 3,
-                                          color: Colors.green,
-                                        ),
-                                      ),
-                                      suffixIcon: Padding(
-                                        padding: const EdgeInsets.only(right: 20),
-                                        child: DropdownButton<String>(
-                                          iconSize: 30,
-                                          isExpanded: true,
-                                          value: selectedType,
-                                          onChanged: (String? newValue) {
+                                    controller: datedeDepense_control,
+                                    decoration: const InputDecoration(
+                                        labelText: 'Date de création',
+                                        labelStyle:
+                                        TextStyle(color: Colors.green),
+                                        enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide.none),
+                                        focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                width: 3,
+                                                color: Colors.green))),
+                                    onTap: () async {
+                                          DateTime? pickedDate =
+                                              await showDatePicker(
+                                                  context: context,
+                                                  initialDate: DateTime.now(),
+                                                  firstDate: DateTime(1950),
+                                                  //DateTime.now() - not to allow to choose before today.
+                                                  lastDate: DateTime(2100));
+                                          if (pickedDate != null) {
+                                            print(pickedDate);
+                                            String formattedDate =
+                                                DateFormat('yyyy-MM-dd')
+                                                    .format(pickedDate);
+                                            print(formattedDate);
                                             setState(() {
-                                              selectedType = newValue;
+                                              datedeDepense_control.text = formattedDate;
                                             });
-                                          },
-                                          items: <String>[
-                                            'quotidien',
-                                            'hebdomadaire',
-                                            'mensuelle',
-                                          ].map<DropdownMenuItem<String>>(
-                                                (String value) {
-                                              return DropdownMenuItem<String>(
-                                                value: value,
-                                                child: Text(
-                                                  value,
-                                                  style: TextStyle(
-                                                    fontSize: 15.0,
-                                                    color: Colors.black,
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                          ).toList(),
-                                          style: TextStyle(
-                                            fontSize: 15.0,
-                                            color: Colors.black,
-                                          ),
-                                          dropdownColor: Colors.white,
-                                          underline: Container(),
-                                        ),
-                                      ),
-                                    ),
+                                          } else {}
+                                        },
                                   ),
                                 ),
-                              ],
-                            ),
+                              ]
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 15, right: 15, bottom: 15),
-                            child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Image.asset(
-                                    'assets/images/calendar.png',
-                                    width: 23,
-                                  ),
-                                  const Expanded(
-                                    child: Padding(
-                                        padding: EdgeInsets.only(left: 5),
-                                        child: Text(
-                                          'Date début :',
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                              color: Color(0xff2f9062)),
-                                        )),
-                                  ),
-                                  Expanded(
-                                    flex: 2,
-                                    child: TextField(
-                                      controller: dateInput,
-                                      decoration: const InputDecoration(
-                                          labelText: 'Date de création',
-                                          labelStyle:
-                                          TextStyle(color: Colors.green),
-                                          enabledBorder: OutlineInputBorder(
-                                              borderSide: BorderSide.none),
-                                          focusedBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  width: 3,
-                                                  color: Colors.green))),
-                                      onTap: () async {
-                                        DateTime? pickedDate =
-                                        await showDatePicker(
-                                            context: context,
-                                            initialDate: DateTime.now(),
-                                            firstDate: DateTime(1950),
-                                            //DateTime.now() - not to allow to choose before today.
-                                            lastDate: DateTime(2100));
-                                        if (pickedDate != null) {
-                                          print(pickedDate);
-                                          String formattedDate =
-                                          DateFormat('yyyy-MM-dd')
-                                              .format(pickedDate);
-                                          print(formattedDate);
-                                          setState(() {
-                                            dateInput.text = formattedDate;
-                                          });
-                                        } else {}
-                                      },
-                                    ),
-                                  ),
-                                ]
-                            ),
-                          ),
+                        ),
                           Padding(
                             padding:const EdgeInsets.only(top:10.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
-                                ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.green,
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                            BorderRadius.circular(13))),
-                                    onPressed: () { },
-                                    child: const Text(
-                                      'Ajouter',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                      ),
-                                    )
+                               ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.green,
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(13)),
+                              ),
+                              onPressed: () async {
+                                final descriptions = descriptionController.text;
+                                final montants = montant_control.text;
+                                final dateDepenses = datedeDepense_control.text;
+                                final budgets = widget.budget;
+                                // Validation pour s'assurer que montants est un nombre valide
+                                if (int.tryParse(montants) != null && widget.budget != null && montants.isEmpty || descriptions.isEmpty || dateDepenses.isEmpty) {
+                                final String errorMessage = "Tous les champs doivent être remplis";
+                                   showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Center(child: Text('Erreur')),
+                                      content: Text(errorMessage),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text('OK'),
+                                        )
+                                      ],
+                                    );
+                                  },
+                                );
+                                 try{
+                                          await DepenseService.ajouterDepense(
+                                              description: descriptions,
+                                              montant : montants,
+                                              type : maType,
+                                              dateDepense : dateDepenses,
+                                              budget : budgets,
+                                              utilisateur : utilisateur,
+                                          );
+
+                                  } catch (e) {
+                                    final String errorMessage = e.toString();
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Center(child: Text('Erreur')),
+                                          content: Text(errorMessage.replaceAll("Exception:", "")),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: Text('OK'),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  }
+                                } else{
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: Center(child: Text('Erreur de format')),
+                                        content: Text("Le montant doit être un nombre valide."),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: Text('OK'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                } 
+                                
+                              },
+                              child: const Text(
+                                'Ajouter',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
                                 ),
+                              ),
+                            ),
+
                                 Padding(
                                   padding: EdgeInsets.only(top: 10.0),
                                   child:  ElevatedButton(
@@ -478,4 +623,3 @@ class _AjoutState extends State<AjoutDepense> {
     );
   }
 }
-

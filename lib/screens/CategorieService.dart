@@ -10,8 +10,10 @@ import 'package:provider/provider.dart';
 
 class CategorieService extends ChangeNotifier {
   static const String apiUrl = 'http://10.0.2.2:8080/Categorie';
+  static const String apiUrl2 = 'http://10.0.2.2:8080/Categorie/list';
+  List<dynamic> categorieListe = [];
 
-  static Future<void> addCategorie({required BuildContext context,required String titre,required Utilisateur utilisateur}) async {
+  Future<String> addCategorie({required BuildContext context,required String titre,required Utilisateur utilisateur}) async {
     Map<String, dynamic> user = {
       "idUtilisateur": utilisateur.idUtilisateur,
       "prenom":utilisateur.prenom,
@@ -32,11 +34,13 @@ class CategorieService extends ChangeNotifier {
       headers: {'Content-Type': 'application/json'},
       body: categories,
     );
-    debugPrint(categories);
+    //debugPrint(categories);
     if (response.statusCode == 200) {
       print("je vais te printer le retour json");
-       context.read<CategoriesProvider>().addItem(jsonDecode(response.body));
       print(response.body);
+      applyChange();
+      print("je vais te");
+      return "succes";
     } else {
       debugPrint(response.reasonPhrase);
       debugPrint(response.body);
@@ -64,9 +68,26 @@ class CategorieService extends ChangeNotifier {
       throw Exception('Failed to lire');
     }
   }
+  Future catByUser(int id) async {
+    final response =
+        await http.get(Uri.parse('$apiUrl2/$id'));
+ //print(response);
+
+    if (response.statusCode == 200) {
+      print("Bienvenu au categorie");
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      print(jsonDecode(response.body));
+      return jsonDecode(response.body);
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to lire');
+    }
+  }
 
  // modifier
-  static Future<void> updateCategorie(
+ Future<void> updateCategorie(
       {required BuildContext context,required int index,required dynamic categorie}) async {
    
 
@@ -78,8 +99,9 @@ class CategorieService extends ChangeNotifier {
     );
 
     if (response.statusCode == 200) {
-      context.read<CategoriesProvider>().editItem(index, categorie);
-      // La catégorie a été mise à jour avec succès.
+      // context.read<CategoriesProvider>().editItem(index, categorie);
+      // // La catégorie a été mise à jour avec succès.
+       applyChange();
     } else {
       debugPrint(response.reasonPhrase);
       debugPrint(response.body);
@@ -87,7 +109,7 @@ class CategorieService extends ChangeNotifier {
     }
   }
   //////////suppression
-  static Future<void> suppresion({required int id,required String titre, required Utilisateur utilisateur}) async {
+  Future<void> suppresion({required int id,required String titre, required Utilisateur utilisateur}) async {
     print("je commence la supprimer");
    Map<String, dynamic> user = {
       "idUtilisateur": utilisateur.idUtilisateur,
@@ -109,6 +131,7 @@ class CategorieService extends ChangeNotifier {
     );
     debugPrint(categories);
     if (response.statusCode == 200) {
+      applyChange();
     } else {
       debugPrint(response.reasonPhrase);
       debugPrint(response.body);

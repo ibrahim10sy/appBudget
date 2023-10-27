@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ika_musaka/provider/UtilisateurProvider.dart';
 import 'package:ika_musaka/screens/Categorie.dart';
-import 'package:ika_musaka/screens/budgetListe.dart';
 import 'package:ika_musaka/services/BottomNavigationService.dart';
 import 'package:ika_musaka/services/budgetService.dart';
 import 'package:badges/badges.dart' as badges;
@@ -61,8 +60,6 @@ class _AccueilState extends State<Accueil> {
                             children: [
                               utilisateur.photos == null || utilisateur.photos!.isEmpty ?
                               CircleAvatar(
-                                //backgroundImage: AssetImage("assets/images/avatar.png"),
-                                //  child: Image.network(utilisateur.photos),
                                 backgroundColor: const Color.fromRGBO(240, 176, 2, 1),
                                 radius: 30,
                                 child: Text(
@@ -82,7 +79,7 @@ class _AccueilState extends State<Accueil> {
                               Padding(
                                 padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
                                 child: Text(
-                                  "${utilisateur.prenom} ${utilisateur.nom}",
+                                  "${utilisateur.prenom.toUpperCase()} ${utilisateur.nom.toUpperCase()}",
                                   overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
                                       fontSize: 20,
@@ -204,7 +201,8 @@ class _AccueilState extends State<Accueil> {
           Navigator.push(context, MaterialPageRoute(builder: (context)=> const Statistiques()));
         }else if(index == 3){
           Navigator.push(context, MaterialPageRoute(builder: (context)=> const Categoriees()));
-        }else{
+        }
+        else{
           Provider.of<BottomNavigationService>(context,listen: false).changeIndex(index);
         }
       },

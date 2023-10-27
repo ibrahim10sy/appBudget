@@ -1,6 +1,5 @@
-import 'dart:convert';
 
-// import 'dart:js';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -75,6 +74,7 @@ class BudgetService extends ChangeNotifier {
     }
   }
 
+
   void applyChange(){
     notifyListeners();
   }
@@ -90,5 +90,4 @@ class BudgetService extends ChangeNotifier {
     sortValue = value;
     applyChange();
   }
-
 }

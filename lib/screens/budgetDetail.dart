@@ -97,7 +97,7 @@ class _BudgetDetaille extends State<BudgetDetaille> {
                                   backgroundColor: const Color.fromRGBO(240, 176, 2, 1),
                                   radius: 30,
                                   child: Text(
-                                    "${utilisateur.prenom.substring(0,1).toUpperCase()}${utilisateur.nom.substring(0,1).toUpperCase()}",
+                                  "${utilisateur.prenom.substring(0,1).toUpperCase()}${utilisateur.nom.substring(0,1).toUpperCase()}",
                                     style: const TextStyle(
                                         fontSize: 25,
                                         fontWeight: FontWeight.bold,
@@ -113,7 +113,7 @@ class _BudgetDetaille extends State<BudgetDetaille> {
                                 Padding(
                                   padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
                                   child: Text(
-                                    "${utilisateur.prenom} ${utilisateur.nom}",
+                                    "${utilisateur.prenom.toUpperCase()} ${utilisateur.nom.toUpperCase()}",
                                     overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(
                                       fontSize: 20,
@@ -248,7 +248,7 @@ class _BudgetDetaille extends State<BudgetDetaille> {
                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 children: [
                                                   GestureDetector(
-                                                    onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=> const AjoutDepense()));},
+                                                    onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) => AjoutDepense(budget :budget)));},
                                                     child: Container(
                                                       padding: const EdgeInsets.all(5.0),
                                                       decoration: BoxDecoration(
