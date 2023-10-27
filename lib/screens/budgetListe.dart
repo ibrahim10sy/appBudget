@@ -92,17 +92,16 @@ class _BudgetListeState extends State<BudgetListe> {
     super.initState();
     utilisateur =
         Provider.of<UtilisateurProvider>(context, listen: false).utilisateur!;
-    future =
-        BudgetService().getBudgetTotal("somme/${utilisateur.idUtilisateur}");
+    future =  BudgetService().getBudgetTotal("somme/${utilisateur.idUtilisateur}");
     _futureListBudget =
         BudgetService().getBudgetByIdUser("list/${utilisateur.idUtilisateur}");
     inputController.text = DateFormat('yyyy-MM').format(DateTime.now());
 
     // utilisateur = Provider.of<UtilisateurProvider>(context,listen: false).utilisateur!;
     fetchAlbum();
-    _mesCategories = http.get(Uri.parse('http://10.0.2.2:8080/Categorie/lire'));
-    utilisateur =
-        Provider.of<UtilisateurProvider>(context, listen: false).utilisateur!;
+    _mesCategories = http.get(Uri.parse('http://10.0.2.2:8080/Categorie/list/${utilisateur.idUtilisateur}'));
+    // utilisateur =
+    //     Provider.of<UtilisateurProvider>(context, listen: false).utilisateur!;
   } 
 
   void updateOnCLick() {

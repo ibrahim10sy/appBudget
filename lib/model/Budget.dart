@@ -15,7 +15,7 @@ class Budget {
     return{
       "idBudget":idBudget,
       "description" :description,
-      "montant" : montant ,
+      "montant" : montant,
       "montantRestant":montantRestant,
       "montantAlert":montantAlert,
       "dateDebut": dateDebut,

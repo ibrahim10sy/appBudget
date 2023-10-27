@@ -46,7 +46,7 @@ class _AjouterBudgetState extends State<AjouterBudget> {
     datedebut_control.clear();
     utilisateur = Provider.of<UtilisateurProvider>(context,listen: false).utilisateur!;
     fetchAlbum();
-    _mesCategories = http.get(Uri.parse('http://10.0.2.2:8080/Categorie/lire'));
+    _mesCategories = http.get(Uri.parse('http://10.0.2.2:8080/Categorie/list/${utilisateur.idUtilisateur}'));
 
     super.initState();
   }

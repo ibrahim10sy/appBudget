@@ -14,7 +14,7 @@ class UpdateDepensesService{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode({
-        'idDepenses': depenses.idDepense,
+        'idDepenses': depenses.idDepenses,
         'description': depenses.description,
         'montant': depenses.montant,
         'date': depenses.date,

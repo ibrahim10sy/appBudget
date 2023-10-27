@@ -2,7 +2,7 @@ import 'package:ika_musaka/model/Budget.dart';
 import 'package:ika_musaka/model/utilisateur.dart';
 
 class DepenseClass{
-  int? idDepense;
+  int? idDepenses;
   String? description;
   int? montant;
   String? date;
@@ -10,12 +10,12 @@ class DepenseClass{
   Map<String, dynamic>? type;
   Utilisateur? utilisateur;
 
-  DepenseClass({this.idDepense, this.description, this.montant, this.date,
+  DepenseClass({this.idDepenses, this.description, this.montant, this.date,
       this.budget, this.type, this.utilisateur});
 
   factory DepenseClass.fromJson(Map<String, dynamic> json){
     return DepenseClass(
-      idDepense: json["idDepenses"],
+      idDepenses: json["idDepenses"],
       description: json["description"],
       montant: json["montant"],
       date: json["date"],
@@ -24,4 +24,13 @@ class DepenseClass{
       utilisateur: Utilisateur.fromJson(json["utilisateur"])
     );
   }
+  //  Map<String, dynamic> toJson() => {
+  //       "idDepenses": idDepenses,
+  //       "description": description,
+  //       "montant": montant,
+  //       "date":date,
+  //       "utilisateur": utilisateur.toJson(),
+  //       "budget": budget.toJson(),
+  //       "type": type!.toJson(),
+  //   };
 }
