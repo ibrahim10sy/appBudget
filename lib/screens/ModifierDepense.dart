@@ -169,8 +169,7 @@ class _ModifierState extends State<ModifierDepense> {
                                 color: Color.fromRGBO(47, 144, 98, 1),
                               ),
                             ),
-                            SizedBox(width: 10),
-                            SizedBox(height: 15),
+                            SizedBox(width: 10,height: 15),
                             Expanded(
                               child: TextField(
                                 decoration: InputDecoration(
@@ -256,8 +255,7 @@ class _ModifierState extends State<ModifierDepense> {
                             ),
                           ],
                         ),
-                        SizedBox(width: 10),
-                        SizedBox(height: 10),
+                        SizedBox(width: 10,height: 10),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
@@ -275,8 +273,7 @@ class _ModifierState extends State<ModifierDepense> {
                                 color: Color.fromRGBO(47, 144, 98, 1),
                               ),
                             ),
-                            SizedBox(width: 10),
-                            SizedBox(height: 15),
+                            SizedBox(width: 10,height: 10),
                             Expanded(
                               child: TextButton(
                                 onPressed: () => _selectDate(context),
@@ -310,8 +307,7 @@ class _ModifierState extends State<ModifierDepense> {
                             ),
                           ],
                         ),
-                        SizedBox(width: 10),
-                        SizedBox(height: 10),
+                        SizedBox(width: 10,height: 10),
                         ElevatedButton(
                             style: ElevatedButton.styleFrom(
                                 minimumSize: const Size.fromHeight(50),
@@ -323,8 +319,7 @@ class _ModifierState extends State<ModifierDepense> {
                               "Modifier",
                               style: TextStyle(fontSize: 24),
                             )),
-                        SizedBox(width: 10),
-                        SizedBox(height: 10),
+                        SizedBox(width: 10,height: 10),
                         ElevatedButton(
                             style: ElevatedButton.styleFrom(
                                 minimumSize: const Size.fromHeight(50),

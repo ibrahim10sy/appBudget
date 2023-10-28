@@ -1,4 +1,5 @@
- import 'package:flutter/material.dart';
+ import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ika_musaka/provider/CategoriesProvider.dart';
 import 'package:ika_musaka/provider/DepenseProvider.dart';
@@ -14,6 +15,7 @@ import 'package:ika_musaka/services/budgetService.dart';
 
 
 void main() {
+ 
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Color.fromRGBO(47, 144, 98, 1),
   ));
@@ -35,8 +37,8 @@ void main() {
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
-  @override
+  const MyApp({Key? key}) : super(key: key);
+    @override
   // ignore: library_private_types_in_public_api
   _MyAppState createState() => _MyAppState();
 }
@@ -57,5 +59,22 @@ class _MyAppState extends State<MyApp> {
     );//Place SignUp function here to Observe SignUp Screen.
   }
 }
+
+
+
+
+/////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
 
 

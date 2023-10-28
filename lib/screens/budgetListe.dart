@@ -203,156 +203,158 @@ class _BudgetListeState extends State<BudgetListe> {
                         ),
                         SizedBox(
                           height: 200,
-                          child: Card(
-                            elevation: 10,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            margin: const EdgeInsets.fromLTRB(0, 25, 0, 0),
-                            color: const Color.fromRGBO(47, 144, 98, 1),
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.fromLTRB(10.0, 15.0, 0, 0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text("Budget total :",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 22,
-                                          fontWeight: FontWeight.bold)),
-                                  Consumer<BudgetService>(
-                                      builder: (context, budgetService, child) {
-                                    int montantTotal = 0;
-                                    int montantRestant = 0;
-                                    List<Budget> budgetList = context.select(
-                                        (BudgetService value) => value.budgets);
-                                    if (budgetList.isNotEmpty) {
-                                      budgetList.forEach((element) {
-                                        montantTotal =
-                                            montantTotal + element.montant!;
-                                        montantRestant = montantRestant +
-                                            element.montantRestant!;
-                                      });
-                                    }
-                                    return Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text("$montantTotal FCFA",
-                                            style: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 22,
-                                                fontWeight: FontWeight.bold)),
-                                        Column(
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 10.0,
-                                                  bottom: 7.5,
-                                                  top: 7.5),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      const Text("Restant :",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 17)),
-                                                      Text(
-                                                          "$montantRestant FCFA",
-                                                          style:
-                                                              const TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize: 17))
-                                                    ],
-                                                  ),
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      const Text("Dépensé :",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 17)),
-                                                      Text(
-                                                          "${montantTotal - montantRestant} FCFA",
-                                                          style:
-                                                              const TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize: 17))
-                                                    ],
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                            Row(
-                                              children: [
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                AjouterBudget()));
-                                                  },
-                                                  child: Container(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            5.0),
-                                                    decoration: BoxDecoration(
-                                                        border: Border.all(
-                                                            width: 2,
-                                                            color:
-                                                                Colors.white),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(23)),
-                                                    child: const Row(
+                          child: Flexible(
+                            child: Card(
+                              elevation: 10,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              margin: const EdgeInsets.fromLTRB(0, 25, 0, 0),
+                              color: const Color.fromRGBO(47, 144, 98, 1),
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(10.0, 15.0, 0, 0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text("Budget total :",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.bold)),
+                                    Consumer<BudgetService>(
+                                        builder: (context, budgetService, child) {
+                                      int montantTotal = 0;
+                                      int montantRestant = 0;
+                                      List<Budget> budgetList = context.select(
+                                          (BudgetService value) => value.budgets);
+                                      if (budgetList.isNotEmpty) {
+                                        budgetList.forEach((element) {
+                                          montantTotal =
+                                              montantTotal + element.montant!;
+                                          montantRestant = montantRestant +
+                                              element.montantRestant!;
+                                        });
+                                      }
+                                      return Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text("$montantTotal FCFA",
+                                              style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 22,
+                                                  fontWeight: FontWeight.bold)),
+                                          Column(
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    right: 10.0,
+                                                    bottom: 7.5,
+                                                    top: 7.5),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
                                                       children: [
-                                                        Icon(Icons.add_circle,
-                                                            color:
-                                                                Colors.white),
-                                                        Padding(
-                                                          padding:
-                                                              EdgeInsets.only(
-                                                                  left: 3.0),
-                                                          child: Text(
-                                                            "Ajouter budget",
+                                                        const Text("Restant :",
                                                             style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontSize: 16,
-                                                                color: Colors
-                                                                    .white),
-                                                          ),
-                                                        )
+                                                                color:
+                                                                    Colors.white,
+                                                                fontSize: 17)),
+                                                        Text(
+                                                            "$montantRestant FCFA",
+                                                            style:
+                                                                const TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize: 17))
                                                       ],
                                                     ),
-                                                  ),
-                                                )
-                                              ],
-                                            )
-                                          ],
-                                        )
-                                      ],
-                                    );
-                                  })
-                                ],
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        const Text("Dépensé :",
+                                                            style: TextStyle(
+                                                                color:
+                                                                    Colors.white,
+                                                                fontSize: 17)),
+                                                        Text(
+                                                            "${montantTotal - montantRestant} FCFA",
+                                                            style:
+                                                                const TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize: 17))
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              Row(
+                                                children: [
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  AjouterBudget()));
+                                                    },
+                                                    child: Container(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              5.0),
+                                                      decoration: BoxDecoration(
+                                                          border: Border.all(
+                                                              width: 2,
+                                                              color:
+                                                                  Colors.white),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(23)),
+                                                      child: const Row(
+                                                        children: [
+                                                          Icon(Icons.add_circle,
+                                                              color:
+                                                                  Colors.white),
+                                                          Padding(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    left: 3.0),
+                                                            child: Text(
+                                                              "Ajouter budget",
+                                                              style: TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontSize: 16,
+                                                                  color: Colors
+                                                                      .white),
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  )
+                                                ],
+                                              )
+                                            ],
+                                          )
+                                        ],
+                                      );
+                                    })
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -618,23 +620,25 @@ class _BudgetListeState extends State<BudgetListe> {
                                                         "supprimer/${budget.idBudget}");
                                                 Navigator.pop(context);
                                               },
-                                              child: Card(
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            16)),
-                                                color: Colors.red,
-                                                child: const Padding(
-                                                  padding: EdgeInsets.symmetric(
-                                                      vertical: 5,
-                                                      horizontal: 30),
-                                                  child: Text(
-                                                    "OUI",
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 20,
-                                                        color: Colors.white),
+                                              child: Flexible(
+                                                child: Card(
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              16)),
+                                                  color: Colors.red,
+                                                  child: const Padding(
+                                                    padding: EdgeInsets.symmetric(
+                                                        vertical: 5,
+                                                        horizontal: 30),
+                                                    child: Text(
+                                                      "OUI",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 20,
+                                                          color: Colors.white),
+                                                    ),
                                                   ),
                                                 ),
                                               ),
@@ -643,25 +647,27 @@ class _BudgetListeState extends State<BudgetListe> {
                                                 onTap: () {
                                                   Navigator.pop(context);
                                                 },
-                                                child: Card(
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              16)),
-                                                  color: const Color.fromRGBO(
-                                                      47, 144, 98, 1),
-                                                  child: const Padding(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 5,
-                                                            horizontal: 30),
-                                                    child: Text(
-                                                      "NON",
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 20,
-                                                          color: Colors.white),
+                                                child: Flexible(
+                                                  child: Card(
+                                                    shape: RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                16)),
+                                                    color: const Color.fromRGBO(
+                                                        47, 144, 98, 1),
+                                                    child: const Padding(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              vertical: 5,
+                                                              horizontal: 30),
+                                                      child: Text(
+                                                        "NON",
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 20,
+                                                            color: Colors.white),
+                                                      ),
                                                     ),
                                                   ),
                                                 )),
@@ -804,20 +810,22 @@ class _BudgetListeState extends State<BudgetListe> {
                                           onTap: () {
                                             Navigator.pop(context);
                                           },
-                                          child: Card(
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(16)),
-                                            color: Colors.red,
-                                            child: const Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  vertical: 5, horizontal: 30),
-                                              child: Text(
-                                                "FERMER",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 20,
-                                                    color: Colors.white),
+                                          child: Flexible(
+                                            child: Card(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(16)),
+                                              color: Colors.red,
+                                              child: const Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 5, horizontal: 30),
+                                                child: Text(
+                                                  "FERMER",
+                                                  style: TextStyle(
+                                                      fontWeight: FontWeight.bold,
+                                                      fontSize: 20,
+                                                      color: Colors.white),
+                                                ),
                                               ),
                                             ),
                                           )))
@@ -923,21 +931,23 @@ class _BudgetListeState extends State<BudgetListe> {
                                                     inputController.text);
                                             Navigator.pop(context);
                                           },
-                                          child: Card(
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(16)),
-                                            color: const Color.fromRGBO(
-                                                47, 144, 98, 1),
-                                            child: const Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  vertical: 5, horizontal: 30),
-                                              child: Text(
-                                                "TRIER",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 20,
-                                                    color: Colors.white),
+                                          child: Flexible(
+                                            child: Card(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(16)),
+                                              color: const Color.fromRGBO(
+                                                  47, 144, 98, 1),
+                                              child: const Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 5, horizontal: 30),
+                                                child: Text(
+                                                  "TRIER",
+                                                  style: TextStyle(
+                                                      fontWeight: FontWeight.bold,
+                                                      fontSize: 20,
+                                                      color: Colors.white),
+                                                ),
                                               ),
                                             ),
                                           ))),
@@ -948,20 +958,22 @@ class _BudgetListeState extends State<BudgetListe> {
                                           onTap: () {
                                             Navigator.pop(context);
                                           },
-                                          child: Card(
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(16)),
-                                            color: Colors.red,
-                                            child: const Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  vertical: 5, horizontal: 30),
-                                              child: Text(
-                                                "FERMER",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 20,
-                                                    color: Colors.white),
+                                          child: Flexible(
+                                            child: Card(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(16)),
+                                              color: Colors.red,
+                                              child: const Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 5, horizontal: 30),
+                                                child: Text(
+                                                  "FERMER",
+                                                  style: TextStyle(
+                                                      fontWeight: FontWeight.bold,
+                                                      fontSize: 20,
+                                                      color: Colors.white),
+                                                ),
                                               ),
                                             ),
                                           )))

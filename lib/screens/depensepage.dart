@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:ika_musaka/model/Budget.dart';
 import 'package:ika_musaka/model/DepenceClasse.dart';
+import 'package:ika_musaka/screens/AjoutDepense.dart';
+import 'package:ika_musaka/screens/DepenseListes.dart';
 import 'package:ika_musaka/screens/budgetDetail.dart';
 import 'package:ika_musaka/screens/budgetListe.dart';
 import 'package:ika_musaka/services/Deletedepenseservice.dart';
@@ -28,6 +31,8 @@ class _DepenseState extends State<Depense> {
   var items = ['quotidien', 'hebdomadaire', 'mensuelle'];
   late DepenseClass depenses;
   late Utilisateur utilisateur;
+      late Budget  budgets  ;
+
 
   @override
   void initState() {
@@ -154,19 +159,34 @@ class _DepenseState extends State<Depense> {
                                           width: 2, color: Colors.white),
                                       borderRadius:
                                       BorderRadius.circular(23)),
-                                  child: const Row(children: [
-                                    Icon(Icons.add_circle,
-                                        color: Colors.white),
-                                    Padding(
-                                      padding: EdgeInsets.only(left: 3),
-                                      child: Text(
-                                        'Ajouter dépense',
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            color: Colors.white),
+                                  child: GestureDetector(
+                                      
+
+                                    onTap: () {
+  // Récupérez l'objet Budget correspondant à partir de l'identifiant ou de la valeur int
+
+  // Naviguez vers la page AjoutDepense en passant le bon objet Budget
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => AjoutDepense(budget: budgets)),
+  );
+},
+
+
+                           child: const Row(children: [
+                                      Icon(Icons.add_circle,
+                                          color: Colors.white),
+                                      Padding(
+                                        padding: EdgeInsets.only(left: 3),
+                                        child: Text(
+                                          'Ajouter dépense',
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.white),
+                                        ),
                                       ),
-                                    ),
-                                  ]))
+                                    ]),
+                                  ))
                             ],
                           )
                         ],
@@ -389,7 +409,7 @@ class _DepenseState extends State<Depense> {
                                               actions: <Widget>[
                                                 TextButton(
                                                   onPressed: () {
-                                                    Navigator.push(context, MaterialPageRoute(builder: ((context) =>  BudgetListe())));
+                                                    Navigator.push(context, MaterialPageRoute(builder: ((context) =>  DepensesListes())));
                                                   },
                                                   child: Text('OK'),
                                                 )
@@ -454,63 +474,100 @@ class _DepenseState extends State<Depense> {
                               height: 30,
                               width: 142,
                               child: ElevatedButton(
-                                onPressed: (){
-                                  SupprimerDepensesService().supprimerdepense(depenses.idDepenses!).then((value) {
-                                   showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return AlertDialog(
-                                              title: Center(child: Text('Succès')),
-                                              content: Text("Dépense supprimé avec succès"),
-                                              actions: <Widget>[
-                                                TextButton(
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop(context);
-                                                  },
-                                                  child: Text('OK'),
-                                                )
-                                              ],
-                                            );
-                                          },
-                                        );
-                                  }).catchError((onError){
-                                    showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return Dialog(
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(20.0),
-                                                side:const BorderSide(color: Colors.greenAccent),
-                                              ),
-                                              child:Container(
-                                                padding: const EdgeInsets.only(left: 15.0) ,
-                                                height: 100,
-                                                child:  Row(
-                                                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: [
-                                                    Expanded(
-                                                      child: Row(
-                                                        children: [
-                                                          Expanded(
-                                                            child: Text("${onError}",
-                                                              style: const TextStyle(
-                                                                  fontSize: 20,
-                                                                  color: Colors.green,
-                                                                  fontWeight: FontWeight.bold
-                                                              ),
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
+                                onPressed: () {
+                              // Affiche la boîte de dialogue de confirmation
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text('Confirmer la suppression'),
+                                    content: Text('Voulez-vous vraiment supprimer cette dépense ?'),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        child: Text('Annuler'),
+                                        onPressed: () {
+                                          // Annule la suppression et ferme la boîte de dialogue
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                      TextButton(
+                                        child: Text('OK'),
+                                        onPressed: () {
+                                          // Supprime la dépense et ferme la boîte de dialogue
+                                          SupprimerDepensesService()
+                                              .supprimerdepense(depenses.idDepenses!)
+                                              .then((value) {
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: Center(child: Text('Succès')),
+                                                  content: Text('Dépense supprimée avec succès'),
+                                                  actions: <Widget>[
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        // Navigator.of(context).pop(context);
+                                                         Navigator.of(context).pop();
+
+                                                        // Redirige vers la page "budgetdetaille" après la suppression réussie
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) => DepensesListes(),
+                                                          ),
+                                                        );
+                                                      },
+                                                      child: Text('OK'),
                                                     )
                                                   ],
-                                                ),
-                                              )
-                                          );
-                                        });
-                                  });
+                                                );
+                                              },
+                                            );
+                                          }).catchError((onError) {
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return Dialog(
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(20.0),
+                                                    side: const BorderSide(color: Colors.greenAccent),
+                                                  ),
+                                                  child: Container(
+                                                    padding: const EdgeInsets.only(left: 15.0),
+                                                    height: 100,
+                                                    child: Row(
+                                                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                                                      mainAxisAlignment: MainAxisAlignment.center,
+                                                      children: [
+                                                        Expanded(
+                                                          child: Row(
+                                                            children: [
+                                                              Expanded(
+                                                                child: Text(
+                                                                  "${onError}",
+                                                                  style: const TextStyle(
+                                                                      fontSize: 20,
+                                                                      color: Colors.green,
+                                                                      fontWeight: FontWeight.bold),
+                                                                ),
+                                                              )
+                                                            ],
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                            );
+                                          });
+                                        },
+                                      ),
+                                    ],
+                                  );
                                 },
+                              );
+                            },
                                 style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.red,
                                     shape: RoundedRectangleBorder(
