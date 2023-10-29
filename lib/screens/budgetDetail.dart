@@ -207,7 +207,7 @@ class _BudgetDetaille extends State<BudgetDetaille> {
                                                       crossAxisAlignment: CrossAxisAlignment.start,
                                                       children: [
                                                         const Text(
-                                                            "Restant :",
+                                                            "Montant restant :",
                                                             style: TextStyle(
                                                                 color: Colors.white,
                                                                 fontSize: 17
@@ -233,7 +233,7 @@ class _BudgetDetaille extends State<BudgetDetaille> {
                                                             )
                                                         ),
                                                         Text(
-                                                            "${budget.montant! - budget.montantRestant!}",
+                                                            "${budget.montant! - budget.montantRestant!} FCFA",
                                                             style: const TextStyle(
                                                                 color: Colors.white,
                                                                 fontSize: 17
