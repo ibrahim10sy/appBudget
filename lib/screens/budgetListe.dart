@@ -135,62 +135,64 @@ class _BudgetListeState extends State<BudgetListe> {
                   child: Padding(
                     padding: const EdgeInsets.all(5.0),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            utilisateur.photos == null ||
-                                    utilisateur.photos!.isEmpty
-                                ? CircleAvatar(
-                                    //backgroundImage: AssetImage("assets/images/avatar.png"),
-                                    //  child: Image.network(utilisateur.photos),
-                                    backgroundColor:
-                                        const Color.fromRGBO(240, 176, 2, 1),
-                                    radius: 30,
-                                    child: Text(
-                                  "${utilisateur.prenom.substring(0,1).toUpperCase()}${utilisateur.nom.substring(0,1).toUpperCase()}",
-                                      style: const TextStyle(
-                                          fontSize: 25,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                          letterSpacing: 2),
-                                    ),
-                                  )
-                                : CircleAvatar(
-                                    backgroundImage:
-                                        NetworkImage(utilisateur.photos!),
-                                    radius: 30),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                              child: Text(
-                                "${utilisateur.prenom} ${utilisateur.nom}",
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                        Padding(
-                            padding: const EdgeInsets.only(right: 15),
-                            child: badges.Badge(
-                              position:
-                                  badges.BadgePosition.topEnd(top: -2, end: -2),
-                              badgeContent: const Text(
-                                "3",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              child: const Icon(
-                                Icons.notifications,
-                                color: Color.fromRGBO(240, 176, 2, 1),
-                                size: 40,
-                              ),
-                            ))
-                      ],
+  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  children: [
+    Consumer<UtilisateurProvider>(
+      builder: (context, utilisateurProvider, child) {
+        final utilisateur = utilisateurProvider.utilisateur;
+        return Row(
+          children: [
+            utilisateur?.photos == null || utilisateur?.photos?.isEmpty == true
+                ? CircleAvatar(
+                    backgroundColor: const Color.fromRGBO(240, 176, 2, 1),
+                    radius: 30,
+                    child: Text(
+                      "${utilisateur!.prenom.substring(0, 1).toUpperCase()}${utilisateur.nom.substring(0, 1).toUpperCase()}",
+                      style: const TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          letterSpacing: 2),
                     ),
-                  )),
+                  )
+                : CircleAvatar(
+                    backgroundImage: NetworkImage(utilisateur!.photos!),
+                    radius: 30,
+                  ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+              child: Text(
+                "${utilisateur.prenom.toUpperCase()} ${utilisateur.nom.toUpperCase()}",
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            )
+          ],
+        );
+      },
+    ),
+    Padding(
+      padding: const EdgeInsets.only(right: 15),
+      child: badges.Badge(
+        position: badges.BadgePosition.topEnd(top: -2, end: -2),
+        badgeContent: const Text(
+          "3",
+          style: TextStyle(color: Colors.white),
+        ),
+        child: const Icon(
+          Icons.notifications,
+          color: Color.fromRGBO(240, 176, 2, 1),
+          size: 40,
+        ),
+      ),
+    )
+  ],
+),),
+
+                  ),
               Stack(
                 alignment: const Alignment(0.9, -0.8),
                 children: [
@@ -203,156 +205,158 @@ class _BudgetListeState extends State<BudgetListe> {
                         ),
                         SizedBox(
                           height: 200,
-                          child: Card(
-                            elevation: 10,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            margin: const EdgeInsets.fromLTRB(0, 25, 0, 0),
-                            color: const Color.fromRGBO(47, 144, 98, 1),
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.fromLTRB(10.0, 15.0, 0, 0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text("Budget total :",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 22,
-                                          fontWeight: FontWeight.bold)),
-                                  Consumer<BudgetService>(
-                                      builder: (context, budgetService, child) {
-                                    int montantTotal = 0;
-                                    int montantRestant = 0;
-                                    List<Budget> budgetList = context.select(
-                                        (BudgetService value) => value.budgets);
-                                    if (budgetList.isNotEmpty) {
-                                      budgetList.forEach((element) {
-                                        montantTotal =
-                                            montantTotal + element.montant!;
-                                        montantRestant = montantRestant +
-                                            element.montantRestant!;
-                                      });
-                                    }
-                                    return Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text("$montantTotal FCFA",
-                                            style: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 22,
-                                                fontWeight: FontWeight.bold)),
-                                        Column(
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 10.0,
-                                                  bottom: 7.5,
-                                                  top: 7.5),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      const Text("Restant :",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 17)),
-                                                      Text(
-                                                          "$montantRestant FCFA",
-                                                          style:
-                                                              const TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize: 17))
-                                                    ],
-                                                  ),
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      const Text("Dépensé :",
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 17)),
-                                                      Text(
-                                                          "${montantTotal - montantRestant} FCFA",
-                                                          style:
-                                                              const TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize: 17))
-                                                    ],
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                            Row(
-                                              children: [
-                                                GestureDetector(
-                                                  onTap: () {
-                                                    Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                AjouterBudget()));
-                                                  },
-                                                  child: Container(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            5.0),
-                                                    decoration: BoxDecoration(
-                                                        border: Border.all(
-                                                            width: 2,
-                                                            color:
-                                                                Colors.white),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(23)),
-                                                    child: const Row(
+                          child: Flexible(
+                            child: Card(
+                              elevation: 10,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              margin: const EdgeInsets.fromLTRB(0, 25, 0, 0),
+                              color: const Color.fromRGBO(47, 144, 98, 1),
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(10.0, 15.0, 0, 0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text("Budget total :",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.bold)),
+                                    Consumer<BudgetService>(
+                                        builder: (context, budgetService, child) {
+                                      int montantTotal = 0;
+                                      int montantRestant = 0;
+                                      List<Budget> budgetList = context.select(
+                                          (BudgetService value) => value.budgets);
+                                      if (budgetList.isNotEmpty) {
+                                        budgetList.forEach((element) {
+                                          montantTotal =
+                                              montantTotal + element.montant!;
+                                          montantRestant = montantRestant +
+                                              element.montantRestant!;
+                                        });
+                                      }
+                                      return Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text("$montantTotal FCFA",
+                                              style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 22,
+                                                  fontWeight: FontWeight.bold)),
+                                          Column(
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    right: 10.0,
+                                                    bottom: 7.5,
+                                                    top: 7.5),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
                                                       children: [
-                                                        Icon(Icons.add_circle,
-                                                            color:
-                                                                Colors.white),
-                                                        Padding(
-                                                          padding:
-                                                              EdgeInsets.only(
-                                                                  left: 3.0),
-                                                          child: Text(
-                                                            "Ajouter budget",
+                                                        const Text("Restant :",
                                                             style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontSize: 16,
-                                                                color: Colors
-                                                                    .white),
-                                                          ),
-                                                        )
+                                                                color:
+                                                                    Colors.white,
+                                                                fontSize: 17)),
+                                                        Text(
+                                                            "$montantRestant FCFA",
+                                                            style:
+                                                                const TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize: 17))
                                                       ],
                                                     ),
-                                                  ),
-                                                )
-                                              ],
-                                            )
-                                          ],
-                                        )
-                                      ],
-                                    );
-                                  })
-                                ],
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        const Text("Dépensé :",
+                                                            style: TextStyle(
+                                                                color:
+                                                                    Colors.white,
+                                                                fontSize: 17)),
+                                                        Text(
+                                                            "${montantTotal - montantRestant} FCFA",
+                                                            style:
+                                                                const TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize: 17))
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              Row(
+                                                children: [
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  AjouterBudget()));
+                                                    },
+                                                    child: Container(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              5.0),
+                                                      decoration: BoxDecoration(
+                                                          border: Border.all(
+                                                              width: 2,
+                                                              color:
+                                                                  Colors.white),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(23)),
+                                                      child: const Row(
+                                                        children: [
+                                                          Icon(Icons.add_circle,
+                                                              color:
+                                                                  Colors.white),
+                                                          Padding(
+                                                            padding:
+                                                                EdgeInsets.only(
+                                                                    left: 3.0),
+                                                            child: Text(
+                                                              "Ajouter budget",
+                                                              style: TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  fontSize: 16,
+                                                                  color: Colors
+                                                                      .white),
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  )
+                                                ],
+                                              )
+                                            ],
+                                          )
+                                        ],
+                                      );
+                                    })
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -618,23 +622,25 @@ class _BudgetListeState extends State<BudgetListe> {
                                                         "supprimer/${budget.idBudget}");
                                                 Navigator.pop(context);
                                               },
-                                              child: Card(
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            16)),
-                                                color: Colors.red,
-                                                child: const Padding(
-                                                  padding: EdgeInsets.symmetric(
-                                                      vertical: 5,
-                                                      horizontal: 30),
-                                                  child: Text(
-                                                    "OUI",
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 20,
-                                                        color: Colors.white),
+                                              child: Flexible(
+                                                child: Card(
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              16)),
+                                                  color: Colors.red,
+                                                  child: const Padding(
+                                                    padding: EdgeInsets.symmetric(
+                                                        vertical: 5,
+                                                        horizontal: 30),
+                                                    child: Text(
+                                                      "OUI",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 20,
+                                                          color: Colors.white),
+                                                    ),
                                                   ),
                                                 ),
                                               ),
@@ -643,25 +649,27 @@ class _BudgetListeState extends State<BudgetListe> {
                                                 onTap: () {
                                                   Navigator.pop(context);
                                                 },
-                                                child: Card(
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              16)),
-                                                  color: const Color.fromRGBO(
-                                                      47, 144, 98, 1),
-                                                  child: const Padding(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 5,
-                                                            horizontal: 30),
-                                                    child: Text(
-                                                      "NON",
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 20,
-                                                          color: Colors.white),
+                                                child: Flexible(
+                                                  child: Card(
+                                                    shape: RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                16)),
+                                                    color: const Color.fromRGBO(
+                                                        47, 144, 98, 1),
+                                                    child: const Padding(
+                                                      padding:
+                                                          EdgeInsets.symmetric(
+                                                              vertical: 5,
+                                                              horizontal: 30),
+                                                      child: Text(
+                                                        "NON",
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 20,
+                                                            color: Colors.white),
+                                                      ),
                                                     ),
                                                   ),
                                                 )),
@@ -804,20 +812,22 @@ class _BudgetListeState extends State<BudgetListe> {
                                           onTap: () {
                                             Navigator.pop(context);
                                           },
-                                          child: Card(
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(16)),
-                                            color: Colors.red,
-                                            child: const Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  vertical: 5, horizontal: 30),
-                                              child: Text(
-                                                "FERMER",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 20,
-                                                    color: Colors.white),
+                                          child: Flexible(
+                                            child: Card(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(16)),
+                                              color: Colors.red,
+                                              child: const Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 5, horizontal: 30),
+                                                child: Text(
+                                                  "FERMER",
+                                                  style: TextStyle(
+                                                      fontWeight: FontWeight.bold,
+                                                      fontSize: 20,
+                                                      color: Colors.white),
+                                                ),
                                               ),
                                             ),
                                           )))
@@ -923,21 +933,23 @@ class _BudgetListeState extends State<BudgetListe> {
                                                     inputController.text);
                                             Navigator.pop(context);
                                           },
-                                          child: Card(
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(16)),
-                                            color: const Color.fromRGBO(
-                                                47, 144, 98, 1),
-                                            child: const Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  vertical: 5, horizontal: 30),
-                                              child: Text(
-                                                "TRIER",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 20,
-                                                    color: Colors.white),
+                                          child: Flexible(
+                                            child: Card(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(16)),
+                                              color: const Color.fromRGBO(
+                                                  47, 144, 98, 1),
+                                              child: const Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 5, horizontal: 30),
+                                                child: Text(
+                                                  "TRIER",
+                                                  style: TextStyle(
+                                                      fontWeight: FontWeight.bold,
+                                                      fontSize: 20,
+                                                      color: Colors.white),
+                                                ),
                                               ),
                                             ),
                                           ))),
@@ -948,20 +960,22 @@ class _BudgetListeState extends State<BudgetListe> {
                                           onTap: () {
                                             Navigator.pop(context);
                                           },
-                                          child: Card(
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(16)),
-                                            color: Colors.red,
-                                            child: const Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  vertical: 5, horizontal: 30),
-                                              child: Text(
-                                                "FERMER",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 20,
-                                                    color: Colors.white),
+                                          child: Flexible(
+                                            child: Card(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(16)),
+                                              color: Colors.red,
+                                              child: const Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 5, horizontal: 30),
+                                                child: Text(
+                                                  "FERMER",
+                                                  style: TextStyle(
+                                                      fontWeight: FontWeight.bold,
+                                                      fontSize: 20,
+                                                      color: Colors.white),
+                                                ),
                                               ),
                                             ),
                                           )))

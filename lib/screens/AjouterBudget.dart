@@ -98,53 +98,63 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                   child: Padding(
                     padding: const EdgeInsets.all(5.0),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            utilisateur.photos == null || utilisateur.photos!.isEmpty ?
-                            CircleAvatar(
-                              //backgroundImage: AssetImage("assets/images/avatar.png"),
-                              //  child: Image.network(utilisateur.photos),
-                              backgroundColor: const Color.fromRGBO(240, 176, 2, 1),
-                              radius: 30,
-                              child: Text(
-                                  "${utilisateur.prenom.substring(0,1).toUpperCase()}${utilisateur.nom.substring(0,1).toUpperCase()}",
-                                style: const TextStyle(
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                    letterSpacing: 2
-                                ),
-                              ),
-                            ) :
-                            CircleAvatar(
-                                backgroundImage: NetworkImage(utilisateur.photos!),
-                                radius: 30
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                              child: Text(
-                                "${utilisateur.prenom} ${utilisateur.nom}",
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                        Padding(
-                            padding: const EdgeInsets.only(right: 15),
-                            child: badges.Badge(
-                              position: badges.BadgePosition.topEnd(top: -2,end: -2),
-                              badgeContent: const Text("3",style: TextStyle(color: Colors.white),),
-                              child: const Icon(Icons.notifications,color: Color.fromRGBO(240, 176, 2, 1),size: 40,),
-                            )
-                        )
-                      ],
+  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  children: [
+    Consumer<UtilisateurProvider>(
+      builder: (context, utilisateurProvider, child) {
+        final utilisateur = utilisateurProvider.utilisateur;
+        return Row(
+          children: [
+            utilisateur?.photos == null || utilisateur?.photos?.isEmpty == true
+                ? CircleAvatar(
+                    backgroundColor: const Color.fromRGBO(240, 176, 2, 1),
+                    radius: 30,
+                    child: Text(
+                      "${utilisateur!.nom.substring(0, 1).toUpperCase()}${utilisateur.prenom.substring(0, 1).toUpperCase()}",
+                      style: const TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          letterSpacing: 2),
                     ),
+                  )
+                : CircleAvatar(
+                    backgroundImage: NetworkImage(utilisateur!.photos!),
+                    radius: 30,
+                  ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+              child: Text(
+                "${utilisateur.prenom.toUpperCase()} ${utilisateur.nom.toUpperCase()}",
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            )
+          ],
+        );
+      },
+    ),
+    Padding(
+      padding: const EdgeInsets.only(right: 15),
+      child: badges.Badge(
+        position: badges.BadgePosition.topEnd(top: -2, end: -2),
+        badgeContent: const Text(
+          "3",
+          style: TextStyle(color: Colors.white),
+        ),
+        child: const Icon(
+          Icons.notifications,
+          color: Color.fromRGBO(240, 176, 2, 1),
+          size: 40,
+        ),
+      ),
+    )
+  ],
+),
+
                   )
               )
             ),

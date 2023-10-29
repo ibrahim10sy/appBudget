@@ -39,14 +39,13 @@ class MyCategorie extends State<Categoriees> {
   Future<void> _chargerCategories() async {
     try {
       var categories = await CategorieService().fetchAlbum();
-      Provider.of<CategorieService>(context, listen: false)
-          .categorieListe = categories;
+      Provider.of<CategorieService>(context, listen: false).categorieListe =
+          categories;
     } catch (e) {
       // Gérer les erreurs ici
       print("L'erreur est servenue lors de la chargement" + e.toString());
     }
   }
-
 
   final _formKey = GlobalKey<FormState>();
   @override
@@ -78,58 +77,65 @@ class MyCategorie extends State<Categoriees> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Row(
-                              children: [
-                                utilisateur.photos == null ||
-                                        utilisateur.photos!.isEmpty
-                                    ? CircleAvatar(
-                                        //backgroundImage: AssetImage("assets/images/avatar.png"),
-                                        //  child: Image.network(utilisateur.photos),
-                                        backgroundColor: const Color.fromRGBO(
-                                            240, 176, 2, 1),
-                                        radius: 30,
-                                        child: Text(
-                                        "${utilisateur.prenom.substring(0,1).toUpperCase()}${utilisateur.nom.substring(0,1).toUpperCase()}",
-                                          style: const TextStyle(
-                                              fontSize: 25,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                              letterSpacing: 2),
+                            Consumer<UtilisateurProvider>(
+                              builder: (context, utilisateurProvider, child) {
+                                final utilisateur =
+                                    utilisateurProvider.utilisateur;
+                                return Row(
+                                  children: [
+                                    utilisateur?.photos == null ||
+                                            utilisateur?.photos?.isEmpty == true
+                                        ? CircleAvatar(
+                                            backgroundColor:
+                                                const Color.fromRGBO(
+                                                    240, 176, 2, 1),
+                                            radius: 30,
+                                            child: Text(
+                                              "${utilisateur!.prenom.substring(0, 1).toUpperCase()}${utilisateur.nom.substring(0, 1).toUpperCase()}",
+                                              style: const TextStyle(
+                                                  fontSize: 25,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                  letterSpacing: 2),
+                                            ),
+                                          )
+                                        : CircleAvatar(
+                                            backgroundImage: NetworkImage(
+                                                utilisateur!.photos!),
+                                            radius: 30,
+                                          ),
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          10, 0, 0, 0),
+                                      child: Text(
+                                        "${utilisateur.prenom.toUpperCase()} ${utilisateur.nom.toUpperCase()}",
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
                                         ),
-                                      )
-                                    : CircleAvatar(
-                                        backgroundImage:
-                                            NetworkImage(utilisateur.photos!),
-                                        radius: 30),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                  child: Text(
-                                    "${utilisateur.prenom} ${utilisateur.nom}",
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                )
-                              ],
+                                      ),
+                                    )
+                                  ],
+                                );
+                              },
                             ),
                             Padding(
-                                padding: const EdgeInsets.only(right: 15),
-                                child: badges.Badge(
-                                  position: badges.BadgePosition.topEnd(
-                                      top: -2, end: -2),
-                                  badgeContent: const Text(
-                                    "3",
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                  child: const Icon(
-                                    Icons.notifications,
-                                    color: Color.fromRGBO(240, 176, 2, 1),
-                                    size: 40,
-                                  ),
-                                ))
+                              padding: const EdgeInsets.only(right: 15),
+                              child: badges.Badge(
+                                position: badges.BadgePosition.topEnd(
+                                    top: -2, end: -2),
+                                badgeContent: const Text(
+                                  "3",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                child: const Icon(
+                                  Icons.notifications,
+                                  color: Color.fromRGBO(240, 176, 2, 1),
+                                  size: 40,
+                                ),
+                              ),
+                            )
                           ],
                         ),
                       ))),
@@ -263,17 +269,20 @@ class MyCategorie extends State<Categoriees> {
                                                           });
                                                       return;
                                                     }
-                                                    await Provider.of<CategorieService>(
-                                                                context,
-                                                                listen: false)
-                                                          .addCategorie(
-                                                              context: context,
-                                                              titre: titre,
-                                                              utilisateur: utilisateur).then((value) {
-                                                                    titre_controller.clear();
-                                                                  }).catchError((onError){
-                                                                    final String
-                                                            errorMessage =
+                                                    await Provider.of<
+                                                                CategorieService>(
+                                                            context,
+                                                            listen: false)
+                                                        .addCategorie(
+                                                            context: context,
+                                                            titre: titre,
+                                                            utilisateur:
+                                                                utilisateur)
+                                                        .then((value) {
+                                                      titre_controller.clear();
+                                                    }).catchError((onError) {
+                                                      final String
+                                                          errorMessage =
                                                           onError.toString();
                                                       // ignore: use_build_context_synchronously
                                                       showDialog(
@@ -301,8 +310,8 @@ class MyCategorie extends State<Categoriees> {
                                                               ],
                                                             );
                                                           });
-                                                                  });
-                                                    
+                                                    });
+
                                                     Navigator.of(context)
                                                         .pop(); // Ferme la boîte de dialogue
                                                   },
@@ -449,73 +458,89 @@ class MyCategorie extends State<Categoriees> {
                         builder: (context, categorieService, child) {
                           debugPrint("edcvfr");
                           return FutureBuilder(
-                            future: categorieService.catByUser(utilisateur.idUtilisateur), 
-                            builder: ((context, snapshot) {
-                              if(snapshot.hasData){
-                                return ListView.builder(
-                            itemCount: snapshot.data.length,
-                            itemBuilder: (context, index) {
-                              final Map<String,dynamic> category = snapshot.data[index]; //categories[index];
-                              //print(category.toString());
-                              return Card(
-                                margin: const EdgeInsets.all(8),
-                                elevation: 5, // Niveau d'élévation pour l'ombre
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(40)),
-                                child: ListTile(
-                                  leading: Image.asset('assets/images/888.png'),
-                                  title: Text(
-                                    category["titre"],
-                                    style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                      color: Color.fromARGB(255, 31, 31, 31),
-                                    ),
-                                  ),
-                                   trailing: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      IconButton(
-                                        icon: const Icon(Icons.edit_sharp,
-                                            color: Color(
-                                                0xFF2F9062)), // Icône pour modifier
+                              future: categorieService
+                                  .catByUser(utilisateur.idUtilisateur),
+                              builder: ((context, snapshot) {
+                                if (snapshot.hasData) {
+                                  return ListView.builder(
+                                    itemCount: snapshot.data.length,
+                                    itemBuilder: (context, index) {
+                                      final Map<String, dynamic> category =
+                                          snapshot
+                                              .data[index]; //categories[index];
+                                      //print(category.toString());
+                                      return Card(
+                                        margin: const EdgeInsets.all(8),
+                                        elevation:
+                                            5, // Niveau d'élévation pour l'ombre
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(40)),
+                                        child: ListTile(
+                                          leading: Image.asset(
+                                              'assets/images/888.png'),
+                                          title: Text(
+                                            category["titre"],
+                                            style: const TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                              color: Color.fromARGB(
+                                                  255, 31, 31, 31),
+                                            ),
+                                          ),
+                                          trailing: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              IconButton(
+                                                icon: const Icon(
+                                                    Icons.edit_sharp,
+                                                    color: Color(
+                                                        0xFF2F9062)), // Icône pour modifier
 
-                                        onPressed: () async {
-                                          // print(category);
-                                          DialogHelper.showModifyCategoryDialog(
-                                              context, index, category);
+                                                onPressed: () async {
+                                                  // print(category);
+                                                  DialogHelper
+                                                      .showModifyCategoryDialog(
+                                                          context,
+                                                          index,
+                                                          category);
 
-                                          //  String newTitre = titre_controller.text;
-                                          // await CategorieService.updateCategorie(id: 1, titre: newTitre);
-                                          // Rafraîchir la liste
-                                          //await _chargerCategories();
-                                          // Fermeture du popup
-                                          //  Navigator.of(context).pop();
-                                        },
-                                      ),
-                                      IconButton(
-                                        icon: const Icon(Icons.delete,
-                                            color: Color.fromARGB(255, 255, 0,
-                                                0)), // Icône pour supprimer
-                                        onPressed: () {
-                                          DialogHelper.showDeleteCategoryDialog(
-                                              context,
-                                              category['idCategorie'],
-                                              index,
-                                              utilisateur);
-                                          // Logique pour la suppression ici
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            },
-                          );
-                              }else{
-                                return const CircularProgressIndicator();
-                              }
-                            }));
+                                                  //  String newTitre = titre_controller.text;
+                                                  // await CategorieService.updateCategorie(id: 1, titre: newTitre);
+                                                  // Rafraîchir la liste
+                                                  //await _chargerCategories();
+                                                  // Fermeture du popup
+                                                  //  Navigator.of(context).pop();
+                                                },
+                                              ),
+                                              IconButton(
+                                                icon: const Icon(Icons.delete,
+                                                    color: Color.fromARGB(
+                                                        255,
+                                                        255,
+                                                        0,
+                                                        0)), // Icône pour supprimer
+                                                onPressed: () {
+                                                  DialogHelper
+                                                      .showDeleteCategoryDialog(
+                                                          context,
+                                                          category[
+                                                              'idCategorie'],
+                                                          index,
+                                                          utilisateur);
+                                                  // Logique pour la suppression ici
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                } else {
+                                  return const CircularProgressIndicator();
+                                }
+                              }));
                         },
                       ),
                     ),
