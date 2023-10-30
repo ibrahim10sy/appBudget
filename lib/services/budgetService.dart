@@ -74,6 +74,16 @@ class BudgetService extends ChangeNotifier {
     }
   }
 
+  getBudgetById(int id){
+    late Budget bud;
+    budgets.forEach((element) {
+      if(element.idBudget == id){
+        bud = element;
+      }
+    });
+    return bud;
+  }
+
 
   void applyChange(){
     notifyListeners();

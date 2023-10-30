@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:ika_musaka/model/Depense.dart';
 import 'package:ika_musaka/provider/UtilisateurProvider.dart';
 import 'package:ika_musaka/screens/Categorie.dart';
 import 'package:ika_musaka/services/BottomNavigationService.dart';
 import 'package:ika_musaka/services/budgetService.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:provider/provider.dart';
+import '../model/DepenceClasse.dart';
 import '../model/utilisateur.dart';
-import 'Statistiques/Statistiques.dart';
+import 'Statistiques/StatistiquesDepenses.dart';
+// import 'Statistiques/Statistiques.dart';
 
 class Accueil extends StatefulWidget {
   const Accueil({super.key});
@@ -18,6 +21,7 @@ class Accueil extends StatefulWidget {
 class _AccueilState extends State<Accueil> {
   late Future<Map<String, dynamic>> future;
   late Utilisateur utilisateur;
+  late  DepenseClass depenses;
 
   @override
   void initState() {
@@ -199,7 +203,8 @@ class _AccueilState extends State<Accueil> {
                 _buildAccueilCard("Budget", "budget.png", 1),
                 _buildAccueilCard("Dépense", "depenses 1.png", 2),
                 _buildAccueilCard("Catégorie", "categorie.png", 3),
-                _buildAccueilCard("Statistique", "statistique_logo.png", 4)
+                _buildAccueilCard("StatistiquesDepenses", "statistique_logo.png", 4)
+                // _buildAccueilCard("Statistique", "statistique_logo.png", 4)
               ],
             ),
           )
@@ -212,8 +217,9 @@ class _AccueilState extends State<Accueil> {
     return InkWell(
       onTap: () {
         if (index == 4) {
+          
           Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const Statistiques()));
+              MaterialPageRoute(builder: (context) => StatistiquesDepenses()));
         } else if (index == 3) {
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => const Categoriees()));

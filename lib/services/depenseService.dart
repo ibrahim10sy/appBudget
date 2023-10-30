@@ -86,7 +86,7 @@ class DepenseService extends ChangeNotifier {
   }
 
  
-static Future<void> ajouterDepense({
+Future<void> ajouterDepense({
   required String description,
   required String montant,
   required String dateDepense,
@@ -122,6 +122,7 @@ static Future<void> ajouterDepense({
   if (response.statusCode == 200) {
     debugPrint(response.body);
     debugPrint(depenses.toString());
+    applyChange();
   } else {
     debugPrint(response.body);
     throw Exception('Impossible d\'ajouter une dépense ${response.statusCode}');

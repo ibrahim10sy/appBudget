@@ -6,6 +6,7 @@ import 'package:ika_musaka/model/Budget.dart';
 import 'package:ika_musaka/model/types.dart';
 import 'package:ika_musaka/screens/DepenseListes.dart';
 import 'package:ika_musaka/screens/budgetDetail.dart';
+import 'package:ika_musaka/services/budgetService.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:badges/badges.dart' as badges;
@@ -506,7 +507,8 @@ class _AjoutState extends State<AjoutDepense> {
                                           );
                                         } else {
                                           // Le montant est valide et ne dépasse pas le budget, ajouter la dépense.
-                                          await DepenseService.ajouterDepense(
+                                          await Provider.of<DepenseService>(context,
+                                                  listen: false).ajouterDepense(
                                             description: descriptions,
                                             montant: montants,
                                             type: maType,
@@ -515,7 +517,9 @@ class _AjoutState extends State<AjoutDepense> {
                                             utilisateur: utilisateur,
                                           );
 
-                                          Provider.of<DepenseService>(context,
+                                         
+
+                                          Provider.of<BudgetService>(context,
                                                   listen: false)
                                               .applyChange();
 

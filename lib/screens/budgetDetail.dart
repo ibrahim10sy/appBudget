@@ -59,6 +59,7 @@ class _BudgetDetaille extends State<BudgetDetaille> {
     _futureListDepense = depenseService.getDepenseByIdBudget(widget.budget.idBudget!);
     inputController.text = DateFormat('yyyy-MM').format(DateTime.now());
     debugPrint("Hello");
+    
   }
 
   @override
@@ -208,7 +209,10 @@ class _BudgetDetaille extends State<BudgetDetaille> {
                                           ),
                                           Column(
                                             children: [
-                                              Padding(
+                                              Consumer<BudgetService>(
+                                                builder: (context, budgetService, child) {
+                                                  budget = budgetService.getBudgetById(budget.idBudget!);
+                                                  return Padding(
                                                 padding: const EdgeInsets.only(right: 10.0,bottom: 7.5,top: 7.5),
                                                 child: Row(
                                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -253,7 +257,9 @@ class _BudgetDetaille extends State<BudgetDetaille> {
                                                     )
                                                   ],
                                                 ),
-                                              ),
+                                              );
+                                                }, 
+                                                ),
                                               Row(
                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 children: [
@@ -564,11 +570,13 @@ class _BudgetDetaille extends State<BudgetDetaille> {
                           height: 15,
                           color: Colors.white,
                         ),
-                        Consumer<DepenseService>(
-                            builder: (context,depenseService,child){
+                        Consumer<DepenseService>( 
+                            builder: (context,depenseServices,child){
+                              
                               return FutureBuilder <List<DepenseClass>>(
-                                  future: _futureListDepense,
+                                  future: _futureListDepense,//depenseServices.getDepenseByIdBudget(widget.budget.idBudget!),
                                   builder: (context, snapshot){
+                                    
                                     depenseService.action="all";
                                     if(snapshot.connectionState == ConnectionState.waiting){
                                       return const CircularProgressIndicator();

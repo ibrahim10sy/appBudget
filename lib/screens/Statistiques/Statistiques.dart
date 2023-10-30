@@ -11,24 +11,26 @@ class Statistiques extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Utilisateur utilisateur = Provider.of<UtilisateurProvider>(context,listen: false).utilisateur!;
+    Utilisateur utilisateur =
+        Provider.of<UtilisateurProvider>(context, listen: false).utilisateur!;
     return SingleChildScrollView(
       child: Column(
         children: [
           Padding(
-              padding: const EdgeInsets.only(top: 30,bottom: 15.0,left: 15, right: 15),
+              padding: const EdgeInsets.only(
+                  top: 30, bottom: 15.0, left: 15, right: 15),
               child: Container(
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(31),
                       boxShadow: const [
                         BoxShadow(
-                            offset: Offset(0.0,0.0),
+                            offset: Offset(0.0, 0.0),
                             blurRadius: 7.0,
-                            color: Color.fromRGBO(0, 0, 0, 0.25) //Color.fromRGBO(47, 144, 98, 1)
-                        )
-                      ]
-                  ),
+                            color: Color.fromRGBO(
+                                0, 0, 0, 0.25) //Color.fromRGBO(47, 144, 98, 1)
+                            )
+                      ]),
                   child: Padding(
                     padding: const EdgeInsets.all(5.0),
                     child: Row(
@@ -36,34 +38,62 @@ class Statistiques extends StatelessWidget {
                       children: [
                         Row(
                           children: [
-                            utilisateur.photos == null || utilisateur.photos!.isEmpty ?
-                            CircleAvatar(
-                              //backgroundImage: AssetImage("assets/images/avatar.png"),
-                              //  child: Image.network(utilisateur.photos),
-                              backgroundColor: const Color.fromRGBO(240, 176, 2, 1),
-                              radius: 30,
-                              child: Text(
-                                "${utilisateur.prenom.substring(0,1).toUpperCase()}${utilisateur.nom.substring(0,1).toUpperCase()}",
-                                style: const TextStyle(
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                    letterSpacing: 2
-                                ),
-                              ),
-                            ) :
-                            CircleAvatar(
-                                backgroundImage: NetworkImage(utilisateur.photos!),
-                                radius: 30
+                            Consumer<UtilisateurProvider>(
+                              builder: (context, utilisateurProvider, child) {
+                                final utilisateur =
+                                    utilisateurProvider.utilisateur;
+                                return Row(
+                                  children: [
+                                    utilisateur?.photos == null ||
+                                            utilisateur?.photos?.isEmpty == true
+                                        ? CircleAvatar(
+                                            backgroundColor:
+                                                const Color.fromRGBO(
+                                                    240, 176, 2, 1),
+                                            radius: 30,
+                                            child: Text(
+                                              "${utilisateur!.nom.substring(0, 1).toUpperCase()}${utilisateur.prenom.substring(0, 1).toUpperCase()}",
+                                              style: const TextStyle(
+                                                  fontSize: 25,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                  letterSpacing: 2),
+                                            ),
+                                          )
+                                        : CircleAvatar(
+                                            backgroundImage: NetworkImage(
+                                                utilisateur!.photos!),
+                                            radius: 30,
+                                          ),
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          10, 0, 0, 0),
+                                      child: Text(
+                                        "${utilisateur.prenom.toUpperCase()} ${utilisateur.nom.toUpperCase()}",
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                );
+                              },
                             ),
                             Padding(
-                              padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                              child: Text(
-                                "${utilisateur.prenom} ${utilisateur.nom}",
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
+                              padding: const EdgeInsets.only(right: 15),
+                              child: badges.Badge(
+                                position: badges.BadgePosition.topEnd(
+                                    top: -2, end: -2),
+                                badgeContent: const Text(
+                                  "3",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                child: const Icon(
+                                  Icons.notifications,
+                                  color: Color.fromRGBO(240, 176, 2, 1),
+                                  size: 40,
                                 ),
                               ),
                             )
@@ -72,18 +102,23 @@ class Statistiques extends StatelessWidget {
                         Padding(
                             padding: const EdgeInsets.only(right: 15),
                             child: badges.Badge(
-                              position: badges.BadgePosition.topEnd(top: -2,end: -2),
-                              badgeContent: const Text("3",style: TextStyle(color: Colors.white),),
-                              child: const Icon(Icons.notifications,color: Color.fromRGBO(240, 176, 2, 1),size: 40,),
-                            )
-                        )
+                              position:
+                                  badges.BadgePosition.topEnd(top: -2, end: -2),
+                              badgeContent: const Text(
+                                "3",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              child: const Icon(
+                                Icons.notifications,
+                                color: Color.fromRGBO(240, 176, 2, 1),
+                                size: 40,
+                              ),
+                            ))
                       ],
                     ),
-                  )
-              )
-          ),
+                  ))),
           Container(
-            margin: const EdgeInsets.only(top:30),
+            margin: const EdgeInsets.only(top: 30),
             width: 370,
             height: 500,
             decoration: ShapeDecoration(
@@ -112,9 +147,7 @@ class Statistiques extends StatelessWidget {
                             margin: const EdgeInsets.only(top: 30),
                             child: const Text(
                               "LES DEPENSES PAR CATEGORIES",
-                              style: TextStyle(
-                                  fontSize: 20
-                              ),
+                              style: TextStyle(fontSize: 20),
                             ),
                           ),
                           const SizedBox(height: 50),
