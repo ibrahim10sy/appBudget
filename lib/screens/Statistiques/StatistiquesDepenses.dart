@@ -1,53 +1,47 @@
-import 'package:flutter/material.dart';
-import 'package:fl_chart/fl_chart.dart';
-import 'package:provider/provider.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/material.dart';
+import 'package:ika_musaka/model/stat_model.dart';
+import 'package:provider/provider.dart';
+
 import '../../model/DepenceClasse.dart';
 import '../../model/utilisateur.dart';
 import '../../provider/UtilisateurProvider.dart';
 import '../../services/depenseService.dart';
 
 class StatistiquesDepenses extends StatefulWidget {
-//  final DepenseClass depenses; 
-  
+//  final DepenseClass depenses;
 
-  const StatistiquesDepenses({Key? key, }) : super(key: key);
+  const StatistiquesDepenses({
+    Key? key,
+  }) : super(key: key);
 
   @override
   _StatistiquesDepensesState createState() => _StatistiquesDepensesState();
 }
 
 class _StatistiquesDepensesState extends State<StatistiquesDepenses> {
-  late Map<String, int> categories;
   late Future<Map<String, dynamic>> future;
-  late Future<List<DepenseClass>> _futureListDepense;
-  late List<DepenseClass> depenses = [];
+  List<StatModel> categories = [];
+  late Future<List<StatModel>> _futureListDepense;
+  List<DepenseClass> depenses = [];
   late Utilisateur utilisateur;
   var depenseService = DepenseService();
   @override
   void initState() {
-    utilisateur = Provider.of<UtilisateurProvider>(context,listen: false).utilisateur!;
-    depenseService.getDepenseByIdUser(utilisateur.idUtilisateur).then((value) {
-      depenses = value;
-    });
+    utilisateur =
+        Provider.of<UtilisateurProvider>(context, listen: false).utilisateur!;
+    _futureListDepense = getCategories();
+    // depenseService.getDepenseByCategory(1).then((value) {
+    //   categories = value;
+    // });
+    //  categories = depenseService.getDepenseByCategory(utilisateur.idUtilisateur) as Map<String, int>;
     super.initState();
-    
-    categories = _calculateCategories();
   }
 
-  
-  Map<String, int> _calculateCategories() {
-    Map<String, int> calculatedCategories = {};
-    for (var depense in depenses) {
-      String typeDepense = depense.type?["titre"] as String;
-      if (calculatedCategories.containsKey(typeDepense)) {
-        calculatedCategories[typeDepense] =
-            (calculatedCategories[typeDepense]! + depense.montant!) as int;
-      } else {
-        calculatedCategories[typeDepense] = depense.montant!;
-      }
-    }
-    return calculatedCategories;
+  Future<List<StatModel>> getCategories() async {
+    final response = await depenseService.getDepenseByCategory(1);
+    return response;
   }
 
   Color _getColorFromCategory(String category) {
@@ -70,7 +64,7 @@ class _StatistiquesDepensesState extends State<StatistiquesDepenses> {
     return SingleChildScrollView(
       child: Column(
         children: [
-           Padding(
+          Padding(
               padding: const EdgeInsets.only(
                   top: 30, bottom: 15.0, left: 15, right: 15),
               child: Container(
@@ -153,23 +147,49 @@ class _StatistiquesDepensesState extends State<StatistiquesDepenses> {
                             )
                           ],
                         ),
-                        
                       ],
                     ),
                   ))),
           SizedBox(
-            height: 30,
-            child: PieChart(
-              PieChartData(
-                sections: categories.entries
-                    .map((e) => PieChartSectionData(
-                          value: e.value.toDouble(),
-                          title: e.key,
-                          color: _getColorFromCategory(e.key),
-                        ))
-                    .toList(),
-              ),
-            ),
+            height: 500,
+            width: 300,
+            child: FutureBuilder(
+                future: _futureListDepense,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text(snapshot.error.toString()),
+                    );
+                  }
+
+                  if (!snapshot.hasData) {
+                    return const Center(
+                      child: Text("Pas de données !"),
+                    );
+                  }
+                  categories = snapshot.data!;
+                  return PieChart(
+                    PieChartData(
+                      sections: categories
+                          .map((e) => PieChartSectionData(
+                                value: double.tryParse(
+                                        e.totalDepenses.toString()) ??
+                                    0.0,
+                                title: e.titreCategorie,
+                                color: _getColorFromCategory(
+                                    e.titreCategorie ?? ""),
+                              ))
+                          .toList(),
+                    ),
+                  );
+                }),
+           
           ),
           // ... Autres éléments de votre interface utilisateur
         ],
