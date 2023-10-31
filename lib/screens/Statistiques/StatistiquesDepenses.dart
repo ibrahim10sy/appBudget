@@ -1,4 +1,3 @@
-import 'package:badges/badges.dart' as badges;
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:ika_musaka/model/stat_model.dart';
@@ -8,6 +7,10 @@ import '../../model/DepenceClasse.dart';
 import '../../model/utilisateur.dart';
 import '../../provider/UtilisateurProvider.dart';
 import '../../services/depenseService.dart';
+
+Color hexToColor(String code) {
+  return Color(int.parse(code.substring(1, 7), radix: 16) + 0xFF000000);
+}
 
 class StatistiquesDepenses extends StatefulWidget {
 //  final DepenseClass depenses;
@@ -40,7 +43,8 @@ class _StatistiquesDepensesState extends State<StatistiquesDepenses> {
   }
 
   Future<List<StatModel>> getCategories() async {
-    final response = await depenseService.getDepenseByCategory(1);
+    final response =
+        await depenseService.getDepenseByCategory(utilisateur.idUtilisateur);
     return response;
   }
 
@@ -54,9 +58,27 @@ class _StatistiquesDepensesState extends State<StatistiquesDepenses> {
         return Colors.pink;
       case 'Transport':
         return Colors.amberAccent;
+      case 'Autres':
+        return const Color.fromARGB(255, 56, 196, 21);
       default:
         return Colors.grey;
     }
+  }
+
+  List<Widget> _buildLegend(List<StatModel> categories) {
+    return categories.map((e) {
+      return Row(
+        children: [
+          Container(
+            width: 15,
+            height: 15,
+            color: _getColorFromCategory(e.titreCategorie ?? ""),
+          ),
+          const SizedBox(width: 20),
+          Text(e.titreCategorie ?? ""),
+        ],
+      );
+    }).toList();
   }
 
   @override
@@ -82,9 +104,10 @@ class _StatistiquesDepensesState extends State<StatistiquesDepenses> {
                   child: Padding(
                     padding: const EdgeInsets.all(5.0),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Row(
+                          // mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Consumer<UtilisateurProvider>(
                               builder: (context, utilisateurProvider, child) {
@@ -113,6 +136,9 @@ class _StatistiquesDepensesState extends State<StatistiquesDepenses> {
                                                 utilisateur!.photos!),
                                             radius: 30,
                                           ),
+                                    const SizedBox(
+                                      width: 50,
+                                    ),
                                     Padding(
                                       padding: const EdgeInsets.fromLTRB(
                                           10, 0, 0, 0),
@@ -129,29 +155,21 @@ class _StatistiquesDepensesState extends State<StatistiquesDepenses> {
                                 );
                               },
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 15),
-                              child: badges.Badge(
-                                position: badges.BadgePosition.topEnd(
-                                    top: -2, end: -2),
-                                badgeContent: const Text(
-                                  "3",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                child: const Icon(
-                                  Icons.notifications,
-                                  color: Color.fromRGBO(240, 176, 2, 1),
-                                  size: 40,
-                                ),
-                              ),
-                            )
                           ],
                         ),
                       ],
                     ),
                   ))),
+          Container(
+            margin: const EdgeInsets.only(top: 30),
+            child: const Text(
+              "LES DEPENSES PAR CATEGORIES",
+              style: TextStyle(fontSize: 20),
+            ),
+          ),
+          // const SizedBox(height: 2),
           SizedBox(
-            height: 500,
+            height: 380,
             width: 300,
             child: FutureBuilder(
                 future: _futureListDepense,
@@ -189,9 +207,11 @@ class _StatistiquesDepensesState extends State<StatistiquesDepenses> {
                     ),
                   );
                 }),
-           
           ),
-          // ... Autres éléments de votre interface utilisateur
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: _buildLegend(categories),
+          ),
         ],
       ),
     );

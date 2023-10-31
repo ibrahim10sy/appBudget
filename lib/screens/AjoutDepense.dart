@@ -2,15 +2,13 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 import 'package:ika_musaka/model/Budget.dart';
 import 'package:ika_musaka/model/types.dart';
-import 'package:ika_musaka/screens/DepenseListes.dart';
 import 'package:ika_musaka/screens/budgetDetail.dart';
 import 'package:ika_musaka/services/budgetService.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:badges/badges.dart' as badges;
-import 'package:http/http.dart' as http;
 
 import '../model/DepenceClasse.dart';
 import '../model/utilisateur.dart';
@@ -98,6 +96,9 @@ class _AjoutState extends State<AjoutDepense> {
                                             NetworkImage(utilisateur!.photos!),
                                         radius: 30,
                                       ),
+                                const SizedBox(
+                                  width: 50,
+                                ),
                                 Padding(
                                   padding:
                                       const EdgeInsets.fromLTRB(10, 0, 0, 0),
@@ -114,22 +115,22 @@ class _AjoutState extends State<AjoutDepense> {
                             );
                           },
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(right: 15),
-                          child: badges.Badge(
-                            position:
-                                badges.BadgePosition.topEnd(top: -2, end: -2),
-                            badgeContent: const Text(
-                              "3",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            child: const Icon(
-                              Icons.notifications,
-                              color: Color.fromRGBO(240, 176, 2, 1),
-                              size: 40,
-                            ),
-                          ),
-                        )
+                        // Padding(
+                        //   padding: const EdgeInsets.only(right: 15),
+                        //   child: badges.Badge(
+                        //     position:
+                        //         badges.BadgePosition.topEnd(top: -2, end: -2),
+                        //     badgeContent: const Text(
+                        //       "3",
+                        //       style: TextStyle(color: Colors.white),
+                        //     ),
+                        //     child: const Icon(
+                        //       Icons.notifications,
+                        //       color: Color.fromRGBO(240, 176, 2, 1),
+                        //       size: 40,
+                        //     ),
+                        //   ),
+                        // )
                       ],
                     ),
                   ))),
@@ -307,7 +308,7 @@ class _AjoutState extends State<AjoutDepense> {
                                             ConnectionState.waiting) {
                                           return DropdownButton(
                                               dropdownColor: Colors.green,
-                                              items: [],
+                                              items: const [],
                                               onChanged: (value) {});
                                         }
                                         if (snapshot.hasError) {
@@ -325,8 +326,8 @@ class _AjoutState extends State<AjoutDepense> {
                                           return DropdownButton(
                                               items: mesTypes
                                                   .map((e) => DropdownMenuItem(
-                                                        child: Text(e.titre),
                                                         value: e.idType,
+                                                        child: Text(e.titre),
                                                       ))
                                                   .toList(),
                                               value: typeValue,
@@ -351,7 +352,7 @@ class _AjoutState extends State<AjoutDepense> {
                             ),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(
+                            padding: const EdgeInsets.only(
                                 left: 15, right: 15, bottom: 15),
                             child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -433,21 +434,21 @@ class _AjoutState extends State<AjoutDepense> {
                                     if (montants.isEmpty ||
                                         descriptions.isEmpty ||
                                         dateDepenses.isEmpty) {
-                                      final String errorMessage =
+                                      const String errorMessage =
                                           "Tous les champs doivent être remplis";
                                       showDialog(
                                         context: context,
                                         builder: (BuildContext context) {
                                           return AlertDialog(
-                                            title:
-                                                Center(child: Text('Erreur')),
-                                            content: Text(errorMessage),
+                                            title: const Center(
+                                                child: Text('Erreur')),
+                                            content: const Text(errorMessage),
                                             actions: <Widget>[
                                               TextButton(
                                                 onPressed: () {
                                                   Navigator.of(context).pop();
                                                 },
-                                                child: Text('OK'),
+                                                child: const Text('OK'),
                                               )
                                             ],
                                           );
@@ -464,10 +465,10 @@ class _AjoutState extends State<AjoutDepense> {
                                             context: context,
                                             builder: (BuildContext context) {
                                               return AlertDialog(
-                                                title: Center(
+                                                title: const Center(
                                                     child: Text(
                                                         'Erreur de format')),
-                                                content: Text(
+                                                content: const Text(
                                                     "Le montant doit être un nombre valide."),
                                                 actions: <Widget>[
                                                   TextButton(
@@ -475,7 +476,7 @@ class _AjoutState extends State<AjoutDepense> {
                                                       Navigator.of(context)
                                                           .pop();
                                                     },
-                                                    child: Text('OK'),
+                                                    child: const Text('OK'),
                                                   ),
                                                 ],
                                               );
@@ -484,22 +485,23 @@ class _AjoutState extends State<AjoutDepense> {
                                         } else if (mt >
                                             widget.budget.montantRestant!) {
                                           // Le montant de la dépense dépasse le montant du budget
-                                          final String errorMessage =
+                                          const String errorMessage =
                                               "Le montant de la dépense ne doit pas dépasser celui du budget";
                                           showDialog(
                                             context: context,
                                             builder: (BuildContext context) {
                                               return AlertDialog(
-                                                title: Center(
+                                                title: const Center(
                                                     child: Text('Erreur')),
-                                                content: Text(errorMessage),
+                                                content:
+                                                    const Text(errorMessage),
                                                 actions: <Widget>[
                                                   TextButton(
                                                     onPressed: () {
                                                       Navigator.of(context)
                                                           .pop();
                                                     },
-                                                    child: Text('OK'),
+                                                    child: const Text('OK'),
                                                   )
                                                 ],
                                               );
@@ -507,8 +509,10 @@ class _AjoutState extends State<AjoutDepense> {
                                           );
                                         } else {
                                           // Le montant est valide et ne dépasse pas le budget, ajouter la dépense.
-                                          await Provider.of<DepenseService>(context,
-                                                  listen: false).ajouterDepense(
+                                          await Provider.of<DepenseService>(
+                                                  context,
+                                                  listen: false)
+                                              .ajouterDepense(
                                             description: descriptions,
                                             montant: montants,
                                             type: maType,
@@ -516,8 +520,6 @@ class _AjoutState extends State<AjoutDepense> {
                                             budget: budgets,
                                             utilisateur: utilisateur,
                                           );
-
-                                         
 
                                           Provider.of<BudgetService>(context,
                                                   listen: false)
@@ -527,9 +529,9 @@ class _AjoutState extends State<AjoutDepense> {
                                             context: context,
                                             builder: (BuildContext context) {
                                               return AlertDialog(
-                                                title: Center(
+                                                title: const Center(
                                                     child: Text('Succès')),
-                                                content: Text(
+                                                content: const Text(
                                                     "Dépense ajoutée avec succès"),
                                                 actions: <Widget>[
                                                   TextButton(
@@ -537,7 +539,7 @@ class _AjoutState extends State<AjoutDepense> {
                                                       Navigator.of(context)
                                                           .pop(context);
                                                     },
-                                                    child: Text('OK'),
+                                                    child: const Text('OK'),
                                                   )
                                                 ],
                                               );
@@ -556,8 +558,8 @@ class _AjoutState extends State<AjoutDepense> {
                                           context: context,
                                           builder: (BuildContext context) {
                                             return AlertDialog(
-                                              title:
-                                                  Center(child: Text('Erreur')),
+                                              title: const Center(
+                                                  child: Text('Erreur')),
                                               content: Text(
                                                   errorMessage.replaceAll(
                                                       "Exception:", "")),
@@ -566,7 +568,7 @@ class _AjoutState extends State<AjoutDepense> {
                                                   onPressed: () {
                                                     Navigator.of(context).pop();
                                                   },
-                                                  child: Text('OK'),
+                                                  child: const Text('OK'),
                                                 ),
                                               ],
                                             );
@@ -705,7 +707,7 @@ class _AjoutState extends State<AjoutDepense> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.only(top: 10.0),
+                                  padding: const EdgeInsets.only(top: 10.0),
                                   child: ElevatedButton(
                                       style: ElevatedButton.styleFrom(
                                           backgroundColor: const Color.fromRGBO(

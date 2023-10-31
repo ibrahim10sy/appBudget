@@ -1,16 +1,16 @@
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:ika_musaka/model/utilisateur.dart';
 import 'package:ika_musaka/provider/UtilisateurProvider.dart';
 import 'package:ika_musaka/screens/budgetDetail.dart';
+import 'package:ika_musaka/screens/categoriess.dart';
 import 'package:ika_musaka/screens/modifyBudget.dart';
 import 'package:ika_musaka/services/budgetService.dart';
-import 'package:badges/badges.dart' as badges;
 import 'package:intl/intl.dart';
-import 'package:ika_musaka/screens/categoriess.dart';
 import 'package:provider/provider.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+
 import '../model/Budget.dart';
 import 'AjouterBudget.dart';
 
@@ -35,8 +35,6 @@ class _BudgetListeState extends State<BudgetListe> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   DateTime selectedDate = DateTime.now();
-
-  
 
   Future fetchAlbum() async {
     final response =
@@ -92,17 +90,19 @@ class _BudgetListeState extends State<BudgetListe> {
     super.initState();
     utilisateur =
         Provider.of<UtilisateurProvider>(context, listen: false).utilisateur!;
-    future =  BudgetService().getBudgetTotal("somme/${utilisateur.idUtilisateur}");
+    future =
+        BudgetService().getBudgetTotal("somme/${utilisateur.idUtilisateur}");
     _futureListBudget =
         BudgetService().getBudgetByIdUser("list/${utilisateur.idUtilisateur}");
     inputController.text = DateFormat('yyyy-MM').format(DateTime.now());
 
     // utilisateur = Provider.of<UtilisateurProvider>(context,listen: false).utilisateur!;
     fetchAlbum();
-    _mesCategories = http.get(Uri.parse('http://10.0.2.2:8080/Categorie/list/${utilisateur.idUtilisateur}'));
+    _mesCategories = http.get(Uri.parse(
+        'http://10.0.2.2:8080/Categorie/list/${utilisateur.idUtilisateur}'));
     // utilisateur =
     //     Provider.of<UtilisateurProvider>(context, listen: false).utilisateur!;
-  } 
+  }
 
   void updateOnCLick() {
     _futureListBudget =
@@ -121,78 +121,84 @@ class _BudgetListeState extends State<BudgetListe> {
           child: Column(
             children: [
               Container(
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(31),
-                      boxShadow: const [
-                        BoxShadow(
-                            offset: Offset(0.0, 0.0),
-                            blurRadius: 7.0,
-                            color: Color.fromRGBO(
-                                0, 0, 0, 0.25) //Color.fromRGBO(47, 144, 98, 1)
-                            )
-                      ]),
-                  child: Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Row(
-  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  children: [
-    Consumer<UtilisateurProvider>(
-      builder: (context, utilisateurProvider, child) {
-        final utilisateur = utilisateurProvider.utilisateur;
-        return Row(
-          children: [
-            utilisateur?.photos == null || utilisateur?.photos?.isEmpty == true
-                ? CircleAvatar(
-                    backgroundColor: const Color.fromRGBO(240, 176, 2, 1),
-                    radius: 30,
-                    child: Text(
-                      "${utilisateur!.prenom.substring(0, 1).toUpperCase()}${utilisateur.nom.substring(0, 1).toUpperCase()}",
-                      style: const TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          letterSpacing: 2),
-                    ),
-                  )
-                : CircleAvatar(
-                    backgroundImage: NetworkImage(utilisateur!.photos!),
-                    radius: 30,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(31),
+                    boxShadow: const [
+                      BoxShadow(
+                          offset: Offset(0.0, 0.0),
+                          blurRadius: 7.0,
+                          color: Color.fromRGBO(
+                              0, 0, 0, 0.25) //Color.fromRGBO(47, 144, 98, 1)
+                          )
+                    ]),
+                child: Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Consumer<UtilisateurProvider>(
+                        builder: (context, utilisateurProvider, child) {
+                          final utilisateur = utilisateurProvider.utilisateur;
+                          return Row(
+                            children: [
+                              utilisateur?.photos == null ||
+                                      utilisateur?.photos?.isEmpty == true
+                                  ? CircleAvatar(
+                                      backgroundColor:
+                                          const Color.fromRGBO(240, 176, 2, 1),
+                                      radius: 30,
+                                      child: Text(
+                                        "${utilisateur!.prenom.substring(0, 1).toUpperCase()}${utilisateur.nom.substring(0, 1).toUpperCase()}",
+                                        style: const TextStyle(
+                                            fontSize: 25,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                            letterSpacing: 2),
+                                      ),
+                                    )
+                                  : CircleAvatar(
+                                      backgroundImage:
+                                          NetworkImage(utilisateur!.photos!),
+                                      radius: 30,
+                                    ),
+                              const SizedBox(
+                                width: 50,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                child: Text(
+                                  "${utilisateur.prenom.toUpperCase()} ${utilisateur.nom.toUpperCase()}",
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              )
+                            ],
+                          );
+                        },
+                      ),
+                      // Padding(
+                      //   padding: const EdgeInsets.only(right: 15),
+                      //   child: badges.Badge(
+                      //     position: badges.BadgePosition.topEnd(top: -2, end: -2),
+                      //     badgeContent: const Text(
+                      //       "3",
+                      //       style: TextStyle(color: Colors.white),
+                      //     ),
+                      //     child: const Icon(
+                      //       Icons.notifications,
+                      //       color: Color.fromRGBO(240, 176, 2, 1),
+                      //       size: 40,
+                      //     ),
+                      //   ),
+                      // )
+                    ],
                   ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-              child: Text(
-                "${utilisateur.prenom.toUpperCase()} ${utilisateur.nom.toUpperCase()}",
-                overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
                 ),
               ),
-            )
-          ],
-        );
-      },
-    ),
-    Padding(
-      padding: const EdgeInsets.only(right: 15),
-      child: badges.Badge(
-        position: badges.BadgePosition.topEnd(top: -2, end: -2),
-        badgeContent: const Text(
-          "3",
-          style: TextStyle(color: Colors.white),
-        ),
-        child: const Icon(
-          Icons.notifications,
-          color: Color.fromRGBO(240, 176, 2, 1),
-          size: 40,
-        ),
-      ),
-    )
-  ],
-),),
-
-                  ),
               Stack(
                 alignment: const Alignment(0.9, -0.8),
                 children: [
@@ -224,19 +230,20 @@ class _BudgetListeState extends State<BudgetListe> {
                                             color: Colors.white,
                                             fontSize: 22,
                                             fontWeight: FontWeight.bold)),
-                                    Consumer<BudgetService>(
-                                        builder: (context, budgetService, child) {
+                                    Consumer<BudgetService>(builder:
+                                        (context, budgetService, child) {
                                       int montantTotal = 0;
                                       int montantRestant = 0;
                                       List<Budget> budgetList = context.select(
-                                          (BudgetService value) => value.budgets);
+                                          (BudgetService value) =>
+                                              value.budgets);
                                       if (budgetList.isNotEmpty) {
-                                        budgetList.forEach((element) {
+                                        for (var element in budgetList) {
                                           montantTotal =
                                               montantTotal + element.montant!;
                                           montantRestant = montantRestant +
                                               element.montantRestant!;
-                                        });
+                                        }
                                       }
                                       return Column(
                                         mainAxisAlignment:
@@ -268,16 +275,15 @@ class _BudgetListeState extends State<BudgetListe> {
                                                       children: [
                                                         const Text("Restant :",
                                                             style: TextStyle(
-                                                                color:
-                                                                    Colors.white,
+                                                                color: Colors
+                                                                    .white,
                                                                 fontSize: 17)),
                                                         Text(
                                                             "$montantRestant FCFA",
-                                                            style:
-                                                                const TextStyle(
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontSize: 17))
+                                                            style: const TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 17))
                                                       ],
                                                     ),
                                                     Column(
@@ -287,16 +293,15 @@ class _BudgetListeState extends State<BudgetListe> {
                                                       children: [
                                                         const Text("Dépensé :",
                                                             style: TextStyle(
-                                                                color:
-                                                                    Colors.white,
+                                                                color: Colors
+                                                                    .white,
                                                                 fontSize: 17)),
                                                         Text(
                                                             "${montantTotal - montantRestant} FCFA",
-                                                            style:
-                                                                const TextStyle(
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontSize: 17))
+                                                            style: const TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 17))
                                                       ],
                                                     )
                                                   ],
@@ -310,7 +315,7 @@ class _BudgetListeState extends State<BudgetListe> {
                                                           context,
                                                           MaterialPageRoute(
                                                               builder: (context) =>
-                                                                  AjouterBudget()));
+                                                                  const AjouterBudget()));
                                                     },
                                                     child: Container(
                                                       padding:
@@ -323,7 +328,8 @@ class _BudgetListeState extends State<BudgetListe> {
                                                                   Colors.white),
                                                           borderRadius:
                                                               BorderRadius
-                                                                  .circular(23)),
+                                                                  .circular(
+                                                                      23)),
                                                       child: const Row(
                                                         children: [
                                                           Icon(Icons.add_circle,
@@ -560,10 +566,13 @@ class _BudgetListeState extends State<BudgetListe> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   IconButton(
-                      onPressed: ()  async{
+                      onPressed: () async {
                         debugPrint(budget.toString());
-                      Navigator.push(context, 
-                      MaterialPageRoute(builder: ((context) => ModifyBudget(budget: budget))));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: ((context) =>
+                                    ModifyBudget(budget: budget))));
                       },
                       icon: Image.asset("assets/images/edit_icon (2).png")),
                   IconButton(
@@ -630,9 +639,10 @@ class _BudgetListeState extends State<BudgetListe> {
                                                               16)),
                                                   color: Colors.red,
                                                   child: const Padding(
-                                                    padding: EdgeInsets.symmetric(
-                                                        vertical: 5,
-                                                        horizontal: 30),
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 5,
+                                                            horizontal: 30),
                                                     child: Text(
                                                       "OUI",
                                                       style: TextStyle(
@@ -651,10 +661,12 @@ class _BudgetListeState extends State<BudgetListe> {
                                                 },
                                                 child: Flexible(
                                                   child: Card(
-                                                    shape: RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                16)),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        16)),
                                                     color: const Color.fromRGBO(
                                                         47, 144, 98, 1),
                                                     child: const Padding(
@@ -668,7 +680,8 @@ class _BudgetListeState extends State<BudgetListe> {
                                                             fontWeight:
                                                                 FontWeight.bold,
                                                             fontSize: 20,
-                                                            color: Colors.white),
+                                                            color:
+                                                                Colors.white),
                                                       ),
                                                     ),
                                                   ),
@@ -778,6 +791,7 @@ class _BudgetListeState extends State<BudgetListe> {
                                                   return "Veuillez saisir une description";
                                                 }
                                                 description = value;
+                                                return null;
                                               },
                                             ),
                                           ),
@@ -816,15 +830,18 @@ class _BudgetListeState extends State<BudgetListe> {
                                             child: Card(
                                               shape: RoundedRectangleBorder(
                                                   borderRadius:
-                                                      BorderRadius.circular(16)),
+                                                      BorderRadius.circular(
+                                                          16)),
                                               color: Colors.red,
                                               child: const Padding(
                                                 padding: EdgeInsets.symmetric(
-                                                    vertical: 5, horizontal: 30),
+                                                    vertical: 5,
+                                                    horizontal: 30),
                                                 child: Text(
                                                   "FERMER",
                                                   style: TextStyle(
-                                                      fontWeight: FontWeight.bold,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                       fontSize: 20,
                                                       color: Colors.white),
                                                 ),
@@ -937,16 +954,19 @@ class _BudgetListeState extends State<BudgetListe> {
                                             child: Card(
                                               shape: RoundedRectangleBorder(
                                                   borderRadius:
-                                                      BorderRadius.circular(16)),
+                                                      BorderRadius.circular(
+                                                          16)),
                                               color: const Color.fromRGBO(
                                                   47, 144, 98, 1),
                                               child: const Padding(
                                                 padding: EdgeInsets.symmetric(
-                                                    vertical: 5, horizontal: 30),
+                                                    vertical: 5,
+                                                    horizontal: 30),
                                                 child: Text(
                                                   "TRIER",
                                                   style: TextStyle(
-                                                      fontWeight: FontWeight.bold,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                       fontSize: 20,
                                                       color: Colors.white),
                                                 ),
@@ -964,15 +984,18 @@ class _BudgetListeState extends State<BudgetListe> {
                                             child: Card(
                                               shape: RoundedRectangleBorder(
                                                   borderRadius:
-                                                      BorderRadius.circular(16)),
+                                                      BorderRadius.circular(
+                                                          16)),
                                               color: Colors.red,
                                               child: const Padding(
                                                 padding: EdgeInsets.symmetric(
-                                                    vertical: 5, horizontal: 30),
+                                                    vertical: 5,
+                                                    horizontal: 30),
                                                 child: Text(
                                                   "FERMER",
                                                   style: TextStyle(
-                                                      fontWeight: FontWeight.bold,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                       fontSize: 20,
                                                       color: Colors.white),
                                                 ),

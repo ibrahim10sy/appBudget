@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:ika_musaka/model/Depense.dart';
 import 'package:ika_musaka/provider/UtilisateurProvider.dart';
 import 'package:ika_musaka/screens/Categorie.dart';
 import 'package:ika_musaka/services/BottomNavigationService.dart';
 import 'package:ika_musaka/services/budgetService.dart';
-import 'package:badges/badges.dart' as badges;
 import 'package:provider/provider.dart';
+
 import '../model/DepenceClasse.dart';
 import '../model/utilisateur.dart';
 import 'Statistiques/StatistiquesDepenses.dart';
@@ -21,7 +20,7 @@ class Accueil extends StatefulWidget {
 class _AccueilState extends State<Accueil> {
   late Future<Map<String, dynamic>> future;
   late Utilisateur utilisateur;
-  late  DepenseClass depenses;
+  late DepenseClass depenses;
 
   @override
   void initState() {
@@ -63,7 +62,8 @@ class _AccueilState extends State<Accueil> {
                         children: [
                           Consumer<UtilisateurProvider>(
                             builder: (context, utilisateurProvider, child) {
-                              final utilisateur = utilisateurProvider.utilisateur;
+                              final utilisateur =
+                                  utilisateurProvider.utilisateur;
                               return Row(
                                 children: [
                                   utilisateur?.photos == null ||
@@ -86,6 +86,9 @@ class _AccueilState extends State<Accueil> {
                                               utilisateur!.photos!),
                                           radius: 30,
                                         ),
+                                  const SizedBox(
+                                    width: 50,
+                                  ),
                                   Padding(
                                     padding:
                                         const EdgeInsets.fromLTRB(10, 0, 0, 0),
@@ -102,22 +105,22 @@ class _AccueilState extends State<Accueil> {
                               );
                             },
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 15),
-                            child: badges.Badge(
-                              position:
-                                  badges.BadgePosition.topEnd(top: -2, end: -2),
-                              badgeContent: const Text(
-                                "3",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              child: const Icon(
-                                Icons.notifications,
-                                color: Color.fromRGBO(240, 176, 2, 1),
-                                size: 40,
-                              ),
-                            ),
-                          )
+                          // Padding(
+                          //   padding: const EdgeInsets.only(right: 15),
+                          //   child: badges.Badge(
+                          //     position:
+                          //         badges.BadgePosition.topEnd(top: -2, end: -2),
+                          //     badgeContent: const Text(
+                          //       "3",
+                          //       style: TextStyle(color: Colors.white),
+                          //     ),
+                          //     child: const Icon(
+                          //       Icons.notifications,
+                          //       color: Color.fromRGBO(240, 176, 2, 1),
+                          //       size: 40,
+                          //     ),
+                          //   ),
+                          // )
                         ],
                       ),
                     )),
@@ -203,7 +206,8 @@ class _AccueilState extends State<Accueil> {
                 _buildAccueilCard("Budget", "budget.png", 1),
                 _buildAccueilCard("Dépense", "depenses 1.png", 2),
                 _buildAccueilCard("Catégorie", "categorie.png", 3),
-                _buildAccueilCard("StatistiquesDepenses", "statistique_logo.png", 4)
+                _buildAccueilCard(
+                    "StatistiquesDepenses", "statistique_logo.png", 4)
                 // _buildAccueilCard("Statistique", "statistique_logo.png", 4)
               ],
             ),
@@ -217,9 +221,10 @@ class _AccueilState extends State<Accueil> {
     return InkWell(
       onTap: () {
         if (index == 4) {
-          
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => StatistiquesDepenses()));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const StatistiquesDepenses()));
         } else if (index == 3) {
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => const Categoriees()));
@@ -238,7 +243,7 @@ class _AccueilState extends State<Accueil> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset("assets/images/" + imgLocation),
+            Image.asset("assets/images/$imgLocation"),
             Text(
               titre,
               style: const TextStyle(
