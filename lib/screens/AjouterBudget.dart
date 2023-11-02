@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
@@ -147,21 +148,22 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                               );
                             },
                           ),
-                          // Padding(
-                          //   padding: const EdgeInsets.only(right: 15),
-                          //   child: badges.Badge(
-                          //     position: badges.BadgePosition.topEnd(top: -2, end: -2),
-                          //     badgeContent: const Text(
-                          //       "3",
-                          //       style: TextStyle(color: Colors.white),
-                          //     ),
-                          //     child: const Icon(
-                          //       Icons.notifications,
-                          //       color: Color.fromRGBO(240, 176, 2, 1),
-                          //       size: 40,
-                          //     ),
-                          //   ),
-                          // )
+                          Padding(
+                            padding: const EdgeInsets.only(right: 15),
+                            child: badges.Badge(
+                              position:
+                                  badges.BadgePosition.topEnd(top: -2, end: -2),
+                              badgeContent: const Text(
+                                "3",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              child: const Icon(
+                                Icons.notifications,
+                                color: Color.fromRGBO(240, 176, 2, 1),
+                                size: 40,
+                              ),
+                            ),
+                          )
                         ],
                       ),
                     ))),
