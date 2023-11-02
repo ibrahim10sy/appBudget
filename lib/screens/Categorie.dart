@@ -120,22 +120,14 @@ class MyCategorie extends State<Categoriees> {
                                 );
                               },
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 15),
-                              child: badges.Badge(
-                                position: badges.BadgePosition.topEnd(
-                                    top: -2, end: -2),
-                                badgeContent: const Text(
-                                  "3",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                child: const Icon(
-                                  Icons.notifications,
-                                  color: Color.fromRGBO(240, 176, 2, 1),
-                                  size: 40,
-                                ),
+                            const Padding(
+                              padding: EdgeInsets.only(right: 15),
+                              child: Icon(
+                                Icons.attach_money_sharp,
+                                color: Colors.yellow,
+                                size: 40,
                               ),
-                            )
+                            ),
                           ],
                         ),
                       ))),
@@ -505,12 +497,7 @@ class MyCategorie extends State<Categoriees> {
                                                           index,
                                                           category);
 
-                                                  //  String newTitre = titre_controller.text;
-                                                  // await CategorieService.updateCategorie(id: 1, titre: newTitre);
-                                                  // Rafraîchir la liste
-                                                  //await _chargerCategories();
-                                                  // Fermeture du popup
-                                                  //  Navigator.of(context).pop();
+                                                 
                                                 },
                                               ),
                                               IconButton(

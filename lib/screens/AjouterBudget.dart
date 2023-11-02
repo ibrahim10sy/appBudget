@@ -116,7 +116,7 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                                               240, 176, 2, 1),
                                           radius: 30,
                                           child: Text(
-                                            "${utilisateur!.nom.substring(0, 1).toUpperCase()}${utilisateur.prenom.substring(0, 1).toUpperCase()}",
+                                            "${utilisateur!.prenom.substring(0, 1).toUpperCase()}${utilisateur.nom.substring(0, 1).toUpperCase()}",
                                             style: const TextStyle(
                                                 fontSize: 25,
                                                 fontWeight: FontWeight.bold,
@@ -129,9 +129,6 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                                               utilisateur!.photos!),
                                           radius: 30,
                                         ),
-                                  const SizedBox(
-                                    width: 50,
-                                  ),
                                   Padding(
                                     padding:
                                         const EdgeInsets.fromLTRB(10, 0, 0, 0),
@@ -148,22 +145,14 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                               );
                             },
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 15),
-                            child: badges.Badge(
-                              position:
-                                  badges.BadgePosition.topEnd(top: -2, end: -2),
-                              badgeContent: const Text(
-                                "3",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              child: const Icon(
-                                Icons.notifications,
-                                color: Color.fromRGBO(240, 176, 2, 1),
-                                size: 40,
-                              ),
+                          const Padding(
+                            padding: EdgeInsets.only(right: 15),
+                            child: Icon(
+                              Icons.attach_money_sharp,
+                              color: Colors.yellow,
+                              size: 40,
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ))),

@@ -112,9 +112,6 @@ class _BudgetDetaille extends State<BudgetDetaille> {
                                             NetworkImage(utilisateur!.photos!),
                                         radius: 30,
                                       ),
-                                const SizedBox(
-                                  width: 50,
-                                ),
                                 Padding(
                                   padding:
                                       const EdgeInsets.fromLTRB(10, 0, 0, 0),
@@ -131,21 +128,14 @@ class _BudgetDetaille extends State<BudgetDetaille> {
                             );
                           },
                         ),
-                        // Padding(
-                        //   padding: const EdgeInsets.only(right: 15),
-                        //   child: badges.Badge(
-                        //     position: badges.BadgePosition.topEnd(top: -2, end: -2),
-                        //     badgeContent: const Text(
-                        //       "3",
-                        //       style: TextStyle(color: Colors.white),
-                        //     ),
-                        //     child: const Icon(
-                        //       Icons.notifications,
-                        //       color: Color.fromRGBO(240, 176, 2, 1),
-                        //       size: 40,
-                        //     ),
-                        //   ),
-                        // )
+                        const Padding(
+                          padding: EdgeInsets.only(right: 15),
+                          child: Icon(
+                            Icons.attach_money_sharp,
+                            color: Colors.yellow,
+                            size: 40,
+                          ),
+                        ),
                       ],
                     ),
                   )),
@@ -674,105 +664,7 @@ class _BudgetDetaille extends State<BudgetDetaille> {
                 ],
               ),
             )),
-            /*Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                IconButton(onPressed: (){},
-                    icon: Image.asset("assets/images/edit_icon (2).png") ),
-                IconButton(onPressed: () => showDialog(
-                    context: context,
-                    builder: (BuildContext context) => Dialog(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(32)
-                        ),
-                        child: Padding(
-                            padding: const EdgeInsets.only(top: 15,left: 10,right: 10,bottom: 15),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Image.asset("assets/images/budget.png",width: 53,height: 53),
-                                    const Expanded(
-                                      child: Text(
-                                        "Voulez-vous vraiment supprimer cet budget ?",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Color.fromRGBO(47, 144, 98, 1)
-                                        ),
-                                        textAlign: TextAlign.center,
-                                        overflow: TextOverflow.visible,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                Text(titre,textAlign: TextAlign.center,overflow:TextOverflow.visible),
-                                const Divider(
-                                  color: Colors.white,
-                                  height: 30,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 0.0,horizontal: 30),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      GestureDetector(
-                                        onTap: (){
-                                          Provider.of<BudgetService>(context,listen: false).deleteBudgetById("supprimer/${budget.idBudget}");
-                                          Navigator.pop(context);
-                                        },
-                                        child: Card(
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(16)
-                                          ),
-                                          color: Colors.red,
-                                          child: const Padding(
-                                            padding: EdgeInsets.symmetric(vertical: 5,horizontal: 30),
-                                            child: Text(
-                                              "OUI",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 20,
-                                                  color: Colors.white
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      GestureDetector(
-                                          onTap: (){Navigator.pop(context);},
-                                          child: Card(
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(16)
-                                            ),
-                                            color: const Color.fromRGBO(47, 144, 98, 1),
-                                            child: const Padding(
-                                              padding: EdgeInsets.symmetric(vertical: 5,horizontal: 30),
-                                              child: Text(
-                                                "NON",
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 20,
-                                                    color: Colors.white
-                                                ),
-                                              ),
-                                            ),
-                                          )
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            )
-                        )
-                    )
-                ),
-                    icon: Image.asset("assets/images/icon_poubelle.png"))
-              ],
-            ),
-          )*/
+           
           ],
         ),
       ),
