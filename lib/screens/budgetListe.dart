@@ -36,22 +36,23 @@ class _BudgetListeState extends State<BudgetListe> {
 
   DateTime selectedDate = DateTime.now();
 
-  Future fetchAlbum() async {
-    final response =
-        await http.get(Uri.parse('http://10.0.2.2:8080/Budget/list'));
-//print(response);
-    if (response.statusCode == 200) {
-      print("Bienvenue dans le console");
-      // If the server did return a 200 OK response,
-      // then parse the JSON.
-      print(jsonDecode(response.body));
-      return jsonDecode(response.body);
-    } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
-      throw Exception('Failed to load album');
-    }
-  }
+//   Future fetchAlbum() async {
+//     final response =
+//         // await http.get(Uri.parse('https://apibudget.onrender.com/Budget/list'));
+//         await http.get(Uri.parse('http://10.0.2.2:8080/Budget/list'));
+// //print(response);
+//     if (response.statusCode == 200) {
+//       print("Bienvenue dans le console");
+//       // If the server did return a 200 OK response,
+//       // then parse the JSON.
+//       print(jsonDecode(response.body));
+//       return jsonDecode(response.body);
+//     } else {
+//       // If the server did not return a 200 OK response,
+//       // then throw an exception.
+//       throw Exception('Failed to load album');
+//     }
+//   }
 //  Future catByUser(int id) async {
 //     final response =
 //         await http.get(Uri.parse('$apiUrl2/$id'));
@@ -97,8 +98,9 @@ class _BudgetListeState extends State<BudgetListe> {
     inputController.text = DateFormat('yyyy-MM').format(DateTime.now());
 
     // utilisateur = Provider.of<UtilisateurProvider>(context,listen: false).utilisateur!;
-    fetchAlbum();
+    // fetchAlbum();
     _mesCategories = http.get(Uri.parse(
+        // 'https://apibudget.onrender.com/Categorie/list/${utilisateur.idUtilisateur}'));
         'http://10.0.2.2:8080/Categorie/list/${utilisateur.idUtilisateur}'));
     // utilisateur =
     //     Provider.of<UtilisateurProvider>(context, listen: false).utilisateur!;

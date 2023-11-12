@@ -9,6 +9,8 @@ import 'package:ika_musaka/screens/Categorie.dart';
 import 'package:provider/provider.dart';
 
 class CategorieService extends ChangeNotifier {
+  // static const String apiUrl = 'https://apibudget.onrender.com/Categorie';
+  // static const String apiUrl2 = 'https://apibudget.onrender.com/Categorie/list';
   static const String apiUrl = 'http://10.0.2.2:8080/Categorie';
   static const String apiUrl2 = 'http://10.0.2.2:8080/Categorie/list';
   List<dynamic> categorieListe = [];

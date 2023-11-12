@@ -10,8 +10,10 @@ import '../model/utilisateur.dart';
 
 class UtilisateurService extends ChangeNotifier {
 
-  static const String apiUrl = 'http://10.0.2.2:8080/utilisateur/create'; // Mettez à jour l'URL correcte
-  static const String apiUrl2 = 'http://10.0.2.2:8080/utilisateur/update2'; // Mettez à jour l'URL correcte
+  // static const String apiUrl = 'https://apibudget.onrender.com/utilisateur/create'; 
+  // static const String apiUrl2 = 'https://apibudget.onrender.com/utilisateur/update2'; 
+  static const String apiUrl = 'http://10.0.2.2:8080/utilisateur/create'; 
+  static const String apiUrl2 = 'http://10.0.2.2:8080/utilisateur/update2'; 
    
   
   static Future<Utilisateur> ajouterUtilisateur({
@@ -23,10 +25,7 @@ class UtilisateurService extends ChangeNotifier {
   }) async {
     try {
       var request = http.MultipartRequest('POST', Uri.parse(apiUrl));
-      // request.headers.addAll({"Authorization": "Bearer token"});
-
-      // Ajoutez l'image à la requête en utilisant le chemin du fichier
-      //request.files.add(await http.MultipartFile.fromPath("photos", photos.path));
+      
       if(photos != null){
         request.files.add(http.MultipartFile('photo',photos.readAsBytes().asStream(),photos.lengthSync(),filename : basename(photos.path)));
         // debugPrint("MMM======== "+photos.path);

@@ -43,6 +43,7 @@ class _ModifyBudgetState extends State<ModifyBudget> {
   Future fetchAlbum() async {
     final response =
         await http.get(Uri.parse('http://10.0.2.2:8080/Budget/list'));
+        // await http.get(Uri.parse('https://apibudget.onrender.com/Budget/list'));
 //print(response);
     if (response.statusCode == 200) {
       print("Bienvenue dans le console");
@@ -87,9 +88,9 @@ class _ModifyBudgetState extends State<ModifyBudget> {
     utilisateur =
         Provider.of<UtilisateurProvider>(context, listen: false).utilisateur!;
 
-    // utilisateur = Provider.of<UtilisateurProvider>(context,listen: false).utilisateur!;
     fetchAlbum();
     _mesCategories = http.get(Uri.parse('http://10.0.2.2:8080/Categorie/lire'));
+    // _mesCategories = http.get(Uri.parse('https://apibudget.onrender.com/Categorie/lire'));
     utilisateur =
         Provider.of<UtilisateurProvider>(context, listen: false).utilisateur!;
   }

@@ -14,6 +14,9 @@ class DepenseService extends ChangeNotifier {
   final String url = "http://10.0.2.2:8080/Depenses/";
   final String url1 = "http://10.0.2.2:8080/Depenses/create";
   final String baseUrl = "http://10.0.2.2:8080/procedure";
+  // final String url = "https://apibudget.onrender.com/Depenses/";
+  // final String url1 = "https://apibudget.onrender.com/Depenses/create";
+  // final String baseUrl = "https://apibudget.onrender.com/procedure";
 
   List<DepenseClass> depenses = [];
   String action = "all";
@@ -41,18 +44,7 @@ class DepenseService extends ChangeNotifier {
       throw Exception(jsonDecode(utf8.decode(response.bodyBytes))["message"]);
     }
   }
-// Future<List<DepenseClass>>getDepenseByCategory(int userId) async {
-//     final response = await http.get(Uri.parse('$baseUrl/expenses/$userId'));
 
-//     if (response.statusCode == 200) {
-//       List<dynamic> data = jsonDecode(utf8.decode(response.bodyBytes));
-//       depenses = data.map((dynamic item) => DepenseClass.fromJson(item)).toList();
-//       return depenses;
-//     } else {
-//       throw Exception('Impossible de chargé les données');
-//     }
-
-//   }
   Future<List<StatModel>> getDepenseByCategory(int userId) async {
     try {
       final response = await http.get(Uri.parse('$baseUrl/expenses/$userId'));
@@ -76,6 +68,7 @@ class DepenseService extends ChangeNotifier {
   Future<List<DepenseClass>> getDepenseByIdBudget(int idBudget) async {
     final response =
         await http.get(Uri.parse('http://10.0.2.2:8080/Depenses/$idBudget'));
+    // await http.get(Uri.parse('https://apibudget.onrender.com/Depenses/$idBudget'));
     // debugPrint("$url$idBudget");
     if (response.statusCode == 200) {
       List<dynamic> body = jsonDecode(utf8.decode(response.bodyBytes));
@@ -126,6 +119,21 @@ class DepenseService extends ChangeNotifier {
     }
   }
 
+  Future<List<DepenseClass>> depenseByIdUser(int idUser) async {
+    final response = await http
+        .get(Uri.parse('http://10.0.2.2:8080/Depenses/${idUser}/read'));
+
+    if (response.statusCode == 200) {
+      List<dynamic> body = jsonDecode(utf8.decode(response.bodyBytes));
+      depenses =
+          body.map((dynamic item) => DepenseClass.fromJson(item)).toList();
+          return depenses;
+    }else {
+      depenses = [];
+           throw Exception(jsonDecode(utf8.decode(response.bodyBytes))["message"]); 
+    }
+  }
+
   Future<void> ajouterDepense({
     required String description,
     required String montant,
@@ -148,6 +156,7 @@ class DepenseService extends ChangeNotifier {
 
     final response = await http.post(
       Uri.parse('http://10.0.2.2:8080/Depenses/create'),
+      // Uri.parse('https://apibudget.onrender.com/Depenses/create'),
       headers: {'Content-Type': 'application/json'},
       body: depenses,
     );

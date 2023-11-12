@@ -48,6 +48,7 @@ class _AjouterBudgetState extends State<AjouterBudget> {
         Provider.of<UtilisateurProvider>(context, listen: false).utilisateur!;
     fetchAlbum();
     _mesCategories = http.get(Uri.parse(
+        // 'https://apibudget.onrender.com/Categorie/list/${utilisateur.idUtilisateur}'));
         'http://10.0.2.2:8080/Categorie/list/${utilisateur.idUtilisateur}'));
 
     super.initState();

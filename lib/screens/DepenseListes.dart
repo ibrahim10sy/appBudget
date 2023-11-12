@@ -1,11 +1,15 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:ika_musaka/model/DepenceClasse.dart';
 import 'package:provider/provider.dart';
-import 'package:badges/badges.dart' as badges;
-
-import '../model/utilisateur.dart';
-import '../provider/UtilisateurProvider.dart';
+import 'package:ika_musaka/model/utilisateur.dart';
+import 'package:ika_musaka/provider/UtilisateurProvider.dart';
+import 'package:ika_musaka/services/budgetService.dart';
+import 'package:intl/intl.dart';
+import '../model/Budget.dart';
+import 'package:ika_musaka/services/depenseService.dart';
 
 class DepensesListes extends StatefulWidget {
   const DepensesListes({Key? key}) : super(key: key);
@@ -15,247 +19,434 @@ class DepensesListes extends StatefulWidget {
 }
 
 class _DepenseState extends State<DepensesListes> {
-  late Future<List<Map<String, dynamic>>> depenses;
+  late Future<Map<String, dynamic>> future;
+  late Future<List<Budget>> _futureListBudget;
+  late List<Budget>? budgets = [];
+  late Future<List<DepenseClass>> _futureListDepense;
+  late List<DepenseClass>? depense = [];
+  TextEditingController inputController = TextEditingController();
   late Utilisateur utilisateur;
+  int? catValue;
+  late Future _mesCategories;
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  DateTime selectedDate = DateTime.now();
+
+  Future fetchAlbum() async {
+    final response =
+        // await http.get(Uri.parse('https://apibudget.onrender.com/Budget/list'));
+        await http.get(Uri.parse('http://10.0.2.2:8080/Budget/list'));
+//print(response);
+    if (response.statusCode == 200) {
+      print("Bienvenue dans le console");
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      print(jsonDecode(response.body));
+      return jsonDecode(response.body);
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load album');
+    }
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate) {
+      String formattedDate = DateFormat('yyyy-MM').format(picked);
+      setState(() {
+        inputController.text = formattedDate;
+        selectedDate = picked;
+      });
+    }
+  }
 
   @override
   void initState() {
     super.initState();
     utilisateur =
         Provider.of<UtilisateurProvider>(context, listen: false).utilisateur!;
-    depenses = fetchDepenses();
+    future =
+        BudgetService().getBudgetTotal("somme/${utilisateur.idUtilisateur}");
+    _futureListBudget =
+        BudgetService().getBudgetByIdUser("list/${utilisateur.idUtilisateur}");
+    inputController.text = DateFormat('yyyy-MM').format(DateTime.now());
+    _futureListDepense =
+        DepenseService().depenseByIdUser(utilisateur.idUtilisateur);
+    fetchAlbum();
+    _mesCategories = http.get(Uri.parse(
+        // 'https://apibudget.onrender.com/Categorie/list/${utilisateur.idUtilisateur}'));
+        'http://10.0.2.2:8080/Categorie/list/${utilisateur.idUtilisateur}'));
+    // utilisateur =
+    //     Provider.of<UtilisateurProvider>(context, listen: false).utilisateur!;
   }
 
-  Future<List<Map<String, dynamic>>> fetchDepenses() async {
-    final response = await http.get(Uri.parse(
-        'http://10.0.2.2:8080/Depenses/${utilisateur.idUtilisateur}/read'));
-
-    if (response.statusCode == 200) {
-      final List<dynamic> data = json.decode(response.body);
-      return List<Map<String, dynamic>>.from(data);
-    } else {
-      throw Exception(response.body);
-    }
+  void updateOnCLick() {
+    _futureListBudget =
+        BudgetService().getBudgetByIdUser("list/${utilisateur.idUtilisateur}");
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: FutureBuilder<List<Map<String, dynamic>>>(
-        future: depenses,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return SingleChildScrollView(
-              child: Column(
-                children: [
-                  Padding(
-                      padding: const EdgeInsets.only(
-                          left: 15.0, top: 30, right: 15.0, bottom: 15.0),
-                      child: Container(
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(31),
-                              boxShadow: const [
-                                BoxShadow(
-                                    offset: Offset(0.0, 0.0),
-                                    blurRadius: 7.0,
-                                    color: Color.fromRGBO(0, 0, 0,
-                                        0.25) //Color.fromRGBO(47, 144, 98, 1)
-                                    )
-                              ]),
-                          child: Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return SingleChildScrollView(
+        child: Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(
+              left: 15.0, top: 30, right: 15.0, bottom: 15.0),
+          child: Column(
+            children: [
+              Container(
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(31),
+                      boxShadow: const [
+                        BoxShadow(
+                            offset: Offset(0.0, 0.0),
+                            blurRadius: 7.0,
+                            color: Color.fromRGBO(
+                                0, 0, 0, 0.25) //Color.fromRGBO(47, 144, 98, 1)
+                            )
+                      ]),
+                  child: Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Consumer<UtilisateurProvider>(
+                          builder: (context, utilisateurProvider, child) {
+                            final utilisateur = utilisateurProvider.utilisateur;
+                            return Row(
                               children: [
-                                Consumer<UtilisateurProvider>(
-                                  builder:
-                                      (context, utilisateurProvider, child) {
-                                    final utilisateur =
-                                        utilisateurProvider.utilisateur;
-                                    return Row(
-                                      children: [
-                                        utilisateur?.photos == null ||
-                                                utilisateur?.photos?.isEmpty ==
-                                                    true
-                                            ? CircleAvatar(
-                                                backgroundColor:
-                                                    const Color.fromRGBO(
-                                                        240, 176, 2, 1),
-                                                radius: 30,
-                                                child: Text(
-                                                  "${utilisateur!.prenom.substring(0, 1).toUpperCase()}${utilisateur.nom.substring(0, 1).toUpperCase()}",
-                                                  style: const TextStyle(
-                                                      fontSize: 25,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.white,
-                                                      letterSpacing: 2),
-                                                ),
-                                              )
-                                            : CircleAvatar(
-                                                backgroundImage: NetworkImage(
-                                                    utilisateur!.photos!),
-                                                radius: 30,
-                                              ),
-                                        Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              10, 0, 0, 0),
-                                          child: Text(
-                                            "${utilisateur.prenom.toUpperCase()} ${utilisateur.nom.toUpperCase()}",
-                                            overflow: TextOverflow.ellipsis,
-                                            style: const TextStyle(
-                                              fontSize: 20,
+                                utilisateur?.photos == null ||
+                                        utilisateur?.photos?.isEmpty == true
+                                    ? CircleAvatar(
+                                        backgroundColor: const Color.fromRGBO(
+                                            240, 176, 2, 1),
+                                        radius: 30,
+                                        child: Text(
+                                          "${utilisateur!.prenom.substring(0, 1).toUpperCase()}${utilisateur.nom.substring(0, 1).toUpperCase()}",
+                                          style: const TextStyle(
+                                              fontSize: 25,
                                               fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        )
-                                      ],
-                                    );
-                                  },
-                                ),
+                                              color: Colors.white,
+                                              letterSpacing: 2),
+                                        ),
+                                      )
+                                    : CircleAvatar(
+                                        backgroundImage:
+                                            NetworkImage(utilisateur!.photos!),
+                                        radius: 30,
+                                      ),
                                 Padding(
-                                  padding: const EdgeInsets.only(right: 15),
-                                  child: badges.Badge(
-                                    position: badges.BadgePosition.topEnd(
-                                        top: -2, end: -2),
-                                    badgeContent: const Text(
-                                      "3",
-                                      style: TextStyle(color: Colors.white),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                  child: Text(
+                                    "${utilisateur.prenom.toUpperCase()} ${utilisateur.nom.toUpperCase()}",
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    child: const Icon(
-                                      Icons.notifications,
-                                      color: Color.fromRGBO(240, 176, 2, 1),
-                                      size: 40,
+                                  ),
+                                )
+                              ],
+                            );
+                          },
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.only(right: 15),
+                          child: Icon(
+                            Icons.attach_money_sharp,
+                            color: Colors.yellow,
+                            size: 40,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )),
+              Stack(
+                alignment: const Alignment(0.9, -0.8),
+                children: [
+                  Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const Divider(
+                          color: Colors.white,
+                          height: 20,
+                        ),
+                        SizedBox(
+                          height: 200,
+                          child: Flexible(
+                            child: Card(
+                              elevation: 10,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              margin: const EdgeInsets.fromLTRB(0, 25, 0, 0),
+                              color: const Color.fromRGBO(47, 144, 98, 1),
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(10.0, 15.0, 0, 0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text("Budget total :",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.bold)),
+                                    Consumer<BudgetService>(builder:
+                                        (context, budgetService, child) {
+                                      int montantTotal = 0;
+                                      int montantRestant = 0;
+                                      List<Budget> budgetList = context.select(
+                                          (BudgetService value) =>
+                                              value.budgets);
+                                      if (budgetList.isNotEmpty) {
+                                        for (var element in budgetList) {
+                                          montantTotal =
+                                              montantTotal + element.montant!;
+                                          montantRestant = montantRestant +
+                                              element.montantRestant!;
+                                        }
+                                      }
+                                      return Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text("$montantTotal FCFA",
+                                              style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 22,
+                                                  fontWeight: FontWeight.bold)),
+                                          Column(
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    right: 10.0,
+                                                    bottom: 7.5,
+                                                    top: 7.5),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        const Text("Restant :",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 17)),
+                                                        Text(
+                                                            "$montantRestant FCFA",
+                                                            style: const TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 17))
+                                                      ],
+                                                    ),
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        const Text("Dépensé :",
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 17)),
+                                                        Text(
+                                                            "${montantTotal - montantRestant} FCFA",
+                                                            style: const TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 17))
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                              Row(
+                                                children: [
+                                                  // GestureDetector(
+                                                  //   onTap: () {
+                                                  //     Navigator.push(
+                                                  //         context,
+                                                  //         MaterialPageRoute(
+                                                  //             builder: (context) =>
+                                                  //                 const AjoutDepense()));
+                                                  //   },
+                                                  //   child: Container(
+                                                  //     padding:
+                                                  //         const EdgeInsets.all(
+                                                  //             5.0),
+                                                  //     decoration: BoxDecoration(
+                                                  //         border: Border.all(
+                                                  //             width: 2,
+                                                  //             color:
+                                                  //                 Colors.white),
+                                                  //         borderRadius:
+                                                  //             BorderRadius
+                                                  //                 .circular(
+                                                  //                     23)),
+                                                  //     child: const Row(
+                                                  //       children: [
+                                                  //         Icon(Icons.add_circle,
+                                                  //             color:
+                                                  //                 Colors.white),
+                                                  //         Padding(
+                                                  //           padding:
+                                                  //               EdgeInsets.only(
+                                                  //                   left: 3.0),
+                                                  //           child: Text(
+                                                  //             "Ajouter depense",
+                                                  //             style: TextStyle(
+                                                  //                 fontWeight:
+                                                  //                     FontWeight
+                                                  //                         .bold,
+                                                  //                 fontSize: 16,
+                                                  //                 color: Colors
+                                                  //                     .white),
+                                                  //           ),
+                                                  //         )
+                                                  //       ],
+                                                  //     ),
+                                                  //   ),
+                                                  // )
+                                                ],
+                                              )
+                                            ],
+                                          )
+                                        ],
+                                      );
+                                    })
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      ]),
+                  Image.asset(
+                    "assets/images/budget.png",
+                    width: 150,
+                    height: 99,
+                  )
+                ],
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 20),
+                padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
+                height: 445,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(28),
+                    color: Colors.white,
+                    boxShadow: const [
+                      BoxShadow(
+                          offset: Offset(0.0, 0.0),
+                          blurRadius: 13,
+                          color: Color.fromRGBO(0, 0, 0, 0.25))
+                    ]),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20, right: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            //flex: 2,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Image.asset("assets/images/budget.png",
+                                    width: 39, height: 39),
+                                const Expanded(
+                                  //flex: 4,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(left: 5),
+                                    child: Text(
+                                      "Liste des depenses :",
+                                      style: TextStyle(
+                                          fontSize: 19,
+                                          fontWeight: FontWeight.bold,
+                                          color:
+                                              Color.fromRGBO(47, 144, 98, 1)),
+                                      //overflow: TextOverflow.visible,
                                     ),
                                   ),
                                 )
                               ],
                             ),
-                          ))),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Stack(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(
-                            right: 10, left: 10, bottom: 10, top: 50),
-                        height: 200,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                            color: Color.fromRGBO(47, 144, 98, 1),
-                            borderRadius: BorderRadius.circular(15)),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Budget Total:',
-                                style: TextStyle(
-                                    fontSize: 29.0,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
-                              ),
-                              SizedBox(height: 50),
-                              OutlinedButton(
-                                onPressed: () {
-                                  // Action à effectuer lorsqu'on appuie sur le bouton
-                                },
-                                style: OutlinedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(90.0),
-                                  ),
-                                  side: BorderSide(color: Colors.white),
-                                ),
-                                child: Text(
-                                  "+ Ajouter Dépenses",
-                                  style: TextStyle(
-                                    fontSize: 14.0,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            ],
                           ),
-                        ),
-                      ),
-                      Positioned(
-                        top: 0,
-                        right: 40,
-                        child: Image.asset(
-                          'assets/images/wallet.png',
-                          height: 90,
-                          fit: BoxFit.contain,
-                        ),
-                      )
-                    ],
-                  ),
-                  SizedBox(height: 12),
-                  Container(
-                    width: 372,
-                    height: 457,
-                    decoration: BoxDecoration(
-                      color: Color.fromRGBO(0, 0, 0, 0.1),
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const ListTile(
-                                leading: CircleAvatar(
-                                  backgroundImage:
-                                      AssetImage("assets/images/wallet.png"),
-                                ),
-                                title: Text("Liste des depenses",
-                                    style: TextStyle(
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.bold,
-                                      color: Color.fromRGBO(47, 144, 98, 1),
-                                    ))),
-                            Expanded(
-                              child: ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: snapshot.data!.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  final depense = snapshot.data![index];
-                                  return Card(
-                                    shape: RoundedRectangleBorder(
-                                      side: BorderSide(
-                                          color: Colors.white10, width: 2),
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    child: ListTile(
-                                      leading: CircleAvatar(
-                                        child: Image.asset(
-                                            "assets/images/wallet.png"),
-                                      ),
-                                      title: Text(depense['description']),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
+                        ],
                       ),
                     ),
-                  )
-                ],
-              ),
-            );
-          } else if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}');
-          }
+                    const Divider(
+                      height: 15,
+                      color: Colors.white,
+                    ),
+                    Expanded(
+                        child: FutureBuilder(
+                            future: _futureListDepense,
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
 
-          return CircularProgressIndicator();
-        },
-      ),
-    );
+                              if (snapshot.hasError) {
+                                return Center(
+                                  child: Text(snapshot.error.toString()),
+                                );
+                              }
+
+                              if (!snapshot.hasData) {
+                                return const Center(
+                                  child: Text("Aucun depense trouvé"),
+                                );
+                              }
+                              depense = snapshot.data!;
+                              depense.printInfo();
+
+                              return Expanded(
+                                child: ListView.builder(
+                                    itemCount: depense!.length,
+                                    itemBuilder: (context, index) {
+                                      return createCardDepense(
+                                          depense![index].description!,
+                                          index,
+                                          depense![index]);
+                                    }),
+                              );
+                            }))
+                  ],
+                ),
+              )
+            ],
+          ),
+        )
+      ],
+    ));
+  }
+
+  //Card pour la liste des budget
+  createCardDepense(String titre, int index, DepenseClass depense) {
+    return Container();
   }
 }

@@ -104,26 +104,7 @@ class _ProfilUtilisateurState extends State<ProfilUtilisateur> {
         );
         Provider.of<UtilisateurProvider>(context, listen: false).setUtilisateur(utilisateurMaj);
       }
-      // showDialog(context: context, 
-      // builder: (BuildContext context){
-      //   return AlertDialog(
-      //     title: const Center(
-      //       child:  Text('Succèss'),
-      //     ),
-      //     content: Text('Profil modifier avec succèss'),
-      //     actions: <Widget>[
-      //      TextButton(
-      //        onPressed:() {
-      //        Navigator.of(
-      //        context).pop();},
-      //         child:
-      //          const Text(
-      //           'Ok'),
-      //        )
-      //       ],                                                     
-      //   );
-      // }
-      // );
+     
 
       // Le profil utilisateur a été mis à jour avec succès, vous pouvez gérer la réponse ici.
       print(

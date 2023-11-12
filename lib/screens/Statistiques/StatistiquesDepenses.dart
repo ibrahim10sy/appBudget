@@ -157,14 +157,11 @@ class _StatistiquesDepensesState extends State<StatistiquesDepenses>
                             );
                           },
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(right: 15),
-                          child: Icon(
-                            Icons.attach_money_sharp,
-                            color: Colors.yellow,
-                            size: 40,
-                          ),
-                        ),
+                        Image.asset(
+                          "assets/images/wallet-budget-icon.png",
+                          width: 50,
+                          height: 50,
+                        )
                       ],
                     ),
                   ))),
@@ -231,7 +228,7 @@ class _StatistiquesDepensesState extends State<StatistiquesDepenses>
 
                 if (!snapshot.hasData) {
                   return const Center(
-                    child: Text("Pas de données !"),
+                    child: Text("Aucune statistique disponible !"),
                   );
                 }
 

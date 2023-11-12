@@ -102,14 +102,11 @@ class _AccueilState extends State<Accueil> {
                               );
                             },
                           ),
-                          const Padding(
-                            padding: EdgeInsets.only(right: 15),
-                            child: Icon(
-                              Icons.attach_money_sharp,
-                              color: Colors.yellow,
-                              size: 40,
-                            ),
-                          ),
+                          Image.asset(
+                            "assets/images/wallet-budget-icon.png",
+                            width: 50,
+                            height: 50,
+                          )
                         ],
                       ),
                     )),
@@ -195,8 +192,7 @@ class _AccueilState extends State<Accueil> {
                 _buildAccueilCard("Budget", "budget.png", 1),
                 _buildAccueilCard("Dépense", "depenses 1.png", 2),
                 _buildAccueilCard("Catégorie", "categorie.png", 3),
-                _buildAccueilCard(
-                    "StatistiquesDepenses", "statistique_logo.png", 4)
+                _buildAccueilCard( "Statistiques", "statistique_logo.png", 4)
                 // _buildAccueilCard("Statistique", "statistique_logo.png", 4)
               ],
             ),

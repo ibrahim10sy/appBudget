@@ -8,6 +8,7 @@ import '../model/utilisateur.dart';
 
 Future<List<Utilisateur>> fetchUtilisateurs() async {
   final response = await http.get(Uri.parse('http://10.0.2.2:8080/utilisateur/read'));
+  // final response = await http.get(Uri.parse('https://apibudget.onrender.com/utilisateur/read'));
 
   if (response.statusCode == 200) {
     final List<dynamic> jsonData = json.decode(utf8.decode(response.bodyBytes));
