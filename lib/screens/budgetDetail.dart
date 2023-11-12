@@ -128,14 +128,11 @@ class _BudgetDetaille extends State<BudgetDetaille> {
                             );
                           },
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(right: 15),
-                          child: Icon(
-                            Icons.attach_money_sharp,
-                            color: Colors.yellow,
-                            size: 40,
-                          ),
-                        ),
+                        Image.asset(
+                          "assets/images/wallet-budget-icon.png",
+                          width: 50,
+                          height: 50,
+                        )
                       ],
                     ),
                   )),
@@ -664,7 +661,6 @@ class _BudgetDetaille extends State<BudgetDetaille> {
                 ],
               ),
             )),
-           
           ],
         ),
       ),

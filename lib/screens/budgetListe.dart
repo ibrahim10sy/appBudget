@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:ika_musaka/model/utilisateur.dart';
@@ -180,14 +178,11 @@ class _BudgetListeState extends State<BudgetListe> {
                             );
                           },
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(right: 15),
-                          child: Icon(
-                            Icons.attach_money_sharp,
-                            color: Colors.yellow,
-                            size: 40,
-                          ),
-                        ),
+                        Image.asset(
+                          "assets/images/wallet-budget-icon.png",
+                          width: 50,
+                          height: 50,
+                        )
                       ],
                     ),
                   )),

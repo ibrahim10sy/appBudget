@@ -1,15 +1,17 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:ika_musaka/model/DepenceClasse.dart';
-import 'package:provider/provider.dart';
 import 'package:ika_musaka/model/utilisateur.dart';
 import 'package:ika_musaka/provider/UtilisateurProvider.dart';
 import 'package:ika_musaka/services/budgetService.dart';
-import 'package:intl/intl.dart';
-import '../model/Budget.dart';
 import 'package:ika_musaka/services/depenseService.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+
+import '../model/Budget.dart';
 
 class DepensesListes extends StatefulWidget {
   const DepensesListes({Key? key}) : super(key: key);
@@ -159,14 +161,11 @@ class _DepenseState extends State<DepensesListes> {
                             );
                           },
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(right: 15),
-                          child: Icon(
-                            Icons.attach_money_sharp,
-                            color: Colors.yellow,
-                            size: 40,
-                          ),
-                        ),
+                        Image.asset(
+                          "assets/images/wallet-budget-icon.png",
+                          width: 50,
+                          height: 50,
+                        )
                       ],
                     ),
                   )),
@@ -278,7 +277,7 @@ class _DepenseState extends State<DepensesListes> {
                                                   ],
                                                 ),
                                               ),
-                                              Row(
+                                              const Row(
                                                 children: [
                                                   // GestureDetector(
                                                   //   onTap: () {
@@ -372,8 +371,11 @@ class _DepenseState extends State<DepensesListes> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Image.asset("assets/images/budget.png",
-                                    width: 39, height: 39),
+                                Image.asset(
+                                  "assets/images/wallet-budget-icon.png",
+                                  width: 40,
+                                  height: 40,
+                                ),
                                 const Expanded(
                                   //flex: 4,
                                   child: Padding(
@@ -410,11 +412,11 @@ class _DepenseState extends State<DepensesListes> {
                                 );
                               }
 
-                              if (snapshot.hasError) {
-                                return Center(
-                                  child: Text(snapshot.error.toString()),
-                                );
-                              }
+                              // if (snapshot.hasError) {
+                              //   return Center(
+                              //     child: Text(snapshot.error.toString()),
+                              //   );
+                              // }
 
                               if (!snapshot.hasData) {
                                 return const Center(
@@ -445,8 +447,21 @@ class _DepenseState extends State<DepensesListes> {
     ));
   }
 
-  //Card pour la liste des budget
+  //Card pour la liste des depenses
   createCardDepense(String titre, int index, DepenseClass depense) {
-    return Container();
+    return Card(
+      elevation: 3,
+      child: ListTile(
+        leading: const CircleAvatar(
+          backgroundImage: AssetImage(
+              "assets/images/wallet-budget-icon.png"), // Remplacez le chemin par le vôtre
+        ),
+        title: Text(
+          depense.description ?? 'Aucune description disponible',
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+        // Ajoutez d'autres éléments ici comme le montant, la date, etc.
+      ),
+    );
   }
 }

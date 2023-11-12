@@ -1,12 +1,8 @@
 // import 'dart:convert';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:ika_musaka/model/categorieM.dart';
-import 'package:ika_musaka/provider/CategoriesProvider.dart';
+import 'package:ika_musaka/provider/UtilisateurProvider.dart';
 import 'package:ika_musaka/screens/CategorieService.dart';
 import 'package:provider/provider.dart';
-import 'package:ika_musaka/provider/UtilisateurProvider.dart';
-import 'package:badges/badges.dart' as badges;
 
 import '../model/utilisateur.dart';
 import 'ActionCategorie.dart';
@@ -43,7 +39,7 @@ class MyCategorie extends State<Categoriees> {
           categories;
     } catch (e) {
       // Gérer les erreurs ici
-      print("L'erreur est servenue lors de la chargement" + e.toString());
+      print("L'erreur est servenue lors de la chargement$e");
     }
   }
 
@@ -120,14 +116,11 @@ class MyCategorie extends State<Categoriees> {
                                 );
                               },
                             ),
-                            const Padding(
-                              padding: EdgeInsets.only(right: 15),
-                              child: Icon(
-                                Icons.attach_money_sharp,
-                                color: Colors.yellow,
-                                size: 40,
-                              ),
-                            ),
+                            Image.asset(
+                              "assets/images/wallet-budget-icon.png",
+                              width: 50,
+                              height: 50,
+                            )
                           ],
                         ),
                       ))),
@@ -496,8 +489,6 @@ class MyCategorie extends State<Categoriees> {
                                                           context,
                                                           index,
                                                           category);
-
-                                                 
                                                 },
                                               ),
                                               IconButton(
