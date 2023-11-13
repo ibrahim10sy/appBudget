@@ -279,51 +279,7 @@ class _DepenseState extends State<DepensesListes> {
                                               ),
                                               const Row(
                                                 children: [
-                                                  // GestureDetector(
-                                                  //   onTap: () {
-                                                  //     Navigator.push(
-                                                  //         context,
-                                                  //         MaterialPageRoute(
-                                                  //             builder: (context) =>
-                                                  //                 const AjoutDepense()));
-                                                  //   },
-                                                  //   child: Container(
-                                                  //     padding:
-                                                  //         const EdgeInsets.all(
-                                                  //             5.0),
-                                                  //     decoration: BoxDecoration(
-                                                  //         border: Border.all(
-                                                  //             width: 2,
-                                                  //             color:
-                                                  //                 Colors.white),
-                                                  //         borderRadius:
-                                                  //             BorderRadius
-                                                  //                 .circular(
-                                                  //                     23)),
-                                                  //     child: const Row(
-                                                  //       children: [
-                                                  //         Icon(Icons.add_circle,
-                                                  //             color:
-                                                  //                 Colors.white),
-                                                  //         Padding(
-                                                  //           padding:
-                                                  //               EdgeInsets.only(
-                                                  //                   left: 3.0),
-                                                  //           child: Text(
-                                                  //             "Ajouter depense",
-                                                  //             style: TextStyle(
-                                                  //                 fontWeight:
-                                                  //                     FontWeight
-                                                  //                         .bold,
-                                                  //                 fontSize: 16,
-                                                  //                 color: Colors
-                                                  //                     .white),
-                                                  //           ),
-                                                  //         )
-                                                  //       ],
-                                                  //     ),
-                                                  //   ),
-                                                  // )
+                                                  
                                                 ],
                                               )
                                             ],

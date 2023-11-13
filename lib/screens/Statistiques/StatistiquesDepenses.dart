@@ -2,7 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:ika_musaka/model/stat_model.dart';
 import 'package:provider/provider.dart';
-
+import 'package:ika_musaka/services/budgetService.dart';
 import '../../model/DepenceClasse.dart';
 import '../../model/utilisateur.dart';
 import '../../provider/UtilisateurProvider.dart';
@@ -35,6 +35,9 @@ class _StatistiquesDepensesState extends State<StatistiquesDepenses>
 
   @override
   void initState() {
+     future =
+        BudgetService().getBudgetTotal("somme/${utilisateur.idUtilisateur}");
+   
     utilisateur =
         Provider.of<UtilisateurProvider>(context, listen: false).utilisateur!;
     _futureListDepense = getCategories();
@@ -51,6 +54,8 @@ class _StatistiquesDepensesState extends State<StatistiquesDepenses>
     _animationController.dispose();
     super.dispose();
   }
+
+ 
 
   Future<List<StatModel>> getCategories() async {
     final response =
@@ -207,7 +212,7 @@ class _StatistiquesDepensesState extends State<StatistiquesDepenses>
               ),
             ),
           ),
-          // const SizedBox(height: 2),
+          const SizedBox(height: 15),
           SizedBox(
             height: 380,
             width: 300,
@@ -236,6 +241,9 @@ class _StatistiquesDepensesState extends State<StatistiquesDepenses>
 
                 // Amélioration du conteneur du graphique avec des ombres, des bordures arrondies et des animations
                 return Container(
+                  padding: const EdgeInsets.all(16.0),
+
+                  // margin: const EdgeInsets.symmetric(vertical: 10),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(15),
@@ -253,35 +261,45 @@ class _StatistiquesDepensesState extends State<StatistiquesDepenses>
                   child: Column(
                     children: [
                       Expanded(
-                        child: PieChart(
-                          PieChartData(
-                            sections: categories.map((e) {
-                              // Calculer le pourcentage
-                              double percentage = (double.tryParse(
-                                          e.totalDepenses.toString()) ??
-                                      0.0) /
-                                  categories.fold(
-                                      0,
-                                      (previous, current) =>
-                                          previous +
-                                          (double.tryParse(current.totalDepenses
-                                                  .toString()) ??
-                                              0.0));
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            const Text("Budget Total"),
+                            PieChart(
+                              swapAnimationDuration:
+                                  const Duration(milliseconds: 750),
+                              swapAnimationCurve: Curves.easeInOutQuint,
+                              PieChartData(
+                                sections: categories.map((e) {
+                                  // Calculer le pourcentage
+                                  double percentage = (double.tryParse(
+                                              e.totalDepenses.toString()) ??
+                                          0.0) /
+                                      categories.fold(
+                                          0,
+                                          (previous, current) =>
+                                              previous +
+                                              (double.tryParse(current
+                                                      .totalDepenses
+                                                      .toString()) ??
+                                                  0.0));
 
-                              // Formater le pourcentage en pourcentage avec une décimale
-                              String percentageString =
-                                  '${(percentage * 100).toStringAsFixed(1)}%';
+                                  // Formater le pourcentage en pourcentage avec une décimale
+                                  String percentageString =
+                                      '${(percentage * 100).toStringAsFixed(1)}%';
 
-                              return PieChartSectionData(
-                                value: double.tryParse(
-                                        e.totalDepenses.toString()) ??
-                                    0.0,
-                                title: percentageString,
-                                color: _getColorFromCategory(
-                                    e.titreCategorie ?? ""),
-                              );
-                            }).toList(),
-                          ),
+                                  return PieChartSectionData(
+                                    value: double.tryParse(
+                                            e.totalDepenses.toString()) ??
+                                        0.0,
+                                    title: percentageString,
+                                    color: _getColorFromCategory(
+                                        e.titreCategorie ?? ""),
+                                  );
+                                }).toList(),
+                              ),
+                            )
+                          ],
                         ),
                       ),
                       Row(
