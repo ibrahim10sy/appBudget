@@ -170,7 +170,7 @@ class MyCategorie extends State<Categoriees> {
                                           ),
                                         ),
                                         const Text(
-                                          'Ajouter Catégorie',
+                                          'Ajout Catégorie',
                                           style: TextStyle(
                                               fontSize: 20,
                                               fontWeight: FontWeight.bold,
@@ -183,7 +183,7 @@ class MyCategorie extends State<Categoriees> {
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       const Text(
-                                        'Nom de la catégorie',
+                                        'Nom',
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold),
                                       ),

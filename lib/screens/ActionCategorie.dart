@@ -1,8 +1,6 @@
 // import 'dart:ffi';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:ika_musaka/model/categorieM.dart';
 import 'package:ika_musaka/provider/CategoriesProvider.dart';
 import 'package:ika_musaka/screens/CategorieService.dart';
 import 'package:provider/provider.dart';
@@ -59,7 +57,7 @@ class DialogHelper {
           mainAxisSize: MainAxisSize.min,
           children: [
             const Text(
-              'Nom de la catégorie',
+              'Nom',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
@@ -83,7 +81,7 @@ class DialogHelper {
                       child: TextFormField(
                         controller: myController,
                         decoration: const InputDecoration(
-                          hintText: "Ma catégorie",
+                          hintText: "catégorie",
                         ),
                       ),
                     ),
@@ -107,7 +105,7 @@ class DialogHelper {
                           vertical: 15,
                           horizontal: 80,
                         ),
-                        backgroundColor: const Color.fromARGB(255, 245, 37, 0),
+                        backgroundColor: Colors.green,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                           side: const BorderSide(
@@ -185,7 +183,7 @@ class DialogHelper {
                   image: AssetImage('assets/images/img.png'),
                 ),
               ),
-              Center(
+              const Center(
                 child: Text(
                   'Voulez-vous supprimer cette catégorie ?',
                   style: TextStyle(
@@ -201,7 +199,7 @@ class DialogHelper {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
+            const Text(
               'Nom de la catégorie',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -210,7 +208,7 @@ class DialogHelper {
             Row(
               children: [
                 Container(
-                  padding: EdgeInsets.only(top: 20),
+                  padding: const EdgeInsets.only(top: 20),
                   child: ElevatedButton(
                     onPressed: () {
                       // Votre logique lorsque le bouton "NON" est pressé
@@ -222,7 +220,7 @@ class DialogHelper {
                         vertical: 15,
                         horizontal: 30,
                       ),
-                      backgroundColor: Color.fromARGB(
+                      backgroundColor: const Color.fromARGB(
                           255, 230, 10, 10), // Couleur du bouton "NON"
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
@@ -242,7 +240,7 @@ class DialogHelper {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.only(left: 40, top: 20),
+                  padding: const EdgeInsets.only(left: 40, top: 20),
                   child: ElevatedButton(
                     onPressed: () async {
                                           

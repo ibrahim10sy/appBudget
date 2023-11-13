@@ -278,9 +278,7 @@ class _DepenseState extends State<DepensesListes> {
                                                 ),
                                               ),
                                               const Row(
-                                                children: [
-                                                  
-                                                ],
+                                                children: [],
                                               )
                                             ],
                                           )
@@ -353,11 +351,7 @@ class _DepenseState extends State<DepensesListes> {
                         ],
                       ),
                     ),
-                    const Divider(
-                      height: 15,
-                      color: Colors.white,
-                    ),
-                    Expanded(
+                   Expanded(
                         child: FutureBuilder(
                             future: _futureListDepense,
                             builder: (context, snapshot) {
@@ -367,13 +361,7 @@ class _DepenseState extends State<DepensesListes> {
                                   child: CircularProgressIndicator(),
                                 );
                               }
-
-                              // if (snapshot.hasError) {
-                              //   return Center(
-                              //     child: Text(snapshot.error.toString()),
-                              //   );
-                              // }
-
+                              
                               if (!snapshot.hasData) {
                                 return const Center(
                                   child: Text("Aucun depense trouvé"),
@@ -392,7 +380,11 @@ class _DepenseState extends State<DepensesListes> {
                                           depense![index]);
                                     }),
                               );
-                            }))
+                            })),
+                    const Divider(
+                      height: 15,
+                      color: Colors.white,
+                    )
                   ],
                 ),
               )

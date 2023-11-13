@@ -1,8 +1,9 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:ika_musaka/model/stat_model.dart';
-import 'package:provider/provider.dart';
 import 'package:ika_musaka/services/budgetService.dart';
+import 'package:provider/provider.dart';
+
 import '../../model/DepenceClasse.dart';
 import '../../model/utilisateur.dart';
 import '../../provider/UtilisateurProvider.dart';
@@ -35,9 +36,9 @@ class _StatistiquesDepensesState extends State<StatistiquesDepenses>
 
   @override
   void initState() {
-     future =
+    future =
         BudgetService().getBudgetTotal("somme/${utilisateur.idUtilisateur}");
-   
+
     utilisateur =
         Provider.of<UtilisateurProvider>(context, listen: false).utilisateur!;
     _futureListDepense = getCategories();
@@ -54,8 +55,6 @@ class _StatistiquesDepensesState extends State<StatistiquesDepenses>
     _animationController.dispose();
     super.dispose();
   }
-
- 
 
   Future<List<StatModel>> getCategories() async {
     final response =

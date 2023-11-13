@@ -52,77 +52,74 @@ class _AjoutState extends State<AjoutDepense> {
       child: Column(
         children: [
           Padding(
-              padding: const EdgeInsets.only(
-                  top: 30, bottom: 15.0, left: 15, right: 15),
-              child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(31),
-                      boxShadow: const [
-                        BoxShadow(
-                            offset: Offset(0.0, 0.0),
-                            blurRadius: 7.0,
-                            color: Color.fromRGBO(
-                                0, 0, 0, 0.25) //Color.fromRGBO(47, 144, 98, 1)
-                            )
-                      ]),
-                  child: Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Consumer<UtilisateurProvider>(
-                          builder: (context, utilisateurProvider, child) {
-                            final utilisateur = utilisateurProvider.utilisateur;
-                            return Row(
-                              children: [
-                                utilisateur?.photos == null ||
-                                        utilisateur?.photos?.isEmpty == true
-                                    ? CircleAvatar(
-                                        backgroundColor: const Color.fromRGBO(
-                                            240, 176, 2, 1),
-                                        radius: 30,
-                                        child: Text(
-                                          "${utilisateur!.prenom.substring(0, 1).toUpperCase()}${utilisateur.nom.substring(0, 1).toUpperCase()}",
-                                          style: const TextStyle(
-                                              fontSize: 25,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                              letterSpacing: 2),
-                                        ),
-                                      )
-                                    : CircleAvatar(
-                                        backgroundImage:
-                                            NetworkImage(utilisateur!.photos!),
-                                        radius: 30,
+            padding: const EdgeInsets.only(
+                top: 30, bottom: 15.0, left: 15, right: 15),
+            child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(31),
+                    boxShadow: const [
+                      BoxShadow(
+                          offset: Offset(0.0, 0.0),
+                          blurRadius: 7.0,
+                          color: Color.fromRGBO(
+                              0, 0, 0, 0.25) //Color.fromRGBO(47, 144, 98, 1)
+                          )
+                    ]),
+                child: Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Consumer<UtilisateurProvider>(
+                        builder: (context, utilisateurProvider, child) {
+                          final utilisateur = utilisateurProvider.utilisateur;
+                          return Row(
+                            children: [
+                              utilisateur?.photos == null ||
+                                      utilisateur?.photos?.isEmpty == true
+                                  ? CircleAvatar(
+                                      backgroundColor:
+                                          const Color.fromRGBO(240, 176, 2, 1),
+                                      radius: 30,
+                                      child: Text(
+                                        "${utilisateur!.prenom.substring(0, 1).toUpperCase()}${utilisateur.nom.substring(0, 1).toUpperCase()}",
+                                        style: const TextStyle(
+                                            fontSize: 25,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                            letterSpacing: 2),
                                       ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                  child: Text(
-                                    "${utilisateur.prenom.toUpperCase()} ${utilisateur.nom.toUpperCase()}",
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
+                                    )
+                                  : CircleAvatar(
+                                      backgroundImage:
+                                          NetworkImage(utilisateur!.photos!),
+                                      radius: 30,
                                     ),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                child: Text(
+                                  "${utilisateur.prenom.toUpperCase()} ${utilisateur.nom.toUpperCase()}",
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
                                   ),
-                                )
-                              ],
-                            );
-                          },
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(right: 15),
-                          child: Icon(
-                            Icons.attach_money_sharp,
-                            color: Colors.yellow,
-                            size: 40,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ))),
+                                ),
+                              )
+                            ],
+                          );
+                        },
+                      ),
+                      Image.asset(
+                        "assets/images/wallet-budget-icon.png",
+                        width: 50,
+                        height: 50,
+                      )
+                    ],
+                  ),
+                )),
+          ),
           Stack(
             children: [
               Container(
@@ -151,7 +148,7 @@ class _AjoutState extends State<AjoutDepense> {
                             Padding(
                               padding: EdgeInsets.only(left: 5.0),
                               child: Text(
-                                "Ajouter Dépense",
+                                "Ajout Dépense",
                                 style: TextStyle(
                                   fontSize: 25.0,
                                   fontWeight: FontWeight.bold,
