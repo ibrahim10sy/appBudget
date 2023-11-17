@@ -114,31 +114,35 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
                     ),
                     label: "Budget"),
                 BottomNavigationBarItem(
-                    icon: SvgPicture.asset(
-                      "assets/images/wallet_budget.svg",
-                      width: 29,
-                      height: 30,
-                      colorFilter: ColorFilter.mode(
-                          (activePageIndex == 2)
-                              ? const Color.fromRGBO(47, 144, 98, 1)
-                              : Colors.black,
-                          BlendMode.srcIn),
-                    ),
-                    label: "Depense"),
+                  icon: SvgPicture.asset(
+                    "assets/images/wallet_budget.svg",
+                    width: 29,
+                    height: 30,
+                    colorFilter: ColorFilter.mode(
+                        (activePageIndex == 2)
+                            ? const Color.fromRGBO(47, 144, 98, 1)
+                            : Colors.black,
+                        BlendMode.srcIn),
+                  ),
+                  label: "Depense",
+                ),
                 BottomNavigationBarItem(
                   icon: SvgPicture.asset(
                     "assets/images/profileCircle.svg",
                     width: 29,
                     height: 30,
                     colorFilter: ColorFilter.mode(
-                        (activePageIndex == 3)
-                            ? const Color.fromRGBO(47, 144, 98, 1)
-                            : Colors.black,
-                        BlendMode.srcIn),
+                      (activePageIndex == 3)
+                          ? const Color.fromRGBO(47, 144, 98, 1)
+                          : Colors.black,
+                      BlendMode.srcIn,
+                    ),
                   ),
                   label: "Profile",
                 ),
               ],
+              selectedLabelStyle: const TextStyle(fontWeight: FontWeight.bold),
+              selectedItemColor: const Color.fromRGBO(47, 144, 98, 1),
               currentIndex: activePageIndex,
               onTap: _onItemTap,
             ),
