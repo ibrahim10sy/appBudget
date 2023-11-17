@@ -1,7 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:ika_musaka/model/stat_model.dart';
-import 'package:ika_musaka/services/budgetService.dart';
 import 'package:provider/provider.dart';
 
 import '../../model/DepenceClasse.dart';
@@ -36,15 +35,15 @@ class _StatistiquesDepensesState extends State<StatistiquesDepenses>
 
   @override
   void initState() {
-    future =
-        BudgetService().getBudgetTotal("somme/${utilisateur.idUtilisateur}");
+    // future =
+    //     BudgetService().getBudgetTotal("somme/${utilisateur.idUtilisateur}");
 
     utilisateur =
         Provider.of<UtilisateurProvider>(context, listen: false).utilisateur!;
     _futureListDepense = getCategories();
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 600),
     );
     _animationController.forward();
     super.initState();
@@ -69,8 +68,12 @@ class _StatistiquesDepensesState extends State<StatistiquesDepenses>
       case 'Loyer':
         return Colors.blue;
       case 'Loisir':
+        return const Color.fromRGBO(233, 30, 99, 1);
+      case 'Loisirs':
         return Colors.pink;
       case 'Transport':
+        return Colors.amberAccent;
+      case 'Transports':
         return Colors.amberAccent;
       case 'Autres':
         return const Color.fromARGB(255, 56, 196, 21);
@@ -88,7 +91,7 @@ class _StatistiquesDepensesState extends State<StatistiquesDepenses>
             height: 15,
             color: _getColorFromCategory(e.titreCategorie ?? ""),
           ),
-          const SizedBox(width: 20),
+          const SizedBox(width: 10),
           Text(e.titreCategorie ?? ""),
         ],
       );

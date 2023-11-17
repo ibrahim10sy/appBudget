@@ -420,7 +420,7 @@ class _DepenseState extends State<Depense> {
                                                     context,
                                                     MaterialPageRoute(
                                                         builder: ((context) =>
-                                                            DepensesListes())));
+                                                            const DepensesListes())));
                                               },
                                               child: Text('OK'),
                                             )
@@ -542,7 +542,7 @@ class _DepenseState extends State<Depense> {
                                                               MaterialPageRoute(
                                                                 builder:
                                                                     (context) =>
-                                                                        DepensesListes(),
+                                                                         const DepensesListes(),
                                                               ),
                                                             );
                                                           },

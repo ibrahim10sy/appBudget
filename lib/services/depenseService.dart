@@ -51,7 +51,7 @@ class DepenseService extends ChangeNotifier {
 
       if (response.statusCode == 200) {
         List data = json.decode(response.body);
-        // data.printInfo();
+         data.printInfo();
         return data.map((item) => StatModel.fromMap(item)).toList();
       } else {
         print(

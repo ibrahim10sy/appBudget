@@ -43,7 +43,8 @@ class DialogHelper {
                 ),
               ),
               const Text(
-                'Modifier la Catégorie',
+                
+                'Modifier la Catégorie ',
                 style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.bold,

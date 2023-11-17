@@ -8,17 +8,15 @@ import 'package:ika_musaka/services/budgetService.dart';
 import 'package:provider/provider.dart';
 
 import 'DepenseListes.dart';
-import 'budgetListeGetx.dart';
 
 class BottomNavigationPage extends StatefulWidget {
-  const BottomNavigationPage ({super.key});
+  const BottomNavigationPage({super.key});
 
   @override
   _BottomNavigationPageState createState() => _BottomNavigationPageState();
 }
 
 class _BottomNavigationPageState extends State<BottomNavigationPage> {
-
   int activePageIndex = 0;
   final List<GlobalKey<NavigatorState>> _navigatorKeys = [
     GlobalKey<NavigatorState>(),
@@ -35,33 +33,34 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
     // const Center(child: Text("Page 4"))
   ];
 
-  void _changeActivePageValue(int index){
+  void _changeActivePageValue(int index) {
     setState(() {
       activePageIndex = index;
     });
   }
 
-  void _onItemTap(int index){
-    Provider.of<BottomNavigationService>(context,listen: false).changeIndex(index);
+  void _onItemTap(int index) {
+    Provider.of<BottomNavigationService>(context, listen: false)
+        .changeIndex(index);
     Provider.of<BudgetService>(context, listen: false).applyChange();
   }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async {
-        final isFirstRouteInCurrentTab =
-        !await _navigatorKeys[activePageIndex].currentState!.maybePop();
-        return isFirstRouteInCurrentTab;
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          toolbarHeight: 0,
-          elevation: 0,
-        ),
-        body: Consumer<BottomNavigationService>(
-          builder: (context,bottomService,child){
-            WidgetsBinding.instance.addPostFrameCallback((_){
+        onWillPop: () async {
+          final isFirstRouteInCurrentTab =
+              !await _navigatorKeys[activePageIndex].currentState!.maybePop();
+          return isFirstRouteInCurrentTab;
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            toolbarHeight: 0,
+            elevation: 0,
+          ),
+          body: Consumer<BottomNavigationService>(
+              builder: (context, bottomService, child) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
               _changeActivePageValue(bottomService.pageIndex);
             });
 
@@ -73,51 +72,79 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
                 _buildOffstageNavigator(3),
               ],
             );
-          }
-        ),
-        bottomNavigationBar: Container(
-          padding: const EdgeInsets.symmetric(vertical: 4.0,horizontal: 10.0),
-          margin: const EdgeInsets.only(left: 15.0,right: 15.0,bottom: 15.0),
-          decoration: BoxDecoration(
-              border: Border.all(
-                width: 3,
-                color: const Color.fromRGBO(47, 144, 98, 1),
-              ),
-              borderRadius: BorderRadius.circular(22.0),
-              color: Colors.white
+          }),
+          bottomNavigationBar: Container(
+            padding:
+                const EdgeInsets.symmetric(vertical: 4.0, horizontal: 10.0),
+            margin:
+                const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),
+            decoration: BoxDecoration(
+                border: Border.all(
+                  width: 3,
+                  color: const Color.fromRGBO(47, 144, 98, 1),
+                ),
+                borderRadius: BorderRadius.circular(22.0),
+                color: Colors.white),
+            child: BottomNavigationBar(
+              elevation: 0.0,
+              backgroundColor: Colors.white,
+              items: [
+                BottomNavigationBarItem(
+                    icon: SvgPicture.asset(
+                      "assets/images/home_svg.svg",
+                      width: 29,
+                      height: 30,
+                      colorFilter: ColorFilter.mode(
+                          (activePageIndex == 0)
+                              ? const Color.fromRGBO(47, 144, 98, 1)
+                              : Colors.black,
+                          BlendMode.srcIn),
+                    ),
+                    label: "Accueil"),
+                BottomNavigationBarItem(
+                    icon: SvgPicture.asset(
+                      "assets/images/moneyTotal.svg",
+                      width: 29,
+                      height: 30,
+                      colorFilter: ColorFilter.mode(
+                          (activePageIndex == 1)
+                              ? const Color.fromRGBO(47, 144, 98, 1)
+                              : Colors.black,
+                          BlendMode.srcIn),
+                    ),
+                    label: "Budget"),
+                BottomNavigationBarItem(
+                    icon: SvgPicture.asset(
+                      "assets/images/wallet_budget.svg",
+                      width: 29,
+                      height: 30,
+                      colorFilter: ColorFilter.mode(
+                          (activePageIndex == 2)
+                              ? const Color.fromRGBO(47, 144, 98, 1)
+                              : Colors.black,
+                          BlendMode.srcIn),
+                    ),
+                    label: "Depense"),
+                BottomNavigationBarItem(
+                  icon: SvgPicture.asset(
+                    "assets/images/profileCircle.svg",
+                    width: 29,
+                    height: 30,
+                    colorFilter: ColorFilter.mode(
+                        (activePageIndex == 3)
+                            ? const Color.fromRGBO(47, 144, 98, 1)
+                            : Colors.black,
+                        BlendMode.srcIn),
+                  ),
+                  label: "Profile",
+                ),
+              ],
+              currentIndex: activePageIndex,
+              onTap: _onItemTap,
+            ),
           ),
-          child: BottomNavigationBar(
-            elevation: 0.0,
-            backgroundColor: Colors.white,
-            items: [
-              BottomNavigationBarItem(icon: SvgPicture.asset(
-                "assets/images/home_svg.svg"
-                ,width: 29,height: 30,
-                colorFilter: ColorFilter.mode((activePageIndex == 0)? const Color.fromRGBO(47, 144, 98, 1):Colors.black, BlendMode.srcIn),),
-                  label: ""),
-              BottomNavigationBarItem(icon: SvgPicture.asset(
-                "assets/images/moneyTotal.svg",
-                width: 29,height: 30,
-                colorFilter: ColorFilter.mode((activePageIndex == 1)? const Color.fromRGBO(47, 144, 98, 1):Colors.black, BlendMode.srcIn),),
-                  label: ""),
-              BottomNavigationBarItem(icon: SvgPicture.asset(
-                "assets/images/wallet_budget.svg",
-                width: 29,height: 30,
-                colorFilter: ColorFilter.mode((activePageIndex == 2)? const Color.fromRGBO(47, 144, 98, 1):Colors.black, BlendMode.srcIn),),
-                  label: ""),
-              BottomNavigationBarItem(icon: SvgPicture.asset(
-                "assets/images/profileCircle.svg",
-                width: 29,height: 30,
-                colorFilter: ColorFilter.mode((activePageIndex == 3)? const Color.fromRGBO(47, 144, 98, 1):Colors.black, BlendMode.srcIn),),
-                  label: ""),
-            ],
-            currentIndex: activePageIndex,
-            onTap: _onItemTap,
-          ),
-        ),
-        backgroundColor: Colors.white,
-      )
-    );
+          backgroundColor: Colors.white,
+        ));
   }
 
   ///////////////////////////////////////////////////////////////TEST/////////////////////////
@@ -143,7 +170,7 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
         key: _navigatorKeys[index],
         onGenerateRoute: (routeSettings) {
           return MaterialPageRoute(
-            builder: (context) => routeBuilders![routeSettings.name]!(context),
+            builder: (context) => routeBuilders[routeSettings.name]!(context),
           );
         },
       ),

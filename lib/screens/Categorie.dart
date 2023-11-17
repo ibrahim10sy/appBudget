@@ -213,7 +213,7 @@ class MyCategorie extends State<Categoriees> {
                                                       decoration:
                                                           const InputDecoration(
                                                               hintText:
-                                                                  'Ma Categorie'),
+                                                                  'Categorie'),
                                                     ),
                                                   )),
                                               Padding(

@@ -553,135 +553,181 @@ class _BudgetListeState extends State<BudgetListe> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   IconButton(
-                      onPressed: () async {
-                        debugPrint(budget.toString());
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: ((context) =>
-                                    ModifyBudget(budget: budget))));
-                      },
-                      icon: Image.asset("assets/images/edit_icon (2).png")),
+                    onPressed: () async {
+                      debugPrint(budget.toString());
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: ((context) => ModifyBudget(budget: budget)),
+                        ),
+                      );
+                    },
+                    icon: Image.asset("assets/images/edit_icon (2).png"),
+                  ),
                   IconButton(
-                      onPressed: () => showDialog(
-                          context: context,
-                          builder: (BuildContext context) => Dialog(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(32)),
-                              child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      top: 15, left: 10, right: 10, bottom: 15),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Image.asset(
-                                              "assets/images/budget.png",
-                                              width: 53,
-                                              height: 53),
-                                          const Expanded(
-                                            child: Text(
-                                              "Voulez-vous vraiment supprimer cet budget ?",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color.fromRGBO(
-                                                      47, 144, 98, 1)),
-                                              textAlign: TextAlign.center,
-                                              overflow: TextOverflow.visible,
-                                            ),
-                                          )
-                                        ],
+                    onPressed: () => showDialog(
+                      context: context,
+                      builder: (BuildContext context) => Dialog(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(32),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            top: 15,
+                            left: 10,
+                            right: 10,
+                            bottom: 15,
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Image.asset(
+                                    "assets/images/budget.png",
+                                    width: 53,
+                                    height: 53,
+                                  ),
+                                  const Expanded(
+                                    child: Text(
+                                      "Voulez-vous vraiment supprimer ce budget ?",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Color.fromRGBO(47, 144, 98, 1),
                                       ),
-                                      Text(titre,
-                                          textAlign: TextAlign.center,
-                                          overflow: TextOverflow.visible),
-                                      const Divider(
-                                        color: Colors.white,
-                                        height: 30,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 0.0, horizontal: 30),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            GestureDetector(
-                                              onTap: () {
-                                                Provider.of<BudgetService>(
-                                                        context,
-                                                        listen: false)
-                                                    .deleteBudgetById(
-                                                        "supprimer/${budget.idBudget}");
-                                                Navigator.pop(context);
-                                              },
-                                              child: Flexible(
-                                                child: Card(
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              16)),
-                                                  color: Colors.red,
-                                                  child: const Padding(
-                                                    padding:
-                                                        EdgeInsets.symmetric(
-                                                            vertical: 5,
-                                                            horizontal: 30),
-                                                    child: Text(
-                                                      "OUI",
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 20,
-                                                          color: Colors.white),
-                                                    ),
-                                                  ),
+                                      textAlign: TextAlign.center,
+                                      overflow: TextOverflow.visible,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Text(
+                                titre, // Assuming `titre` is defined somewhere
+                                textAlign: TextAlign.center,
+                                overflow: TextOverflow.visible,
+                              ),
+                              const Divider(
+                                color: Colors.white,
+                                height: 30,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 0.0,
+                                  horizontal: 30,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () async {
+                                        // Check if the remaining amount is different from the total amount
+                                        if (budget.montantRestant !=
+                                            budget.montant) {
+                                          // Display an error message and prevent deletion
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: const Text(
+                                                    'Erreur de Suppression'),
+                                                content: const Text(
+                                                  'Vous ne pouvez pas supprimer ce budget car il dispose d\'au moins une dépense',
                                                 ),
+                                                actions: <Widget>[
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop(); // Close the dialog
+                                                      Navigator.of(context)
+                                                          .pop(); // Close the current screen
+                                                    },
+                                                    child: const Text('OK'),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        } else {
+                                          // Continue with the deletion logic
+                                          Navigator.of(context)
+                                              .pop(); 
+                                        }
+                                           await Provider.of<BudgetService>(
+                                                context,
+                                                listen: false)
+                                            .deleteBudgetById(
+                                                "supprimer/${budget.idBudget}");
+                                      },
+                                      child: Flexible(
+                                        child: Card(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(16),
+                                          ),
+                                          color: Colors.red,
+                                          child: const Padding(
+                                            padding: EdgeInsets.symmetric(
+                                              vertical: 5,
+                                              horizontal: 30,
+                                            ),
+                                            child: Text(
+                                              "OUI",
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20,
+                                                color: Colors.white,
                                               ),
                                             ),
-                                            GestureDetector(
-                                                onTap: () {
-                                                  Navigator.pop(context);
-                                                },
-                                                child: Flexible(
-                                                  child: Card(
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        16)),
-                                                    color: const Color.fromRGBO(
-                                                        47, 144, 98, 1),
-                                                    child: const Padding(
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              vertical: 5,
-                                                              horizontal: 30),
-                                                      child: Text(
-                                                        "NON",
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            fontSize: 20,
-                                                            color:
-                                                                Colors.white),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                )),
-                                          ],
+                                          ),
                                         ),
-                                      )
-                                    ],
-                                  )))),
-                      icon: Image.asset("assets/images/icon_poubelle.png"))
+                                      ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.of(context)
+                                            .pop(); // Close the current screen
+                                      },
+                                      child: Flexible(
+                                        child: Card(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(16),
+                                          ),
+                                          color: const Color.fromRGBO(
+                                              47, 144, 98, 1),
+                                          child: const Padding(
+                                            padding: EdgeInsets.symmetric(
+                                              vertical: 5,
+                                              horizontal: 30,
+                                            ),
+                                            child: Text(
+                                              "NON",
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    icon: Image.asset("assets/images/icon_poubelle.png"),
+                  ),
                 ],
               ),
             )
+
           ],
         ),
       ),
