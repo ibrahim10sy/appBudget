@@ -34,40 +34,6 @@ class _BudgetListeState extends State<BudgetListe> {
 
   DateTime selectedDate = DateTime.now();
 
-//   Future fetchAlbum() async {
-//     final response =
-//         // await http.get(Uri.parse('https://apibudget.onrender.com/Budget/list'));
-//         await http.get(Uri.parse('http://10.0.2.2:8080/Budget/list'));
-// //print(response);
-//     if (response.statusCode == 200) {
-//       print("Bienvenue dans le console");
-//       // If the server did return a 200 OK response,
-//       // then parse the JSON.
-//       print(jsonDecode(response.body));
-//       return jsonDecode(response.body);
-//     } else {
-//       // If the server did not return a 200 OK response,
-//       // then throw an exception.
-//       throw Exception('Failed to load album');
-//     }
-//   }
-//  Future catByUser(int id) async {
-//     final response =
-//         await http.get(Uri.parse('$apiUrl2/$id'));
-//  //print(response);
-
-//     if (response.statusCode == 200) {
-//       print("Bienvenu au categorie");
-//       // If the server did return a 200 OK response,
-//       // then parse the JSON.
-//       print(jsonDecode(response.body));
-//       return jsonDecode(response.body);
-//     } else {
-//       // If the server did not return a 200 OK response,
-//       // then throw an exception.
-//       throw Exception('Failed to lire');
-//     }
-//   }
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(

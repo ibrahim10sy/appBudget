@@ -587,7 +587,7 @@ class _BudgetDetaille extends State<BudgetDetaille> {
 
                             if (!snapshot.hasData) {
                               return const Center(
-                                  child: Text("Aucune donnée trouvée !"));
+                                  child: Text("Aucune depense trouvée !"));
                             } else {
                               depenses = snapshot.data;
                               return Expanded(

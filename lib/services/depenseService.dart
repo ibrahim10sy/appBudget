@@ -14,9 +14,7 @@ class DepenseService extends ChangeNotifier {
   final String url = "http://10.0.2.2:8080/Depenses/";
   final String url1 = "http://10.0.2.2:8080/Depenses/create";
   final String baseUrl = "http://10.0.2.2:8080/procedure";
-  // final String url = "https://apibudget.onrender.com/Depenses/";
-  // final String url1 = "https://apibudget.onrender.com/Depenses/create";
-  // final String baseUrl = "https://apibudget.onrender.com/procedure";
+ 
 
   List<DepenseClass> depenses = [];
   String action = "all";
@@ -51,7 +49,7 @@ class DepenseService extends ChangeNotifier {
 
       if (response.statusCode == 200) {
         List data = json.decode(response.body);
-         data.printInfo();
+        data.printInfo();
         return data.map((item) => StatModel.fromMap(item)).toList();
       } else {
         print(
@@ -120,17 +118,17 @@ class DepenseService extends ChangeNotifier {
   }
 
   Future<List<DepenseClass>> depenseByIdUser(int idUser) async {
-    final response = await http
-        .get(Uri.parse('http://10.0.2.2:8080/Depenses/${idUser}/read'));
+    final response =
+        await http.get(Uri.parse('http://10.0.2.2:8080/Depenses/$idUser/read'));
 
     if (response.statusCode == 200) {
       List<dynamic> body = jsonDecode(utf8.decode(response.bodyBytes));
       depenses =
           body.map((dynamic item) => DepenseClass.fromJson(item)).toList();
-          return depenses;
-    }else {
+      return depenses;
+    } else {
       depenses = [];
-           throw Exception(jsonDecode(utf8.decode(response.bodyBytes))["message"]); 
+      throw Exception(jsonDecode(utf8.decode(response.bodyBytes))["message"]);
     }
   }
 

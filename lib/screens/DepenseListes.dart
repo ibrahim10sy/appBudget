@@ -348,12 +348,29 @@ class _DepenseState extends State<DepensesListes> {
                               ],
                             ),
                           ),
+                          IconButton(
+                              onPressed: () {
+                                Provider.of<DepenseService>(context,
+                                        listen: false)
+                                    .action = "all";
+                                Provider.of<DepenseService>(context,
+                                        listen: false)
+                                    .applyChange();
+                              },
+                              icon: const Icon(Icons.restart_alt,
+                                  color: Color.fromRGBO(47, 144, 98, 1),
+                                  size: 28)),
                         ],
                       ),
                     ),
-                   Expanded(
-                        child: FutureBuilder(
-                            future: _futureListDepense,
+                   Consumer<DepenseService>(
+                      builder: (context, depenseService, child) {
+                        depenseService.action = "all";
+                        return Expanded(
+                          child: FutureBuilder<List<DepenseClass>>(
+                            future: depenseService
+                                .depenseByIdUser(utilisateur
+                                .idUtilisateur), // Utilisez directement la méthode du service
                             builder: (context, snapshot) {
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting) {
@@ -361,26 +378,31 @@ class _DepenseState extends State<DepensesListes> {
                                   child: CircularProgressIndicator(),
                                 );
                               }
-                              
+
                               if (!snapshot.hasData) {
                                 return const Center(
-                                  child: Text("Aucun depense trouvé"),
+                                  child: Text("Aucune dépense trouvée"),
+                                );
+                              } else {
+                                depense = snapshot.data!;
+
+                                return ListView.builder(
+                                  itemCount: depense!.length,
+                                  itemBuilder: (context, index) {
+                                    return createCardDepense(
+                                      depense![index].description!,
+                                      index,
+                                      depense![index],
+                                    );
+                                  },
                                 );
                               }
-                              depense = snapshot.data!;
-                              depense.printInfo();
+                            },
+                          ),
+                        );
+                      },
+                    ),
 
-                              return Expanded(
-                                child: ListView.builder(
-                                    itemCount: depense!.length,
-                                    itemBuilder: (context, index) {
-                                      return createCardDepense(
-                                          depense![index].description!,
-                                          index,
-                                          depense![index]);
-                                    }),
-                              );
-                            })),
                     const Divider(
                       height: 15,
                       color: Colors.white,
@@ -413,3 +435,22 @@ class _DepenseState extends State<DepensesListes> {
     );
   }
 }
+
+// restartDepense() {
+//   final formKey = GlobalKey<FormState>();
+//   String description = "";
+//   return Container(
+//     child :  IconButton(
+//                               onPressed: () {
+//                                 Provider.of<DepenseService>(context,
+//                                         listen: false)
+//                                     .action = "all";
+//                                 Provider.of<DepenseService>(context,
+//                                         listen: false)
+//                                     .applyChange();
+//                               },
+//                               icon: const Icon(Icons.restart_alt,
+//                                   color: Color.fromRGBO(47, 144, 98, 1),
+//                                   size: 28)),
+//   )
+// }
