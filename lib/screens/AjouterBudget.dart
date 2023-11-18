@@ -26,7 +26,7 @@ class _AjouterBudgetState extends State<AjouterBudget> {
   // ignore: non_constant_identifier_names
   TextEditingController montant_control = TextEditingController();
   // ignore: non_constant_identifier_names
-  TextEditingController montantalert_control = TextEditingController();
+  TextEditingController montantAlerte_control = TextEditingController();
   // ignore: non_constant_identifier_names
   TextEditingController categorie_control = TextEditingController();
   // ignore: non_constant_identifier_names
@@ -41,7 +41,7 @@ class _AjouterBudgetState extends State<AjouterBudget> {
     description_control.clear();
     montant_control.clear();
     montant_control.clear();
-    montantalert_control.clear();
+    montantAlerte_control.clear();
     categorie_control.clear();
     datedebut_control.clear();
     utilisateur =
@@ -323,7 +323,7 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                                         inputFormatters: <TextInputFormatter>[
                                           FilteringTextInputFormatter.digitsOnly
                                         ],
-                                        controller: montantalert_control,
+                                        controller: montantAlerte_control,
                                         decoration: const InputDecoration(
                                             labelText: 'Montant Alerte',
                                             labelStyle:
@@ -475,12 +475,12 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                               onPressed: () async {
                                 final description = description_control.text;
                                 final montant = montant_control.text;
-                                final montantAlert = montantalert_control.text;
+                                final montantAlerte = montantAlerte_control.text;
                                 final datedebut = datedebut_control.text;
 
                                 if (description.isEmpty ||
                                     montant.isEmpty ||
-                                    montantAlert.isEmpty ||
+                                    montantAlerte.isEmpty ||
                                     datedebut.isEmpty) {
                                   const String errorMessage =
                                       "Tous les champs doivent être remplis";
@@ -508,10 +508,11 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                                   await BudgetServices.addBudget(
                                       description: description,
                                       montant: montant,
-                                      montantAlert: montantAlert,
+                                      montantAlerte: montantAlerte,
                                       datedebut: datedebut,
+                                      utilisateur: utilisateur,
                                       categorie: maCat,
-                                      utilisateur: utilisateur);
+                                      );
                                   Provider.of<BudgetService>(context,
                                           listen: false)
                                       .applyChange();
@@ -539,7 +540,7 @@ class _AjouterBudgetState extends State<AjouterBudget> {
 
                                   description_control.clear();
                                   montant_control.clear();
-                                  montantalert_control.clear();
+                                  montantAlerte_control.clear();
                                   datedebut_control.clear();
                                   categorie_control.clear();
                                 } catch (e) {

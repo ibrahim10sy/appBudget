@@ -34,7 +34,6 @@ class _BudgetListeState extends State<BudgetListe> {
 
   DateTime selectedDate = DateTime.now();
 
-
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
         context: context,
@@ -483,6 +482,7 @@ class _BudgetListeState extends State<BudgetListe> {
             context,
             MaterialPageRoute(
                 builder: (context) => BudgetDetaille(budget: budget)));
+        debugPrint(budget.toString());
       },
       child: Container(
         margin: index == 0
@@ -617,10 +617,9 @@ class _BudgetListeState extends State<BudgetListe> {
                                           );
                                         } else {
                                           // Continue with the deletion logic
-                                          Navigator.of(context)
-                                              .pop(); 
+                                          Navigator.of(context).pop();
                                         }
-                                           await Provider.of<BudgetService>(
+                                        await Provider.of<BudgetService>(
                                                 context,
                                                 listen: false)
                                             .deleteBudgetById(
@@ -693,7 +692,6 @@ class _BudgetListeState extends State<BudgetListe> {
                 ],
               ),
             )
-
           ],
         ),
       ),

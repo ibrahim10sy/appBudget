@@ -1,6 +1,3 @@
-
-import 'dart:io';
-
 // import 'dart:convert';
 class Utilisateur {
   final String nom;
@@ -10,13 +7,13 @@ class Utilisateur {
   final int idUtilisateur;
   final String? photos;
 
-  Utilisateur({required this.photos,
-    required this.nom,
-    required this.prenom,
-    required this.email,
-    required this.motDePasse,
-    required this.idUtilisateur
-    });
+  Utilisateur(
+      {required this.photos,
+      required this.nom,
+      required this.prenom,
+      required this.email,
+      required this.motDePasse,
+      required this.idUtilisateur});
 
   factory Utilisateur.fromJson(Map<String, dynamic> json) {
     return Utilisateur(
@@ -27,5 +24,16 @@ class Utilisateur {
       idUtilisateur: json['idUtilisateur'],
       photos: json['photos'],
     );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      "idUtilisateur": idUtilisateur,
+      "nom": nom,
+      "prenom": prenom,
+      "email": email,
+      "motDePasse": motDePasse,
+      "photos": photos
+    };
   }
 }

@@ -24,13 +24,16 @@ class DepenseClass{
       utilisateur: Utilisateur.fromJson(json["utilisateur"])
     );
   }
-  //  Map<String, dynamic> toJson() => {
-  //       "idDepenses": idDepenses,
-  //       "description": description,
-  //       "montant": montant,
-  //       "date":date,
-  //       "utilisateur": utilisateur.toJson(),
-  //       "budget": budget.toJson(),
-  //       "type": type!.toJson(),
-  //   };
+  
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'idDepenses': idDepenses,
+      'description': description,
+      'montant': montant,
+      'date': date,
+      'budget': budget?.toMap(),
+      'type': type,
+      'utilisateur': utilisateur?.toMap(),
+    };
+  }
 }

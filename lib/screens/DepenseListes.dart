@@ -370,7 +370,7 @@ class _DepenseState extends State<DepensesListes> {
                           child: FutureBuilder<List<DepenseClass>>(
                             future: depenseService
                                 .depenseByIdUser(utilisateur
-                                .idUtilisateur), // Utilisez directement la méthode du service
+                                .idUtilisateur), 
                             builder: (context, snapshot) {
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting) {

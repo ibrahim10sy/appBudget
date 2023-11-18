@@ -171,7 +171,7 @@ class _BudgetDetaille extends State<BudgetDetaille> {
                                       const Icon(Icons.notifications,
                                           color: Colors.white, size: 13),
                                       Text(
-                                        "Montant alerte : ${budget.montantAlert}",
+                                        "Montant alerte : ${budget.montantAlerte}",
                                         style: const TextStyle(
                                             fontSize: 13,
                                             fontWeight: FontWeight.bold,
@@ -263,6 +263,7 @@ class _BudgetDetaille extends State<BudgetDetaille> {
                                             children: [
                                               GestureDetector(
                                                 onTap: () {
+                                                   print(budget.montantAlerte);
                                                   Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
@@ -270,6 +271,7 @@ class _BudgetDetaille extends State<BudgetDetaille> {
                                                               AjoutDepense(
                                                                   budget:
                                                                       budget)));
+                                                   
                                                 },
                                                 child: Container(
                                                   padding:
@@ -401,7 +403,7 @@ class _BudgetDetaille extends State<BudgetDetaille> {
                                                                                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Color.fromRGBO(47, 144, 98, 1)),
                                                                                 ),
                                                                                 Text(
-                                                                                  "${budget.montantAlert} FCFA",
+                                                                                  "${budget.montantAlerte} FCFA",
                                                                                   style: const TextStyle(
                                                                                     fontSize: 14,
                                                                                   ),

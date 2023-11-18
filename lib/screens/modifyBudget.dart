@@ -27,7 +27,7 @@ class _ModifyBudgetState extends State<ModifyBudget> {
   // ignore: non_constant_identifier_names
   TextEditingController montant_control = TextEditingController();
   // ignore: non_constant_identifier_names
-  TextEditingController montantalert_control = TextEditingController();
+  TextEditingController montantAlerte_control = TextEditingController();
   // ignore: non_constant_identifier_names
   TextEditingController categorie_control = TextEditingController();
   // ignore: non_constant_identifier_names
@@ -80,8 +80,8 @@ class _ModifyBudgetState extends State<ModifyBudget> {
         TextEditingController(text: widget.budget.description);
     montant_control =
         TextEditingController(text: widget.budget.montant.toString());
-    montantalert_control =
-        TextEditingController(text: widget.budget.montantAlert.toString());
+    montantAlerte_control =
+        TextEditingController(text: widget.budget.montantAlerte.toString());
     categorie_control =
         TextEditingController(text: widget.budget.categorie.toString());
     datedebut_control = TextEditingController(text: widget.budget.dateDebut);
@@ -99,7 +99,7 @@ class _ModifyBudgetState extends State<ModifyBudget> {
   void dispose() {
     description_control.dispose();
     montant_control.dispose();
-    montantalert_control.dispose();
+    montantAlerte_control.dispose();
     categorie_control.dispose();
     datedebut_control.dispose();
     super.dispose();
@@ -353,7 +353,7 @@ class _ModifyBudgetState extends State<ModifyBudget> {
                                         inputFormatters: <TextInputFormatter>[
                                           FilteringTextInputFormatter.digitsOnly
                                         ],
-                                        controller: montantalert_control,
+                                        controller: montantAlerte_control,
                                         decoration: const InputDecoration(
                                             labelText: 'Montant Alerte',
                                             labelStyle:
@@ -508,17 +508,17 @@ class _ModifyBudgetState extends State<ModifyBudget> {
                                 widget.budget.description =
                                     montant_control.text;
                                 widget.budget.description =
-                                    montantalert_control.text;
+                                    montantAlerte_control.text;
                                 widget.budget.description =
                                     datedebut_control.text;
                                 final description = description_control.text;
                                 final montant = montant_control.text;
-                                final montantAlert = montantalert_control.text;
+                                final montantAlerte = montantAlerte_control.text;
                                 final datedebut = datedebut_control.text;
 
                                 if (description.isEmpty ||
                                     montant.isEmpty ||
-                                    montantAlert.isEmpty ||
+                                    montantAlerte.isEmpty ||
                                     datedebut.isEmpty) {
                                   final String errorMessage =
                                       "Tous les champs doivent être remplis";
@@ -546,7 +546,7 @@ class _ModifyBudgetState extends State<ModifyBudget> {
                                       id: widget.budget.idBudget ?? 0,
                                       description: description,
                                       montant: montant,
-                                      montantAlert: montantAlert,
+                                      montantAlerte: montantAlerte,
                                       montantRestant: widget
                                           .budget.montantRestant
                                           .toString(),
@@ -579,7 +579,7 @@ class _ModifyBudgetState extends State<ModifyBudget> {
 
                                   description_control.clear();
                                   montant_control.clear();
-                                  montantalert_control.clear();
+                                  montantAlerte_control.clear();
                                   datedebut_control.clear();
                                   categorie_control.clear();
                                 } catch (e) {

@@ -1,15 +1,13 @@
+import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ika_musaka/model/Budget.dart';
 import 'package:ika_musaka/model/DepenceClasse.dart';
 import 'package:ika_musaka/screens/AjoutDepense.dart';
-import 'package:ika_musaka/screens/DepenseListes.dart';
-import 'package:ika_musaka/screens/budgetDetail.dart';
-import 'package:ika_musaka/screens/budgetListe.dart';
 import 'package:ika_musaka/services/Deletedepenseservice.dart';
 import 'package:ika_musaka/services/updatedepenseservice.dart';
 import 'package:provider/provider.dart';
-import 'package:badges/badges.dart' as badges;
+
 import '../model/utilisateur.dart';
 import '../provider/UtilisateurProvider.dart';
 
@@ -410,19 +408,21 @@ class _DepenseState extends State<Depense> {
                                       context: context,
                                       builder: (BuildContext context) {
                                         return AlertDialog(
-                                          title: Center(child: Text('Succès')),
-                                          content: Text(
+                                          title: const Center(
+                                              child: Text('Succès')),
+                                          content: const Text(
                                               "Dépense modifié avec succès"),
                                           actions: <Widget>[
                                             TextButton(
                                               onPressed: () {
-                                                Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: ((context) =>
-                                                            const DepensesListes())));
+                                                Navigator.of(context).pop();
+                                                // Navigator.push(
+                                                //     context,
+                                                //     MaterialPageRoute(
+                                                //         builder: ((context) =>
+                                                //             const DepensesListes())));
                                               },
-                                              child: Text('OK'),
+                                              child: const Text('OK'),
                                             )
                                           ],
                                         );
@@ -455,7 +455,7 @@ class _DepenseState extends State<Depense> {
                                                         children: [
                                                           Expanded(
                                                             child: Text(
-                                                              "${onError}",
+                                                              "$onError",
                                                               style: const TextStyle(
                                                                   fontSize: 20,
                                                                   color: Colors
@@ -499,19 +499,20 @@ class _DepenseState extends State<Depense> {
                                     context: context,
                                     builder: (BuildContext context) {
                                       return AlertDialog(
-                                        title: Text('Confirmer la suppression'),
-                                        content: Text(
+                                        title: const Text(
+                                            'Confirmer la suppression'),
+                                        content: const Text(
                                             'Voulez-vous vraiment supprimer cette dépense ?'),
                                         actions: <Widget>[
                                           TextButton(
-                                            child: Text('Annuler'),
+                                            child: const Text('Annuler'),
                                             onPressed: () {
                                               // Annule la suppression et ferme la boîte de dialogue
                                               Navigator.of(context).pop();
                                             },
                                           ),
                                           TextButton(
-                                            child: Text('OK'),
+                                            child: const Text('OK'),
                                             onPressed: () {
                                               // Supprime la dépense et ferme la boîte de dialogue
                                               SupprimerDepensesService()
@@ -523,10 +524,10 @@ class _DepenseState extends State<Depense> {
                                                   builder:
                                                       (BuildContext context) {
                                                     return AlertDialog(
-                                                      title: Center(
+                                                      title: const Center(
                                                           child:
                                                               Text('Succès')),
-                                                      content: Text(
+                                                      content: const Text(
                                                           'Dépense supprimée avec succès'),
                                                       actions: <Widget>[
                                                         TextButton(
@@ -537,16 +538,17 @@ class _DepenseState extends State<Depense> {
                                                                 .pop();
 
                                                             // Redirige vers la page "budgetdetaille" après la suppression réussie
-                                                            Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                builder:
-                                                                    (context) =>
-                                                                         const DepensesListes(),
-                                                              ),
-                                                            );
+                                                            // Navigator.push(
+                                                            //   context,
+                                                            //   MaterialPageRoute(
+                                                            //     builder:
+                                                            //         (context) =>
+                                                            //              const DepensesListes(),
+                                                            //   ),
+                                                            // );
                                                           },
-                                                          child: Text('OK'),
+                                                          child:
+                                                              const Text('OK'),
                                                         )
                                                       ],
                                                     );
@@ -586,7 +588,7 @@ class _DepenseState extends State<Depense> {
                                                                 children: [
                                                                   Expanded(
                                                                     child: Text(
-                                                                      "${onError}",
+                                                                      "$onError",
                                                                       style: const TextStyle(
                                                                           fontSize:
                                                                               20,

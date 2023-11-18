@@ -14,7 +14,6 @@ class DepenseService extends ChangeNotifier {
   final String url = "http://10.0.2.2:8080/Depenses/";
   final String url1 = "http://10.0.2.2:8080/Depenses/create";
   final String baseUrl = "http://10.0.2.2:8080/procedure";
- 
 
   List<DepenseClass> depenses = [];
   String action = "all";
@@ -140,28 +139,28 @@ class DepenseService extends ChangeNotifier {
     required Budget budget,
     required Utilisateur utilisateur,
   }) async {
-    Map<String, int?> typeMap = {"idType": type.idType};
-    Map<String, int?> ut = {"idUtilisateur": utilisateur.idUtilisateur};
-    Map<String, int?> bud = {"idBudget": budget.idBudget};
+    // Map<String, int?> typeMap = {"idType": type.idType};
+    // Map<String, int?> ut = {"idUtilisateur": utilisateur.idUtilisateur};
+    // Map<String, int?> bud = {"idBudget": budget.idBudget};
+    print(budget.toMap().toString());
     var depenses = jsonEncode({
       'description': description,
       'montant': int.tryParse(montant),
       'type': type.toMap(),
       'date': dateDepense,
       'budget': budget.toMap(),
-      'utilisateur': ut,
+      'utilisateur': utilisateur.toMap(),
     });
 
     final response = await http.post(
       Uri.parse('http://10.0.2.2:8080/Depenses/create'),
-      // Uri.parse('https://apibudget.onrender.com/Depenses/create'),
       headers: {'Content-Type': 'application/json'},
       body: depenses,
     );
-
+    print("depense service $depenses.toString()");
     if (response.statusCode == 200) {
-      debugPrint(response.body);
-      debugPrint(depenses.toString());
+      debugPrint("service de $response.body");
+
       applyChange();
     } else {
       debugPrint(response.body);

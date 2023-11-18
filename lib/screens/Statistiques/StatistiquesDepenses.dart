@@ -65,6 +65,10 @@ class _StatistiquesDepensesState extends State<StatistiquesDepenses>
     switch (category) {
       case 'Nourriture':
         return Colors.grey;
+      case 'Nourritures':
+        return Colors.grey;
+      case 'Courses':
+        return Color.fromARGB(141, 143, 77, 77);
       case 'Loyer':
         return Colors.blue;
       case 'Loisir':

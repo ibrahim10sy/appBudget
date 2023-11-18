@@ -6,72 +6,59 @@ import 'package:ika_musaka/screens/categoriess.dart';
 
 import '../model/utilisateur.dart';
 
-class BudgetServices{
+class BudgetServices {
   // static const String apiUrl = 'https://apibudget.onrender.com/Budget';
   static const String apiUrl = 'http://10.0.2.2:8080/Budget';
   // static const String Url = 'http://10.0.2.2:8080/Budget/modifier';
 
-  static Future<void> addBudget({
-    required String description,
-    required String montant,
-    required String montantAlert,
-    required String datedebut,
-    required Categorie categorie,
-    required Utilisateur utilisateur
-})async{
-    Map<String,int?> cate = {
-      "idCategorie": categorie.id
-    };
-    Map<String,int> ut = {
-      "idUtilisateur" : utilisateur.idUtilisateur
-    };
+  static Future<void> addBudget(
+      {required String description,
+      required String montant,
+      required String montantAlerte,
+      required String datedebut,
+      required Utilisateur utilisateur,
+      required Categorie categorie}) async {
+    Map<String, int?> cate = {"idCategorie": categorie.id};
+    Map<String, int> ut = {"idUtilisateur": utilisateur.idUtilisateur};
     var budget = jsonEncode({
-      'idBudget':null,
+      'idBudget': null,
       'description': description,
-      'montant': int.parse(montant),         
-      'montantAlerte' : int.parse(montantAlert),
+      'montant': int.parse(montant),
+      'montantAlerte': int.parse(montantAlerte),
       'dateDebut': datedebut,
+      'utilisateur': utilisateur.toMap(),
       'categorie': categorie.toMap(),
-      'utilisateur' : ut
     });
-    final response = await http.post(Uri.parse('$apiUrl/ajouter'),
-    headers: {'Content-Type': 'application/json'},
-    body: budget,
+    final response = await http.post(
+      Uri.parse('$apiUrl/ajouter'),
+      headers: {'Content-Type': 'application/json'},
+      body: budget,
     );
-    debugPrint(budget);
-    if(response.statusCode == 200){
-
+    print("budget service $budget.toString()");
+    if (response.statusCode == 200) {
       //return Budget.fromJson(jsonDecode(utf8.decode(response.bodyBytes)));
-
-    }else{
+    } else {
       debugPrint(response.body);
       throw Exception(jsonDecode(utf8.decode(response.bodyBytes))["message"]);
     }
   }
- 
 
-  
- static Future<void> updateBudget ({
-    required int id,
-    required String description,
-    required String montant,
-    required String montantAlert,
-    required String montantRestant,
-    required String datedebut,
-    required Categorie categorie,
-    required Utilisateur utilisateur
-  }) async {
-    Map<String, int?> cate = {
-      "idCategorie": categorie.id
-    };
-    Map<String, int> ut = {
-      "idUtilisateur": utilisateur.idUtilisateur
-    };
+  static Future<void> updateBudget(
+      {required int id,
+      required String description,
+      required String montant,
+      required String montantAlerte,
+      required String montantRestant,
+      required String datedebut,
+      required Categorie categorie,
+      required Utilisateur utilisateur}) async {
+    Map<String, int?> cate = {"idCategorie": categorie.id};
+    Map<String, int> ut = {"idUtilisateur": utilisateur.idUtilisateur};
     var budget = jsonEncode({
       'idBudget': id,
       'description': description,
-      'montant': int.parse(montant),         
-      'montantAlerte': int.parse(montantAlert),
+      'montant': int.parse(montant),
+      'montantAlerte': int.parse(montantAlerte),
       'montantRestant': int.parse(montantRestant),
       'dateDebut': datedebut,
       'categorie': categorie.toMap(),
@@ -104,4 +91,4 @@ class BudgetServices{
   //     print('Une erreur s\'est produit lors de la modificario.${response.statusCode}');
   //   }
   // }
-  }
+}
