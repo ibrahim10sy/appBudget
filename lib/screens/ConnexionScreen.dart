@@ -156,7 +156,7 @@ Future<void> signInWithGoogle() async {
       } else {
         // Gérez les erreurs d'authentification ici, par exemple affichez un message d'erreur.
         final responseBody = json.decode(response.body);
-        final errorMessage = responseBody['message']; // Remplacez par le nom réel du champ d'erreur.
+        final errorMessage =responseBody['message']; // Remplacez par le nom réel du champ d'erreur.
         // Affichez un message d'erreur à l'utilisateur.
          showDialog(
           context:  context,

@@ -588,10 +588,10 @@ class _BudgetListeState extends State<BudgetListe> {
                                   children: [
                                     GestureDetector(
                                       onTap: () async {
-                                        // Check if the remaining amount is different from the total amount
+                                        // verifie si le montant restant est diff du montant initial
                                         if (budget.montantRestant !=
                                             budget.montant) {
-                                          // Display an error message and prevent deletion
+                                          // afficher le message
                                           showDialog(
                                             context: context,
                                             builder: (BuildContext context) {
