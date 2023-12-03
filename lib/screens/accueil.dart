@@ -192,7 +192,7 @@ class _AccueilState extends State<Accueil> {
                 _buildAccueilCard("Budget", "budget.png", 1),
                 _buildAccueilCard("Dépense", "depenses 1.png", 2),
                 _buildAccueilCard("Catégorie", "categorie.png", 3),
-                _buildAccueilCard( "Statistiques", "statistique_logo.png", 4)
+                _buildAccueilCard("Statistiques", "statistique_logo.png", 4)
                 // _buildAccueilCard("Statistique", "statistique_logo.png", 4)
               ],
             ),
@@ -203,41 +203,44 @@ class _AccueilState extends State<Accueil> {
   }
 
   Widget _buildAccueilCard(String titre, String imgLocation, int index) {
-    return InkWell(
-      onTap: () {
-        if (index == 4) {
-          Navigator.push(
-            
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const StatistiquesDepenses()));
-        } else if (index == 3) {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const Categoriees()));
-        } else {
-          Provider.of<BottomNavigationService>(context, listen: false)
-              .changeIndex(index);
-        }
-      },
-      borderRadius: BorderRadius.circular(28),
-      highlightColor: const Color.fromRGBO(47, 144, 98, 0.9),
-      child: Card(
-        elevation: 10,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(28),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset("assets/images/$imgLocation"),
-            Text(
-              titre,
-              style: const TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.bold,
-              ),
-            )
-          ],
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: InkWell(
+        onTap: () {
+          if (index == 4) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const StatistiquesDepenses()));
+          } else if (index == 3) {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const Categoriees()));
+          } else {
+            Provider.of<BottomNavigationService>(context, listen: false)
+                .changeIndex(index);
+          }
+        },
+        borderRadius: BorderRadius.circular(28),
+        highlightColor: const Color.fromRGBO(47, 144, 98, 0.9),
+        child: Card(
+          color: Colors.white,
+          elevation: 2,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(28),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset("assets/images/$imgLocation"),
+              Text(
+                titre,
+                style: const TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

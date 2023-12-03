@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:ika_musaka/model/DepenceClasse.dart';
 import 'package:ika_musaka/model/utilisateur.dart';
@@ -363,14 +362,13 @@ class _DepenseState extends State<DepensesListes> {
                         ],
                       ),
                     ),
-                   Consumer<DepenseService>(
+                    Consumer<DepenseService>(
                       builder: (context, depenseService, child) {
                         depenseService.action = "all";
                         return Expanded(
                           child: FutureBuilder<List<DepenseClass>>(
                             future: depenseService
-                                .depenseByIdUser(utilisateur
-                                .idUtilisateur), 
+                                .depenseByIdUser(utilisateur.idUtilisateur),
                             builder: (context, snapshot) {
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting) {
@@ -402,7 +400,6 @@ class _DepenseState extends State<DepensesListes> {
                         );
                       },
                     ),
-
                     const Divider(
                       height: 15,
                       color: Colors.white,

@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
@@ -146,14 +145,11 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                               );
                             },
                           ),
-                          const Padding(
-                            padding: EdgeInsets.only(right: 15),
-                            child: Icon(
-                              Icons.attach_money_sharp,
-                              color: Colors.yellow,
-                              size: 40,
-                            ),
-                          ),
+                          Image.asset(
+                            "assets/images/wallet-budget-icon.png",
+                            width: 50,
+                            height: 50,
+                          )
                         ],
                       ),
                     ))),
@@ -475,7 +471,8 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                               onPressed: () async {
                                 final description = description_control.text;
                                 final montant = montant_control.text;
-                                final montantAlerte = montantAlerte_control.text;
+                                final montantAlerte =
+                                    montantAlerte_control.text;
                                 final datedebut = datedebut_control.text;
 
                                 if (description.isEmpty ||
@@ -506,13 +503,13 @@ class _AjouterBudgetState extends State<AjouterBudget> {
                                 }
                                 try {
                                   await BudgetServices.addBudget(
-                                      description: description,
-                                      montant: montant,
-                                      montantAlerte: montantAlerte,
-                                      datedebut: datedebut,
-                                      utilisateur: utilisateur,
-                                      categorie: maCat,
-                                      );
+                                    description: description,
+                                    montant: montant,
+                                    montantAlerte: montantAlerte,
+                                    datedebut: datedebut,
+                                    utilisateur: utilisateur,
+                                    categorie: maCat,
+                                  );
                                   Provider.of<BudgetService>(context,
                                           listen: false)
                                       .applyChange();

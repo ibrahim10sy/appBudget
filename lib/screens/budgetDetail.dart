@@ -147,7 +147,7 @@ class _BudgetDetaille extends State<BudgetDetaille> {
                           height: 20,
                         ),
                         SizedBox(
-                          height: 200,
+                          height: 230,
                           child: Card(
                             elevation: 10,
                             shape: RoundedRectangleBorder(
@@ -185,14 +185,6 @@ class _BudgetDetaille extends State<BudgetDetaille> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      /*Text(
-                                              "${snapshot.data?["Total"]} CFA",
-                                              style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 22,
-                                                  fontWeight: FontWeight.bold
-                                              )
-                                          ),*/
                                       const Divider(
                                           height: 10,
                                           color:
@@ -208,8 +200,8 @@ class _BudgetDetaille extends State<BudgetDetaille> {
                                               return Padding(
                                                 padding: const EdgeInsets.only(
                                                     right: 10.0,
-                                                    bottom: 7.5,
-                                                    top: 7.5),
+                                                    bottom: 7,
+                                                    top: 7),
                                                 child: Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment
@@ -263,7 +255,7 @@ class _BudgetDetaille extends State<BudgetDetaille> {
                                             children: [
                                               GestureDetector(
                                                 onTap: () {
-                                                   print(budget.montantAlerte);
+                                                  print(budget.montantAlerte);
                                                   Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
@@ -271,7 +263,6 @@ class _BudgetDetaille extends State<BudgetDetaille> {
                                                               AjoutDepense(
                                                                   budget:
                                                                       budget)));
-                                                   
                                                 },
                                                 child: Container(
                                                   padding:

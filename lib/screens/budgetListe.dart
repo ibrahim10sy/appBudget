@@ -162,7 +162,7 @@ class _BudgetListeState extends State<BudgetListe> {
                           height: 20,
                         ),
                         SizedBox(
-                          height: 200,
+                          height: 220,
                           child: Flexible(
                             child: Card(
                               elevation: 10,
@@ -174,146 +174,160 @@ class _BudgetListeState extends State<BudgetListe> {
                               child: Padding(
                                 padding:
                                     const EdgeInsets.fromLTRB(10.0, 15.0, 0, 0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text("Budget total :",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 22,
-                                            fontWeight: FontWeight.bold)),
-                                    Consumer<BudgetService>(builder:
-                                        (context, budgetService, child) {
-                                      int montantTotal = 0;
-                                      int montantRestant = 0;
-                                      List<Budget> budgetList = context.select(
-                                          (BudgetService value) =>
-                                              value.budgets);
-                                      if (budgetList.isNotEmpty) {
-                                        for (var element in budgetList) {
-                                          montantTotal =
-                                              montantTotal + element.montant!;
-                                          montantRestant = montantRestant +
-                                              element.montantRestant!;
+                                child: Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const Text("Budget total :",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 22,
+                                              fontWeight: FontWeight.bold)),
+                                      Consumer<BudgetService>(builder:
+                                          (context, budgetService, child) {
+                                        int montantTotal = 0;
+                                        int montantRestant = 0;
+                                        List<Budget> budgetList = context
+                                            .select((BudgetService value) =>
+                                                value.budgets);
+                                        if (budgetList.isNotEmpty) {
+                                          for (var element in budgetList) {
+                                            montantTotal =
+                                                montantTotal + element.montant!;
+                                            montantRestant = montantRestant +
+                                                element.montantRestant!;
+                                          }
                                         }
-                                      }
-                                      return Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text("$montantTotal FCFA",
-                                              style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 22,
-                                                  fontWeight: FontWeight.bold)),
-                                          Column(
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 10.0,
-                                                    bottom: 7.5,
-                                                    top: 7.5),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        const Text("Restant :",
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontSize: 17)),
-                                                        Text(
-                                                            "$montantRestant FCFA",
-                                                            style: const TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontSize: 17))
-                                                      ],
-                                                    ),
-                                                    Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        const Text("Dépensé :",
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontSize: 17)),
-                                                        Text(
-                                                            "${montantTotal - montantRestant} FCFA",
-                                                            style: const TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontSize: 17))
-                                                      ],
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                              Row(
-                                                children: [
-                                                  GestureDetector(
-                                                    onTap: () {
-                                                      Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  const AjouterBudget()));
-                                                    },
-                                                    child: Container(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              5.0),
-                                                      decoration: BoxDecoration(
-                                                          border: Border.all(
-                                                              width: 2,
-                                                              color:
-                                                                  Colors.white),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      23)),
-                                                      child: const Row(
+                                        return Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text("$montantTotal FCFA",
+                                                style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 22,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                            Column(
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 10.0,
+                                                          bottom: 7.5,
+                                                          top: 7.5),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
                                                         children: [
-                                                          Icon(Icons.add_circle,
-                                                              color:
-                                                                  Colors.white),
-                                                          Padding(
-                                                            padding:
-                                                                EdgeInsets.only(
-                                                                    left: 3.0),
-                                                            child: Text(
-                                                              "Ajouter budget",
+                                                          const Text(
+                                                              "Restant :",
                                                               style: TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  fontSize: 16,
                                                                   color: Colors
-                                                                      .white),
-                                                            ),
-                                                          )
+                                                                      .white,
+                                                                  fontSize:
+                                                                      17)),
+                                                          Text(
+                                                              "$montantRestant FCFA",
+                                                              style: const TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize: 17))
                                                         ],
                                                       ),
-                                                    ),
-                                                  )
-                                                ],
-                                              )
-                                            ],
-                                          )
-                                        ],
-                                      );
-                                    })
-                                  ],
+                                                      Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          const Text(
+                                                              "Dépensé :",
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize:
+                                                                      17)),
+                                                          Text(
+                                                              "${montantTotal - montantRestant} FCFA",
+                                                              style: const TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize: 17))
+                                                        ],
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        const AjouterBudget()));
+                                                      },
+                                                      child: Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(5.0),
+                                                        decoration: BoxDecoration(
+                                                            border: Border.all(
+                                                                width: 2,
+                                                                color: Colors
+                                                                    .white),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        23)),
+                                                        child: const Row(
+                                                          children: [
+                                                            Icon(
+                                                                Icons
+                                                                    .add_circle,
+                                                                color: Colors
+                                                                    .white),
+                                                            Padding(
+                                                              padding: EdgeInsets
+                                                                  .only(
+                                                                      left:
+                                                                          3.0),
+                                                              child: Text(
+                                                                "Ajouter budget",
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    fontSize:
+                                                                        16,
+                                                                    color: Colors
+                                                                        .white),
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    )
+                                                  ],
+                                                )
+                                              ],
+                                            )
+                                          ],
+                                        );
+                                      })
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),

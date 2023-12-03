@@ -125,7 +125,7 @@ class _AjoutState extends State<AjoutDepense> {
               Container(
                 margin: const EdgeInsets.only(
                     left: 15, right: 15, top: 30, bottom: 30),
-                height: 200,
+                height: 210,
                 width: double.infinity,
                 decoration: BoxDecoration(
                   color: const Color.fromRGBO(47, 144, 98, 1),

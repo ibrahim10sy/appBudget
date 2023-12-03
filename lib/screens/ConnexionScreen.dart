@@ -1,16 +1,14 @@
-
 import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:http/http.dart' as http;
+import 'package:ika_musaka/screens/InscriptionScreen.dart';
 import 'package:ika_musaka/screens/accueil.dart';
 import 'package:ika_musaka/screens/bottomNavigatorBar.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter/material.dart';
-import 'package:ika_musaka/screens/InscriptionScreen.dart';
-import 'package:http/http.dart' as http;
 
 import '../model/utilisateur.dart';
 import '../provider/UtilisateurProvider.dart';
@@ -19,53 +17,58 @@ class Connexion extends StatefulWidget {
   const Connexion({super.key});
 
   @override
-   // ignore: library_private_types_in_public_api
-   _ConnexionState createState() => _ConnexionState();
+  // ignore: library_private_types_in_public_api
+  _ConnexionState createState() => _ConnexionState();
 }
+
 class _ConnexionState extends State<Connexion> {
   TextEditingController emailController = TextEditingController();
   TextEditingController motDePasseController = TextEditingController();
 
-        String name = '';
-        String email = '';
-        String image = '';
-      final GoogleSignIn _googleSignIn = GoogleSignIn();
-       nextPage() {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => const BottomNavigationPage()));
+  String name = '';
+  String email = '';
+  String image = '';
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  nextPage() {
+    Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => const BottomNavigationPage()));
   }
 
-Future<void> signInWithGoogle() async {
-  try {
-    final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+  Future<void> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
 
-    if (googleUser != null) {
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-      final AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleAuth.accessToken,
-        idToken: googleAuth.idToken,
-      );
+      if (googleUser != null) {
+        final GoogleSignInAuthentication googleAuth =
+            await googleUser.authentication;
+        final AuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleAuth.accessToken,
+          idToken: googleAuth.idToken,
+        );
 
-      final UserCredential authResult = await FirebaseAuth.instance.signInWithCredential(credential);
-      final User? user = authResult.user;
+        final UserCredential authResult =
+            await FirebaseAuth.instance.signInWithCredential(credential);
+        final User? user = authResult.user;
 
-      if (user != null) {
-        // Connexion avec succès
-        // Vous pouvez rediriger l'utilisateur vers la page d'accueil ou effectuer d'autres actions nécessaires.
-        Navigator.push(context, MaterialPageRoute(builder: (context) => BottomNavigationPage()));
+        if (user != null) {
+          // Connexion avec succès
+          // Vous pouvez rediriger l'utilisateur vers la page d'accueil ou effectuer d'autres actions nécessaires.
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const BottomNavigationPage()));
+        } else {
+          print('Erreur de connexion Google : Utilisateur null');
+        }
       } else {
-        print('Erreur de connexion Google : Utilisateur null');
+        print('L\'utilisateur a annulé la connexion Google');
       }
-    } else {
-      print('L\'utilisateur a annulé la connexion Google');
+    } catch (e) {
+      print('Erreur de connexion Google : $e');
     }
-  } catch (e) {
-    print('Erreur de connexion Google : $e');
   }
-}
 
-
-   Future<void> intializeFirebase() async {
+  Future<void> intializeFirebase() async {
     WidgetsFlutterBinding.ensureInitialized();
     await Firebase.initializeApp();
     FirebaseAuth.instance.authStateChanges().listen((User? user) {
@@ -80,40 +83,40 @@ Future<void> signInWithGoogle() async {
     });
   }
 
-
   Future<void> loginUser() async {
     // /utilisateur/login
-    final String baseUrl = 'http://10.0.2.2:8080/utilisateur'; 
+    const String baseUrl = 'http://10.0.2.2:8080/utilisateur';
     final String email = emailController.text;
     final String password = motDePasseController.text;
-    UtilisateurProvider utilisateurProvider = Provider.of<UtilisateurProvider>(context, listen: false);
+    UtilisateurProvider utilisateurProvider =
+        Provider.of<UtilisateurProvider>(context, listen: false);
 
     if (email.isEmpty || password.isEmpty) {
-
       // Gérez le cas où l'email ou le mot de passe est vide.
-       const String errorMessage = "Veillez remplir tout les champs ";
-        // Gérez le cas où l'email ou le mot de passe est vide.
-        showDialog(
-          context:  context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Center(child: Text('Erreur')),
-              content:const  Text(errorMessage),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child:const  Text('OK'),
-                ),
-              ],
-            );
-          },
-        );
+      const String errorMessage = "Veillez remplir tout les champs ";
+      // Gérez le cas où l'email ou le mot de passe est vide.
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Center(child: Text('Erreur')),
+            content: const Text(errorMessage),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
       return;
     }
     const String endpoint = '/login';
-    final Uri apiUrl = Uri.parse('$baseUrl$endpoint?email=$email&motDePasse=$password');
+    final Uri apiUrl =
+        Uri.parse('$baseUrl$endpoint?email=$email&motDePasse=$password');
 
     try {
       final response = await http.post(
@@ -147,7 +150,10 @@ Future<void> signInWithGoogle() async {
         // Affichez les informations de l'utilisateur dans votre interface utilisateur (UI).
         // Stockez l'utilisateur dans UtilisateurProvider.
         utilisateurProvider.setUtilisateur(utilisateur);
-        Navigator.push(context,MaterialPageRoute(builder: (context) => BottomNavigationPage()));
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const BottomNavigationPage()));
         // Navigator.pushNamed(
         //   context,
         //   '/BottomNavigationPage',
@@ -156,20 +162,21 @@ Future<void> signInWithGoogle() async {
       } else {
         // Gérez les erreurs d'authentification ici, par exemple affichez un message d'erreur.
         final responseBody = json.decode(response.body);
-        final errorMessage =responseBody['message']; // Remplacez par le nom réel du champ d'erreur.
+        final errorMessage = responseBody[
+            'message']; // Remplacez par le nom réel du champ d'erreur.
         // Affichez un message d'erreur à l'utilisateur.
-         showDialog(
-          context:  context,
+        showDialog(
+          context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title:  Center(child: Text('Connexion echouer !')),
-              content:  Text(errorMessage),
+              title: const Center(child: Text('Connexion echouer !')),
+              content: Text(errorMessage),
               actions: <Widget>[
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child:  Text('OK'),
+                  child: const Text('OK'),
                 ),
               ],
             );
@@ -198,8 +205,7 @@ Future<void> signInWithGoogle() async {
       backgroundColor: const Color(0xffffffff),
       body: SingleChildScrollView(
         child: Container(
-          
-         //For moving according to the screen when the keyboard popsup.
+          //For moving according to the screen when the keyboard popsup.
           alignment: Alignment.bottomCenter,
           child: Container(
               padding: const EdgeInsets.all(30),
@@ -208,161 +214,147 @@ Future<void> signInWithGoogle() async {
                 children: [
                   Stack(
                     children: <Widget>[
-                      
                       SizedBox(
-                        child: Container(
+                        child: SizedBox(
                           height: 250,
                           width: 600,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(50),
                             // child: Image.asset("assets/images/login1-removebg.png"),
                             child: Image.asset("assets/images/log.png"),
-                           
                           ),
-                         
                         ),
-                        
                       ),
-                      
                     ],
                   ),
-                 
+
                   const SizedBox(height: 10),
 // From here the login Credentials start.
-                 //Pour la navigation
+                  //Pour la navigation
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  // const  Text("Vous n'avez pas de compte?"),
-                   MouseRegion(
-                    cursor: SystemMouseCursors.click, // Définit le curseur en mode "pointer"
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Inscription()),
-                        );
-                      },
-                      // ignore: avoid_unnecessary_containers
-                      child: Container(
-                        child: const Text(
-                          "Connexion",
-                          
-                          style: TextStyle(
-                            decoration: TextDecoration.underline,
-                            decorationColor: Color(0xFF2F9062), 
-                            decorationThickness: 4,
-                            fontWeight: FontWeight.w900,
-                            fontSize: 20,
-                            color: Color(0xFF2F9062), // Utilisez la couleur #2F9062
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const  SizedBox(width: 70),
+                    // const  Text("Vous n'avez pas de compte?"),
                     MouseRegion(
-                    cursor: SystemMouseCursors.click, // Définit le curseur en mode "pointer"
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) =>const Inscription()),
-                        );
-                      },
-                      // ignore: avoid_unnecessary_containers
-                      child: Container(
-                        child: const Text(
-                          "Inscription",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w900,
-                            fontSize: 20,
-                            color: Color.fromARGB(255, 27, 30, 29), // Utilisez la couleur #2F9062
+                      cursor: SystemMouseCursors
+                          .click, // Définit le curseur en mode "pointer"
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Inscription()),
+                          );
+                        },
+                        // ignore: avoid_unnecessary_containers
+                        child: Container(
+                          child: const Text(
+                            "Connexion",
+                            style: TextStyle(
+                              decoration: TextDecoration.underline,
+                              decorationColor: Color(0xFF2F9062),
+                              decorationThickness: 4,
+                              fontWeight: FontWeight.w900,
+                              fontSize: 20,
+                              color: Color(
+                                  0xFF2F9062), // Utilisez la couleur #2F9062
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  )
-
+                    const SizedBox(width: 70),
+                    MouseRegion(
+                      cursor: SystemMouseCursors
+                          .click, // Définit le curseur en mode "pointer"
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const Inscription()),
+                          );
+                        },
+                        // ignore: avoid_unnecessary_containers
+                        child: Container(
+                          child: const Text(
+                            "Inscription",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w900,
+                              fontSize: 20,
+                              color: Color.fromARGB(255, 27, 30,
+                                  29), // Utilisez la couleur #2F9062
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
                   ]),
                   const SizedBox(height: 10),
 
-
-                    // je voudrais mettre le background cette container à cette blanc
+                  // je voudrais mettre le background cette container à cette blanc
                   Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         // color: const Color(0xffe1e2e3),
                         color: Colors.white,
-                        
-                        boxShadow: [
+                        boxShadow: const [
                           BoxShadow(
                             // color: Colors.grey.withOpacity(0.5),
                             color: Color(0xffffffff),
                             spreadRadius: 5,
                             blurRadius: 7,
-                            offset: const Offset(0, 3),
-                            
+                            offset: Offset(0, 3),
                           ),
                         ]),
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                         const SizedBox(height: 5),
-
+                          const SizedBox(height: 5),
                           Container(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 2, vertical: 5),
                             decoration: const BoxDecoration(
                                 color: Color(0xfff5f8fd),
-                                boxShadow: 
-                                  [
-                                    
-                                    BoxShadow(  
-                                        color: Colors.black12,
-                                        offset: Offset(0.0,
-                                            1.0),
-                                        blurRadius: 5.0),
-                                    BoxShadow(
-                                        color: Colors.black12,
-                                        offset: Offset(0.0, 1.0),
-                                        blurRadius: 1.0),
-                                  ],
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: Colors.black12,
+                                      offset: Offset(0.0, 1.0),
+                                      blurRadius: 5.0),
+                                  BoxShadow(
+                                      color: Colors.black12,
+                                      offset: Offset(0.0, 1.0),
+                                      blurRadius: 1.0),
+                                ],
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(20))),
-                            child:  TextFormField(
+                            child: TextFormField(
                               controller: emailController,
                               decoration: const InputDecoration(
                                 hintText: "Email",
                                 border: InputBorder.none,
                                 prefixIcon: Icon(
                                   Icons.email,
-                                  color:  Color(0xFF2F9062),
+                                  color: Color(0xFF2F9062),
                                 ),
                               ),
                             ),
                           ),
-
-
-                         const SizedBox(height: 15),
-
+                          const SizedBox(height: 15),
                           Container(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 2, vertical: 5),
                             decoration: const BoxDecoration(
                                 color: Color(0xfff5f8fd),
-                                boxShadow: 
-                                  [
-                                    
-                                    BoxShadow(  
-                                        color: Colors.black12,
-                                        offset: Offset(0.0,
-                                            1.0),
-                                        blurRadius: 5.0),
-                                    BoxShadow(
-                                        color: Colors.black12,
-                                        offset: Offset(0.0, 1.0),
-                                        blurRadius: 1.0),
-                                  ],
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: Colors.black12,
+                                      offset: Offset(0.0, 1.0),
+                                      blurRadius: 5.0),
+                                  BoxShadow(
+                                      color: Colors.black12,
+                                      offset: Offset(0.0, 1.0),
+                                      blurRadius: 1.0),
+                                ],
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(20))),
                             child: TextFormField(
@@ -371,17 +363,18 @@ Future<void> signInWithGoogle() async {
                               decoration: const InputDecoration(
                                 hintText: "Mot de passe",
                                 border: InputBorder.none,
-                                prefixIcon:
-                                    Icon(Icons.vpn_key, color: Color(0xFF2F9062),),
+                                prefixIcon: Icon(
+                                  Icons.vpn_key,
+                                  color: Color(0xFF2F9062),
+                                ),
                               ),
                             ),
                           ),
                           const SizedBox(height: 10),
-
                         ]),
                   ),
 
-                 const SizedBox(
+                  const SizedBox(
                     height: 25,
                   ),
 
@@ -389,14 +382,14 @@ Future<void> signInWithGoogle() async {
                     alignment: Alignment.centerRight,
                     child: const Text(
                       "Mot de passe oublié ?",
-                      style:  TextStyle(
-                      color: Color(0xFFE4AF18), 
-                      fontWeight: FontWeight.w500),
+                      style: TextStyle(
+                          color: Color(0xFFE4AF18),
+                          fontWeight: FontWeight.w500),
                     ),
                   ),
 
                   const SizedBox(height: 25),
-                  
+
                   //From here the signin buttons will occur.
 
                   Row(
@@ -406,8 +399,10 @@ Future<void> signInWithGoogle() async {
                         onPressed: loginUser,
                         style: ElevatedButton.styleFrom(
                           elevation: 3,
-                          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 50),
-                          backgroundColor: const Color(0xFF2F9062), // Button color
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 15, horizontal: 50),
+                          backgroundColor:
+                              const Color(0xFF2F9062), // Button color
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30),
                             side: const BorderSide(color: Colors.white70),
@@ -422,16 +417,15 @@ Future<void> signInWithGoogle() async {
                           ),
                         ),
                       ),
-
-                    const  SizedBox(width: 8),
-                      Expanded(child:
-                      GestureDetector(
-                        //Signin with google button.
-                        onTap: () {
-                          signInWithGoogle();
-                          //I changed it from raised button to container and then added gesture control to add an image of google.
-                        },
-                        child:  Container(
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: GestureDetector(
+                          //Signin with google button.
+                          onTap: () {
+                            signInWithGoogle();
+                            //I changed it from raised button to container and then added gesture control to add an image of google.
+                          },
+                          child: Container(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 10, vertical: 5),
                             decoration: const BoxDecoration(
@@ -455,11 +449,12 @@ Future<void> signInWithGoogle() async {
                               mainAxisAlignment: MainAxisAlignment
                                   .center, // I had added main axis allignment to be center to make to be at the center.
                               children: [
-                               const Text(
+                                const Text(
                                   "Continuer avec",
                                   style: TextStyle(
                                       fontSize: 14,
-                                      color: Color(0xFF2F9062), // Utilisez la couleur #2F9062
+                                      color: Color(
+                                          0xFF2F9062), // Utilisez la couleur #2F9062
                                       fontWeight: FontWeight.w700),
                                 ),
                                 Image.asset(
@@ -468,14 +463,11 @@ Future<void> signInWithGoogle() async {
                                 )
                               ],
                             ),
+                          ),
                         ),
                       ),
-                      ),
                     ],
-
                   ),
-
-              
                 ],
               )),
         ),
