@@ -1,12 +1,11 @@
+import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:ika_musaka/model/NotificationModel.dart';
 import 'package:ika_musaka/model/utilisateur.dart';
 import 'package:ika_musaka/provider/UtilisateurProvider.dart';
 import 'package:ika_musaka/screens/notification_detail.dart';
 import 'package:ika_musaka/services/notificationService.dart';
 import 'package:provider/provider.dart';
-import 'package:badges/badges.dart' as badges;
 
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({super.key});
@@ -39,7 +38,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
       return notificationsM;
     } catch (error) {
       print('Erreur lors de la récupération des notifications: $error');
-      throw error;
+      rethrow;
     }
   }
 
@@ -120,14 +119,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              NotificationScreen()));
+                                              const NotificationScreen()));
                                 },
                                 child: badges.Badge(
                                   position: badges.BadgePosition.topEnd(
                                       top: -2, end: -2),
                                   badgeContent: Text(
                                     "${listeNotif.length}",
-                                    style: TextStyle(color: Colors.white),
+                                    style: const TextStyle(color: Colors.white),
                                   ),
                                   child: const Icon(
                                     Icons.notifications,
@@ -158,8 +157,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               ),
                               margin: const EdgeInsets.fromLTRB(0, 25, 0, 0),
                               color: const Color.fromRGBO(47, 144, 98, 1),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
+                              child: const Padding(
+                                padding: EdgeInsets.all(8.0),
                                 child: Text(
                                   "Notifications",
                                   style: TextStyle(
@@ -201,7 +200,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     future: _notif,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(
+                        return const Center(
                           child: CircularProgressIndicator(),
                         );
                       } else if (snapshot.hasError) {
@@ -218,35 +217,38 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           itemBuilder: (context, index) {
                             final notificationList = listeNotif[index];
                             return Material(
-                              child: ListTile(
-                                shape: BeveledRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10))),
-                                // visualDensity: VisualDensity(vertical: 4),
-                                tileColor:
-                                    const Color.fromARGB(255, 242, 244, 247),
-                                title: Text(
-                                  notificationList.texte.substring(0, 10),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                subtitle: Text(notificationList.date),
-                                leading: Image.asset(
-                                  "assets/images/clock.png",
-                                  width: 30,
-                                  height: 30,
-                                  scale: 0.9,
-                                ),
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          NotificationDetailScreen(
-                                        notificationM: notificationList,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: ListTile(
+                                  shape: const BeveledRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10))),
+                                  // visualDensity: VisualDensity(vertical: 4),
+                                  tileColor:
+                                      const Color.fromARGB(255, 242, 244, 247),
+                                  title: Text(
+                                    notificationList.texte.substring(0, 10),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  subtitle: Text(notificationList.date),
+                                  leading: Image.asset(
+                                    "assets/images/clock.png",
+                                    width: 30,
+                                    height: 30,
+                                    scale: 0.9,
+                                  ),
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            NotificationDetailScreen(
+                                          notificationM: notificationList,
+                                        ),
                                       ),
-                                    ),
-                                  );
-                                },
+                                    );
+                                  },
+                                ),
                               ),
                             );
                           },
