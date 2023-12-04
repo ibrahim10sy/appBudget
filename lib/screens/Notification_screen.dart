@@ -1,45 +1,50 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:ika_musaka/model/NotificationModel.dart';
+import 'package:ika_musaka/model/utilisateur.dart';
 import 'package:ika_musaka/provider/UtilisateurProvider.dart';
-import 'package:ika_musaka/screens/Categorie.dart';
-import 'package:ika_musaka/screens/Notification_screen.dart';
-import 'package:ika_musaka/services/BottomNavigationService.dart';
-import 'package:ika_musaka/services/budgetService.dart';
+import 'package:ika_musaka/screens/notification_detail.dart';
 import 'package:ika_musaka/services/notificationService.dart';
 import 'package:provider/provider.dart';
 import 'package:badges/badges.dart' as badges;
 
-import '../model/DepenceClasse.dart';
-import '../model/utilisateur.dart';
-import 'Statistiques/StatistiquesDepenses.dart';
-// import 'Statistiques/Statistiques.dart';
-
-class Accueil extends StatefulWidget {
-  const Accueil({super.key});
+class NotificationScreen extends StatefulWidget {
+  const NotificationScreen({super.key});
 
   @override
-  _AccueilState createState() => _AccueilState();
+  State<NotificationScreen> createState() => _NotificationScreenState();
 }
 
-class _AccueilState extends State<Accueil> {
-  late Future<Map<String, dynamic>> future;
-  late Utilisateur utilisateur;
-  late DepenseClass depenses;
-   late List<NotificationModel> listeNotif = [];
+class _NotificationScreenState extends State<NotificationScreen> {
+  late Future<List<NotificationModel>> _notif;
+  late List<NotificationModel> listeNotif = [];
+  var notificationService = NotificationService();
+  late Utilisateur utilisateurs;
 
   @override
   void initState() {
-    super.initState();
-    utilisateur =
+    utilisateurs =
         Provider.of<UtilisateurProvider>(context, listen: false).utilisateur!;
-    future =
-        BudgetService().getBudgetTotal("somme/${utilisateur.idUtilisateur}");
+    _notif = fetchNotif(utilisateurs.idUtilisateur);
+    super.initState();
+  }
+
+  Future<List<NotificationModel>> fetchNotif(int idUtilisateur) async {
+    try {
+      final notificationsM =
+          await notificationService.getNotifForUser(idUtilisateur);
+      setState(() {
+        listeNotif = notificationsM;
+      });
+      return notificationsM;
+    } catch (error) {
+      print('Erreur lors de la récupération des notifications: $error');
+      throw error;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    // Récupérer les données de l'utilisateur passées en argument.
-    // final utilisateur = ModalRoute.of(context)!.settings.arguments as Utilisateur;
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -120,7 +125,7 @@ class _AccueilState extends State<Accueil> {
                                 child: badges.Badge(
                                   position: badges.BadgePosition.topEnd(
                                       top: -2, end: -2),
-                                 badgeContent: Text(
+                                  badgeContent: Text(
                                     "${listeNotif.length}",
                                     style: TextStyle(color: Colors.white),
                                   ),
@@ -154,71 +159,95 @@ class _AccueilState extends State<Accueil> {
                               margin: const EdgeInsets.fromLTRB(0, 25, 0, 0),
                               color: const Color.fromRGBO(47, 144, 98, 1),
                               child: Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(10.0, 15.0, 0, 0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text("Budget total :",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 22,
-                                            fontWeight: FontWeight.bold)),
-                                    Consumer<BudgetService>(
-                                      builder: (context, bugetService, child) {
-                                        return FutureBuilder<
-                                                Map<String, dynamic>>(
-                                            future: bugetService.getBudgetTotal(
-                                                "somme/${utilisateur.idUtilisateur}"),
-                                            builder: (context, snapshot) {
-                                              if (snapshot.hasData) {
-                                                return Text(
-                                                    "${snapshot.data?["Total"]} CFA",
-                                                    style: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 22,
-                                                        fontWeight:
-                                                            FontWeight.bold));
-                                              } else {
-                                                return const CircularProgressIndicator(); //const CircularProgressIndicator();
-                                              }
-                                            });
-                                      },
-                                    )
-                                  ],
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  "Notifications",
+                                  style: TextStyle(
+                                      fontSize: 28, color: Colors.white),
                                 ),
                               ),
                             ),
                           )
                         ]),
                     Image.asset(
-                      "assets/images/wallet-budget-icon.png",
+                      "assets/images/Group 49.png",
                       width: 150,
                       height: 99,
-                    ),Consumer<NotificationService>(
+                      scale: 1,
+                    )
+                  ],
+                )
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Container(
+              margin: const EdgeInsets.only(top: 20),
+              padding: const EdgeInsets.only(left: 15, right: 15, top: 10),
+              height: 445,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(28),
+                  color: Colors.white,
+                  boxShadow: const [
+                    BoxShadow(
+                        offset: Offset(0.0, 0.0),
+                        blurRadius: 13,
+                        color: Color.fromRGBO(0, 0, 0, 0.25))
+                  ]),
+              child: Consumer<NotificationService>(
                 builder: (context, notifService, child) {
                   return FutureBuilder(
-                    future: notifService.getNotifForUser(utilisateur.idUtilisateur),
+                    future: _notif,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(
                           child: CircularProgressIndicator(),
                         );
-                      }
-
-                      if (!snapshot.hasData) {
+                      } else if (snapshot.hasError) {
+                        return Center(
+                          child: Text("Erreur : ${snapshot.error}"),
+                        );
+                      } else if (!snapshot.hasData || listeNotif.isEmpty) {
                         return const Center(
-                          child: Text("Aucune donnée trouvée"),
+                          child: Text("Aucune notification trouvée"),
                         );
                       } else {
-                        listeNotif = snapshot.data!;
                         return ListView.builder(
                           itemCount: listeNotif.length,
                           itemBuilder: (context, index) {
-                            return ListTile(
-                              title: Text(listeNotif[index].texte),
-                              subtitle: Text(listeNotif[index].date),
-                              
+                            final notificationList = listeNotif[index];
+                            return Material(
+                              child: ListTile(
+                                shape: BeveledRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10))),
+                                // visualDensity: VisualDensity(vertical: 4),
+                                tileColor:
+                                    const Color.fromARGB(255, 242, 244, 247),
+                                title: Text(
+                                  notificationList.texte.substring(0, 10),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                subtitle: Text(notificationList.date),
+                                leading: Image.asset(
+                                  "assets/images/clock.png",
+                                  width: 30,
+                                  height: 30,
+                                  scale: 0.9,
+                                ),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          NotificationDetailScreen(
+                                        notificationM: notificationList,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
                             );
                           },
                         );
@@ -226,77 +255,10 @@ class _AccueilState extends State<Accueil> {
                     },
                   );
                 },
-              )
-                  ],
-                )
-              ],
-            ),
-          ),
-          const Divider(
-            color: Colors.white,
-            height: 20,
-          ),
-          Padding(
-            padding:
-                const EdgeInsets.only(left: 15.0, right: 15.0, bottom: 15.0),
-            child: GridView.count(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              crossAxisCount: 2,
-              children: [
-                _buildAccueilCard("Budget", "budget.png", 1),
-                _buildAccueilCard("Dépense", "depenses 1.png", 2),
-                _buildAccueilCard("Catégorie", "categorie.png", 3),
-                _buildAccueilCard("Statistiques", "statistique_logo.png", 4)
-                // _buildAccueilCard("Statistique", "statistique_logo.png", 4)
-              ],
+              ),
             ),
           )
         ],
-      ),
-    );
-  }
-
-  Widget _buildAccueilCard(String titre, String imgLocation, int index) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: InkWell(
-        onTap: () {
-          if (index == 4) {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const StatistiquesDepenses()));
-          } else if (index == 3) {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const Categoriees()));
-          } else {
-            Provider.of<BottomNavigationService>(context, listen: false)
-                .changeIndex(index);
-          }
-        },
-        borderRadius: BorderRadius.circular(28),
-        highlightColor: const Color.fromRGBO(47, 144, 98, 0.9),
-        child: Card(
-          color: Colors.white,
-          elevation: 2,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(28),
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset("assets/images/$imgLocation"),
-              Text(
-                titre,
-                style: const TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.bold,
-                ),
-              )
-            ],
-          ),
-        ),
       ),
     );
   }
